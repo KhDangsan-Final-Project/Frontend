@@ -1,10 +1,10 @@
 import './App.css';
+import MainPage from './components/mainpage/contents/MainPage';
 
 function App() {
   return (
     <div className="App">
-        <p>hello react</p>
-        <p>react</p>
+        <MainPage/>
     </div>
   );
 }
