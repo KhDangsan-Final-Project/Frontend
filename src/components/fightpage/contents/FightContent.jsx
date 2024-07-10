@@ -66,8 +66,23 @@ export default function FightContent() {
         <div className={styles.container}>
             <div className={styles.head}>
                 <div className={styles.myPokemonInfo}>
+                    <div className={styles.pokemonCardAttackMethod}>
+
                     <div className={styles.pokemonCardImage}>
                         {selectedPokemon && <img className={styles.pokemon1}></img>}
+                    </div>
+                    <div className={styles.pokemonCardInfo}>
+                        <div className={styles.pokemonAttack}>
+                        <div className={styles.waterImage}></div>
+                         <p>Shinobi Blade 170</p>
+                        </div>
+                        <div className={styles.pokemonAttack}>
+                        <div className={styles.waterImage}></div>
+                        <div className={styles.colorlessImage}></div>
+                        <div className={styles.colorlessImage}></div>
+                         <p>Mirage Barrage</p>
+                        </div>
+                    </div>
                     </div>
                     <ul>
                         <li className={styles.pokemonName}>my pokemon name</li>
@@ -88,6 +103,12 @@ export default function FightContent() {
             <div className={styles.foot}>
                 <div className={styles.enemyPokemonInfo}>
                     <div className={styles.pokemonCardImage}></div>
+                    <div className={styles.pokemonCardInfo}>
+                        <div className={styles.pokemonAttack}>
+                        <div className={styles.grassImage}></div>
+                    <p>Bug Bite 20</p>
+                        </div>
+                    </div>
                     <ul>
                         <li className={styles.pokemonName}>enemy pokemon name</li>
                         <li className={styles.hp}>HP</li>
