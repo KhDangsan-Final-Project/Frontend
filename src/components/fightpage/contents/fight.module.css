@@ -3,17 +3,20 @@ html{
   background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
   background-repeat: no-repeat;
   background-position: center;
-  background-color: pink;
+  background-color: palegoldenrod;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .container{
     border: 1px solid black;
     /* background-color: #000; */
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     height: 100%;
+  width: 2000px;
 }
 
 .pokemonCardImage{
@@ -136,7 +139,7 @@ input[type="range"]::-ms-thumb {
 .head{
     border: 1px solid green;
     width: 30%;
-    height: 700px;
+    height: 500px;
     float: left;
     display: flex;
     flex-flow: column nowrap;
@@ -146,8 +149,8 @@ input[type="range"]::-ms-thumb {
 
 .body{
     border: 1px solid skyblue;
-    /* width: 30%; */
-    height: 700px;
+    width: 30%;
+    height: 500px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
@@ -163,7 +166,15 @@ input[type="range"]::-ms-thumb {
     color: #FFF;
     background-color: #000;
 }
-
+.vs{
+  margin-top: 200px;
+  background-image: url(/public/img/vs.png);
+  width: 100px;
+  height: 150px;
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .mainPokeball{
     width: 300px;
     height: 300px;
@@ -177,7 +188,7 @@ input[type="range"]::-ms-thumb {
 .foot{
     border: 1px solid crimson;
     width: 30%;
-    height: 700px;
+    height: 500px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
@@ -220,6 +231,29 @@ input[type="range"]::-ms-thumb {
 .attackMethod button:hover{
     background-color: #FFF;
     color: #000;
+}
+.bottomMenu{
+  display: flex;
+  flex-flow: row wrap;
+}
+.attackMethod , .PokemonList {
+  display: flex;
+  flex-flow: row wrap;
+ 
+
+}
+.attackMethod , .PokemonList > a {
+margin: 5px 40px;
+
+}
+.ItemCardList > a{
+  margin: 5px 40px;
+
+}
+.ItemCardList {
+  display: flex;
+  flex-flow: row wrap;
+
 }
 /* -------------------------------------------------- */
 .pokemon1{
@@ -270,6 +304,47 @@ input[type="range"]::-ms-thumb {
 .selectedPokemon{
   width: 228px;
   height: 318px;
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+/* ------------------------------------------------------------------------------------------------------- */
+.item1{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/item1.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.item2{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/item2.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.item3{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/item3.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.item4{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/item4.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.item5{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/item5.png);
   background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
   background-repeat: no-repeat;
   background-position: center;

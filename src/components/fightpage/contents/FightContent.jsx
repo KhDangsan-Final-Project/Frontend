@@ -61,6 +61,8 @@ export default function FightContent() {
     };
 
     return (
+        <html>
+
         <div className={styles.container}>
             <div className={styles.head}>
                 <div className={styles.myPokemonInfo}>
@@ -81,11 +83,11 @@ export default function FightContent() {
                 </div>
             </div>
             <div className={styles.body}>
-                <img className={styles.pokeLibraryImage} alt='pokeLibraryImage'></img>
+                <div className={styles.vs} ></div>
             </div>
             <div className={styles.foot}>
                 <div className={styles.enemyPokemonInfo}>
-                    <div className={styles.pokemonCardImage} alt='pokemonCardImage'></div>
+                    <div className={styles.pokemonCardImage}></div>
                     <ul>
                         <li className={styles.pokemonName}>enemy pokemon name</li>
                         <li className={styles.hp}>HP</li>
@@ -113,11 +115,11 @@ export default function FightContent() {
                 )}
                 {item && (
                     <div className={styles.ItemCardList}>
-                        <a href="#item1" onClick={() => itemCardList('item1')}> itemCardList 1</a><br/>
-                        <a href="#item2" onClick={() => itemCardList('item2')}> itemCardList 2</a><br/>
-                        <a href="#item3" onClick={() => itemCardList('item3')}> itemCardList 3</a><br/>
-                        <a href="#item4" onClick={() => itemCardList('item4')}> itemCardList 4</a><br/>
-                        <a href="#item5" onClick={() => itemCardList('item5')}> itemCardList 5</a>
+                        <a href="#item1" onClick={() => itemCardList('item1')}> <div className={styles.item1}></div></a><br/>
+                        <a href="#item2" onClick={() => itemCardList('item2')}><div className={styles.item2}></div></a><br/>
+                        <a href="#item3" onClick={() => itemCardList('item3')}> <div className={styles.item3}></div></a><br/>
+                        <a href="#item4" onClick={() => itemCardList('item4')}> <div className={styles.item4}></div></a><br/>
+                        <a href="#item5" onClick={() => itemCardList('item5')}> <div className={styles.item5}></div></a>
                     </div>
                 )}
                 {pokemonList && (
@@ -141,5 +143,17 @@ export default function FightContent() {
                 )}
             </div>
         </div>
+        <div>
+
+        <h1>전투 규칙 과 그외 내용</h1><br/>
+        <p>아이템 카드 5개 선택, 포켓몬 카드 5개 선택, 본인 턴일때 run 버튼 실행 가능</p><br/>
+                <h2>기능 구현</h2>
+                <p>HP 슬라이드 버튼 삭제</p><br/>
+                <p>HP 데이터 변경 시 사라진 HP 는 회색으로 데이터 처리</p><br/>
+                <p>포켓몬/아이템 카드 데이터 받는 테스트</p><br/>
+                <p>포켓몬 카드에 있는 공격 리스트 받는 테스트</p>
+
+        </div>
+                </html>
     );
 }
