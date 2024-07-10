@@ -10,30 +10,33 @@ export default function FightContent() {
 <p>Leave Battle</p>
                 </div>
 <div className={styles.myPokemonInfo}>
-<img className={styles.pokemonCardImage} alt='pokemonCardImage'></img>
+<div className={styles.pokemonCardImage} alt='pokemonCardImage'></div>
     <ul>
-        <li>my pokemon name</li>
-        <li>HP</li>
-        <li>EX , MX</li>  {/*포켓몬 카드 특성 */}
+        <li className={styles.pokemonName}>my pokemon name</li>
+        <li className={styles.hp}>HP</li>
 <input type='range' alt='포켓몬 HP 박스'></input>
     </ul>
 </div>
             </div>
             <div className={styles.body}>
                 <img className={styles.pokeLibraryImage} alt='pokeLibraryImage'></img>
-<img className={styles.pokeball} alt='pokeball'></img>
-<img className={styles.mainPokeball} alt='mainPokeball'></img>
-<button>ATTACK</button>
+<div className={styles.mainPokeball} alt='mainPokeball'></div>
+<button>::ATTACK::</button>
             </div>
             <div className={styles.foot}>
             <div className={styles.enemyPokemonInfo}>
-<img className={styles.pokemonCardImage} alt='pokemonCardImage'></img>
+<div className={styles.pokemonCardImage} alt='pokemonCardImage'></div>
     <ul>
-        <li>enemy pokemon name</li>
-        <li>HP</li>
-         <li>EX , MX</li> {/*포켓몬 카드 특성 */}
+        <li className={styles.pokemonName}>enemy pokemon name</li>
+        <li className={styles.hp}>HP</li>
 <input type='range' alt='포켓몬 HP 박스'></input>
     </ul>
+</div>
+<div className={styles.attackMethod}>
+    <button>Attack example1</button>
+    <button>Attack example2</button>
+    <button>Attack example3</button>
+    <button>Attack example4</button>
 </div>
             </div>
         </div>
