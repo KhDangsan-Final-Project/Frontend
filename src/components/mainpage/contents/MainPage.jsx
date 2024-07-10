@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/MainPage.module.css';
 
@@ -41,23 +40,8 @@ export default function MainPage() {
     fetchPokemonData();
   }, []);
 
-  const handleNext = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pokemonData.length);
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 500);
-  };
-
-  const handlePrev = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + pokemonData.length) % pokemonData.length);
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 500);
-  };
+  const handleNext = () => setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pokemonData.length);
+  const handlePrev = () => setCurrentImageIndex((prevIndex) => (prevIndex - 1 + pokemonData.length) % pokemonData.length);
 
   return (
     <div className={styles.container}>
@@ -69,28 +53,34 @@ export default function MainPage() {
               className={`${styles.slide} ${index === currentImageIndex ? styles['slide-active'] : styles['slide-exit']}`}
             >
               <div className={styles.textContainer}>
-                <Link to={`/pokemon/${pokemon.id}`} className={`${styles.header} ${styles[`${pokemonNames[index]}Text`]}`}>
+                <div className={`${styles.header} ${styles[`${pokemonNames[index]}Text`]}`}>
                   {pokemon.name}
-                </Link>
+                </div>
                 <h2 className={`${styles.type} ${styles[`${pokemonNames[index]}Text`]}`}>{pokemon.type}</h2>
                 <div className={styles.description}>{pokemon.description}</div>
                 <footer className={styles.footer}>
-                  <div>카테고리: {pokemon.category}</div>
-                  <div>능력: {pokemon.abilities}</div>
+                  <div>
+                    <div className={`${styles.category} ${styles[`${pokemonNames[index]}Category`]}`}>카테고리</div>
+                    <div>{pokemon.category}</div>
+                  </div>
+                  <div>
+                    <div className={`${styles.category} ${styles[`${pokemonNames[index]}Category`]}`}>능력</div>
+                    <div>{pokemon.abilities}</div>
+                  </div>
                 </footer>
               </div>
               <div className={styles.imageContainer}>
-                <Link to={`/pokemon/${pokemon.id}`} className={`${styles.imageWrapper} ${styles[`${pokemonNames[index]}Wrapper`]}`}>
+                <div className={`${styles.imageWrapper} ${styles[`${pokemonNames[index]}Wrapper`]}`}>
                   <img src={pokemon.image} alt={pokemon.name} className={styles.pokemonImage} />
-                </Link>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
       <div className={styles.buttons}>
-        <button className={styles.arrow} onClick={handlePrev} disabled={isAnimating}>⬅</button>
-        <button className={styles.arrow} onClick={handleNext} disabled={isAnimating}>➡</button>
+        <button className={styles.arrow} onClick={handlePrev}>⬅</button>
+        <button className={styles.arrow} onClick={handleNext}>➡</button>
       </div>
     </div>
   );

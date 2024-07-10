@@ -41,24 +41,71 @@
 }
 
 .header {
-  font-size: 3rem;
+  font-size: 64px;
   margin-top: 20px;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .type {
-  font-size: 2rem;
-  margin-top: 10px;
+  font-size: 40px;
+  margin-top: 30px;
 }
 
 .description {
-  font-size: 1.2rem;
-  margin: 20px 0;
+  width: 600px;
+  font-size: 32px;
+  margin-top: 60px;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin-left: auto; /* 좌측 여백 자동으로 설정 */
+  margin-right: auto; /* 우측 여백 자동으로 설정 */
 }
 
 .footer {
+  display: flex;
+  justify-content: space-around;
   font-size: 1rem;
+  margin-top: 70px;
 }
+
+.footer div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.pikachuCategory,
+.charmanderCategory,
+.meltanCategory {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.pikachuCategory { color: #FFEB3B; }
+.charmanderCategory { color: #FF7043; }
+.meltanCategory { color: #6a99c9; }
+
+.pikachuWrapper, .charmanderWrapper, .meltanWrapper {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pikachuWrapper { background: #ffe23b; }
+.charmanderWrapper { background: #FF7043; }
+.meltanWrapper { background: #6a99c9; }
+
+.pikachuText, .pikachuCategory { color: #FFEB3B; }
+.charmanderText, .charmanderCategory { color: #FF7043; }
+.meltanText, .meltanCategory { color: #6a99c9; }
 
 .imageContainer {
   flex: 1;
@@ -69,8 +116,8 @@
 }
 
 .imageWrapper {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -79,8 +126,8 @@
 }
 
 .pokemonImage {
-  width: 170px;
-  height: 170px;
+  width: 240px;
+  height: 240px;
 }
 
 .buttons {
@@ -99,23 +146,6 @@
   cursor: pointer;
   margin: 0 20px;
 }
-
-.pikachuWrapper, .charmanderWrapper, .meltanWrapper {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pikachuWrapper { background: #ffe23b; }
-.charmanderWrapper { background: #FF7043; }
-.meltanWrapper { background: #6a99c9; }
-
-.pikachuText { color: #FFEB3B; }
-.charmanderText { color: #FF7043; }
-.meltanText { color: #6a99c9; }
 
 @keyframes slideIn {
   from {
