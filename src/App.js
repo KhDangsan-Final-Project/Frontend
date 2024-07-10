@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <p>hello react from change</p>
     </div>
-  );
+  ); ""
 }
 
 export default App;
