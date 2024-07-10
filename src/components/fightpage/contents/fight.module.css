@@ -108,25 +108,7 @@ input[type="range"]:hover {
 }
   
 
-/* Firefox */
-input[type="range"]::-moz-range-track {
-    width: 100%;
-    height: 8px;
-    cursor: pointer;
-    background: #4CAF50; /* 슬라이더 색상 */
-    border-radius: 5px;
-}
-  
-input[type="range"]::-moz-range-thumb {
-    width: 20px; /* 슬라이더 버튼 크기 조정 */
-    height: 20px; /* 슬라이더 버튼 크기 조정 */
-    background: #FFF; /* 슬라이더 버튼 색상 */
-    cursor: pointer;
-    border-radius: 50%;
-    border: 2px solid #4CAF50;
-}
-  
-/* Internet Explorer */
+
 input[type="range"]::-ms-track {
     width: 100%;
     height: 8px;
@@ -151,6 +133,19 @@ input[type="range"]::-ms-thumb {
     cursor: pointer;
     border-radius: 50%;
     border: 2px solid #4CAF50;
+}
+input[type="range"]::-webkit-slider-thumb {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+
+/* 옵션: 전체적으로 버튼 모양의 스타일을 없애기 위해 아래와 같이 추가 */
+input[type="range"] {
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+}
+input[type="range"].grayed {
+  background-color: rgb(160, 162, 159); /* 회색 배경색 */
 }
 
 /* ------------------------------------------------------------------------------ */
@@ -193,15 +188,7 @@ input[type="range"]::-ms-thumb {
   background-repeat: no-repeat;
   background-position: center;
 }
-.mainPokeball{
-    width: 300px;
-    height: 300px;
-    background-image: url(/public/img/pokeball.png);
-    background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: blur(2px); 
-}
+
 
 .foot{
     border: 1px solid crimson;
