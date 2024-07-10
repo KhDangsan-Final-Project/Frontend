@@ -22,7 +22,6 @@
 .slider {
   display: flex;
   flex-direction: column;
-  transition: transform 0.5s ease-in-out;
 }
 
 .slide {
@@ -30,16 +29,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  width: 100%;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .textContainer {
   flex: 1;
   padding: 20px;
+  font-family: 'K2D', sans-serif;
 }
 
 .header {
   font-size: 3rem;
   margin-top: 20px;
+  text-decoration: none;
 }
 
 .type {
@@ -71,12 +75,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20%; /* 오른쪽편에 배치하기 위한 여백 */
+  margin-right: 20%;
 }
 
 .pokemonImage {
-  width: 300px;
-  height: 300px;
+  width: 170px;
+  height: 170px;
 }
 
 .buttons {
@@ -96,7 +100,6 @@
   margin: 0 20px;
 }
 
-/* 개별 포켓몬 스타일 */
 .pikachuWrapper, .charmanderWrapper, .meltanWrapper {
   width: 200px;
   height: 200px;
@@ -106,10 +109,40 @@
   justify-content: center;
 }
 
-.pikachuWrapper { background: #FFEB3B; }
+.pikachuWrapper { background: #ffe23b; }
 .charmanderWrapper { background: #FF7043; }
 .meltanWrapper { background: #6a99c9; }
 
 .pikachuText { color: #FFEB3B; }
 .charmanderText { color: #FF7043; }
 .meltanText { color: #6a99c9; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.slide-active {
+  animation: slideIn 0.5s forwards;
+}
+
+.slide-exit {
+  animation: slideOut 0.5s forwards;
+}

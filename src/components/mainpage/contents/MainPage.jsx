@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/MainPage.module.css';
 
@@ -9,66 +10,87 @@ const pokemonTypeTranslations = { electric: '전기', fire: '불꽃', steel: '�
 export default function MainPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [pokemonData, setPokemonData] = useState([]);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const fetchPokemonData = async () => {
-      const dataPromises = pokemonNames.map(async (name) => {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
-        const speciesResponse = await axios.get(response.data.species.url);
-        const description = speciesResponse.data.flavor_text_entries.find(entry => entry.language.name === 'ko').flavor_text;
-        const category = speciesResponse.data.genera.find(genus => genus.language.name === 'ko').genus;
-        const type = response.data.types.map(typeInfo => pokemonTypeTranslations[typeInfo.type.name] || typeInfo.type.name).join(', ');
-        const abilities = response.data.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ');
+      const data = await Promise.all(pokemonNames.map(async (name) => {
+        const { data: pokemon } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+        const { data: species } = await axios.get(pokemon.species.url);
+
+        const description = species.flavor_text_entries.find(entry => entry.language.name === 'ko').flavor_text;
+        const category = species.genera.find(genus => genus.language.name === 'ko').genus;
+        const type = pokemon.types.map(typeInfo => pokemonTypeTranslations[typeInfo.type.name] || typeInfo.type.name).join(', ');
+        const abilities = pokemon.abilities.map(abilityInfo => abilityInfo.ability.name).join(', ');
+        const image = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
 
         return {
-          image: response.data.sprites.front_default,
+          id: pokemon.id,
+          image,
           name: pokemonKoreanNames[name],
           type,
           description,
           category,
           abilities,
-          className: `${name}Wrapper`,
-          textClassName: `${name}Text`
         };
-      });
+      }));
 
-      const data = await Promise.all(dataPromises);
       setPokemonData(data);
     };
 
     fetchPokemonData();
   }, []);
 
-  const handleNext = () => setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pokemonData.length);
-  const handlePrev = () => setCurrentImageIndex((prevIndex) => (prevIndex - 1 + pokemonData.length) % pokemonData.length);
+  const handleNext = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pokemonData.length);
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 500);
+  };
+
+  const handlePrev = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + pokemonData.length) % pokemonData.length);
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 500);
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.sliderWrapper}>
-        <div className={styles.slider} style={{ transform: `translateY(-${currentImageIndex * 100}vh)` }}>
+        <div className={styles.slider}>
           {pokemonData.map((pokemon, index) => (
-            <div key={index} className={styles.slide}>
+            <div
+              key={index}
+              className={`${styles.slide} ${index === currentImageIndex ? styles['slide-active'] : styles['slide-exit']}`}
+            >
               <div className={styles.textContainer}>
-                <header className={`${styles.header} ${styles[pokemon.textClassName]}`}>{pokemon.name}</header>
-                <h2 className={`${styles.type} ${styles[pokemon.textClassName]}`}>{pokemon.type}</h2>
+                <Link to={`/pokemon/${pokemon.id}`} className={`${styles.header} ${styles[`${pokemonNames[index]}Text`]}`}>
+                  {pokemon.name}
+                </Link>
+                <h2 className={`${styles.type} ${styles[`${pokemonNames[index]}Text`]}`}>{pokemon.type}</h2>
                 <div className={styles.description}>{pokemon.description}</div>
                 <footer className={styles.footer}>
                   <div>카테고리: {pokemon.category}</div>
                   <div>능력: {pokemon.abilities}</div>
                 </footer>
               </div>
-              <div className={`${styles.imageContainer} ${styles.right}`}>
-                <div className={`${styles.imageWrapper} ${styles[pokemon.className]}`}>
+              <div className={styles.imageContainer}>
+                <Link to={`/pokemon/${pokemon.id}`} className={`${styles.imageWrapper} ${styles[`${pokemonNames[index]}Wrapper`]}`}>
                   <img src={pokemon.image} alt={pokemon.name} className={styles.pokemonImage} />
-                </div>
+                </Link>
               </div>
             </div>
           ))}
         </div>
       </div>
       <div className={styles.buttons}>
-        <button className={styles.arrow} onClick={handlePrev}>⬅</button>
-        <button className={styles.arrow} onClick={handleNext}>➡</button>
+        <button className={styles.arrow} onClick={handlePrev} disabled={isAnimating}>⬅</button>
+        <button className={styles.arrow} onClick={handleNext} disabled={isAnimating}>➡</button>
       </div>
     </div>
   );
