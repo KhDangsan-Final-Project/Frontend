@@ -1,23 +1,31 @@
+html{
+  /* background-image: url(/public/img/backgroundImage.jpg); */
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: pink;
+  width: 100%;
+  height: 100%;
+}
+
 .container{
     border: 1px solid black;
-display: flex;
-flex-flow: row nowrap;
-height: 100%;
-background-image: url(/public/img/backgroundImage.jpg);
-background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
-background-repeat: no-repeat;
-background-position: center;
+    /* background-color: #000; */
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100%;
 }
 
 .pokemonCardImage{
-    width:228px ;
-    height:318px ;
-background-image: url(/public/img/testPokemonCard.png);
-background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
-background-repeat: no-repeat;
-background-position: center;
-margin-top: 10px;
+    width: 228px;
+    height: 318px;
+    background-image: url(/public/img/testPokemonCard.png);
+    background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 10px;
 }
+
 ul {
     list-style-type: none;
     padding: 0;
@@ -26,10 +34,11 @@ ul {
     flex-flow: row wrap;
     justify-content: space-between;
     background-color: transparent;
- padding: 20px 0px;
- border-radius: 20px ;
-    /* opacity: 0.5;  */
+    padding: 20px 0px;
+    border-radius: 20px;
+    /* opacity: 0.5; */
 }
+
 li{
     padding: 5px 0;
     font-family: "Raleway", Arial, sans-serif;
@@ -42,9 +51,9 @@ li{
     letter-spacing: 3px;
     font-weight: 400;
     font-style: normal;
-color: #FFF;
-
+    color: #FFF;
 }
+
 .hp{
     font-family: "Raleway", Arial, sans-serif;
     font-weight: 600;
@@ -56,11 +65,12 @@ color: #FFF;
     letter-spacing: 3px;
     font-weight: 400;
     font-style: normal;
-    
 }
+
 .pokemonName{
     width: 100%;
 }
+
 /* 슬라이더 색상 변경 */
 input[type="range"] {
     -webkit-appearance: none; /* 기본 스타일 제거 */
@@ -70,94 +80,81 @@ input[type="range"] {
     outline: none;
     opacity: 0.7;
     transition: opacity .2s;
-  }
+}
   
-  input[type="range"]:hover {
+input[type="range"]:hover {
     opacity: 1; /* 호버 시 불투명도 */
-  }
+}
   
-  /* Chrome, Safari, Opera */
-  input[type="range"]::-webkit-slider-runnable-track {
+
+/* Firefox */
+input[type="range"]::-moz-range-track {
     width: 100%;
     height: 8px;
     cursor: pointer;
     background: #4CAF50; /* 슬라이더 색상 */
     border-radius: 5px;
-  }
+}
   
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 0px; /* 슬라이더 버튼 없애기 */
-    height: 0px; /* 슬라이더 버튼 없애기 */
-    background: transparent; /* 슬라이더 버튼 색상 투명 */
+input[type="range"]::-moz-range-thumb {
+    width: 20px; /* 슬라이더 버튼 크기 조정 */
+    height: 20px; /* 슬라이더 버튼 크기 조정 */
+    background: #FFF; /* 슬라이더 버튼 색상 */
     cursor: pointer;
-  }
+    border-radius: 50%;
+    border: 2px solid #4CAF50;
+}
   
-  /* Firefox */
-  input[type="range"]::-moz-range-track {
-    width: 100%;
-    height: 8px;
-    cursor: pointer;
-    background: #4CAF50; /* 슬라이더 색상 */
-    border-radius: 5px;
-  }
-  
-  input[type="range"]::-moz-range-thumb {
-    width: 0px; /* 슬라이더 버튼 없애기 */
-    height: 0px; /* 슬라이더 버튼 없애기 */
-    background: transparent; /* 슬라이더 버튼 색상 투명 */
-    cursor: pointer;
-  }
-  
-  /* Internet Explorer */
-  input[type="range"]::-ms-track {
+/* Internet Explorer */
+input[type="range"]::-ms-track {
     width: 100%;
     height: 8px;
     cursor: pointer;
     background: transparent; 
     border-color: transparent;
     color: transparent;
-  }
+}
   
-  input[type="range"]::-ms-fill-lower {
+input[type="range"]::-ms-fill-lower {
     background: #4CAF50; /* 슬라이더 색상 */
-  }
+}
   
-  input[type="range"]::-ms-fill-upper {
+input[type="range"]::-ms-fill-upper {
     background: #4CAF50; /* 슬라이더 색상 */
-  }
+}
   
-  input[type="range"]::-ms-thumb {
-    width: 0px; /* 슬라이더 버튼 없애기 */
-    height: 0px; /* 슬라이더 버튼 없애기 */
-    background: transparent; /* 슬라이더 버튼 색상 투명 */
+input[type="range"]::-ms-thumb {
+    width: 20px; /* 슬라이더 버튼 크기 조정 */
+    height: 20px; /* 슬라이더 버튼 크기 조정 */
+    background: #FFF; /* 슬라이더 버튼 색상 */
     cursor: pointer;
-  }
-  
+    border-radius: 50%;
+    border: 2px solid #4CAF50;
+}
+
 /* ------------------------------------------------------------------------------ */
 .head{
     border: 1px solid green;
     width: 30%;
-    height: 100%;
+    height: 700px;
     float: left;
-display: flex;
-flex-flow: column nowrap;
-justify-content: space-between;
-align-items: center;
-}
-.body{
-    border: 1px solid skyblue;
-    width: 30%;
-    height: 100%;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
     align-items: center;
-    
-    
-    margin: 0px 50px;
 }
+
+.body{
+    border: 1px solid skyblue;
+    /* width: 30%; */
+    height: 700px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: center;
+    /* margin: 0px 50px; */
+}
+
 .body > button{
     margin: 0px 70px;
     margin-bottom: 22px;
@@ -166,33 +163,33 @@ align-items: center;
     color: #FFF;
     background-color: #000;
 }
+
 .mainPokeball{
     width: 300px;
     height: 300px;
     background-image: url(/public/img/pokeball.png);
-background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
-background-repeat: no-repeat;
-background-position: center;
-filter: blur(2px); 
-
+    background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: blur(2px); 
 }
+
 .foot{
     border: 1px solid crimson;
     width: 30%;
-    height: 100%;
+    height: 700px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
     align-items: center;
 }
+
 .attackMethod{
     border: 1px solid pink;
     display: flex;
     flex-flow: row wrap;
     float: right;
-    
 }
-
 
 .attackMethod button {
     margin: 2px 2px;
@@ -219,8 +216,61 @@ filter: blur(2px);
     transition: background-color .1s linear;
     color: #fff;
 }
+
 .attackMethod button:hover{
     background-color: #FFF;
     color: #000;
 }
-
+/* -------------------------------------------------- */
+.pokemon1{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/pokemon1.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+.pokemon2{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/pokemon2.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+.pokemon3{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/pokemon3.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+.pokemon4{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/pokemon4.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+.pokemon5{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/pokemon5.png);
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+.selectedPokemon{
+  width: 228px;
+  height: 318px;
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
