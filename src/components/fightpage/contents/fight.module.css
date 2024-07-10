@@ -1,0 +1,20 @@
+.container{
+    border: 1px solid black;
+display: flex;
+flex-flow: row nowrap;
+}
+.head{
+    border: 1px solid green;
+width: 30%;
+height: 500px;
+}
+.body{
+    border: 1px solid skyblue;
+    width: 40%;
+    height: 500px;
+}
+.foot{
+    border: 1px solid crimson;
+    width: 30%;
+    height: 500px;
+}

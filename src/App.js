@@ -1,12 +1,13 @@
-import logo from './logo.svg';
+
 import './App.css';
+import FightContent from './components/fightpage/contents/FightContent';
 
 function App() {
   return (
     <div className="App">
-      <p>hello react from change</p>
+   <FightContent/>
     </div>
-  ); ""
+  ); 
 }
 
 export default App;
