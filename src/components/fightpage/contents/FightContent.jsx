@@ -1,182 +1,134 @@
-import { useState } from 'react';
-import styles from './fight.module.css';
+import React, { useEffect, useState } from 'react';
+// import styles from './fight.module.css';
 
-export default function FightContent() {
-    const [item, setItem] = useState(false);
-    const [fight, setFight] = useState(false);
-    const [pokemonList, setPokemonList] = useState(false);
-    const [selectedPokemon, setSelectedPokemon] = useState(null);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [hp, setHp] = useState(100); // 포켓몬 HP 상태 추가
+function FightContent() {
+    //카드 데이터 배열 관리
+  const [cards, setCards] = useState([]);
+  // 검색어 데이터
+  const [searchTerm, setSearchTerm] = useState('');
+  // 선택된 카드 타입
+  const [selectedType, setSelectedType] = useState('');
+  //타입 목록
+  const [types, setTypes] = useState([]);
+  // 현재 페이지 번호
+  const [page, setPage] = useState(1);
+  //데이터 로딩 상태
+  const [loading, setLoading] = useState(false);
+  //api 키
+  const API_KEY = 'YOUR_API_KEY';  // 여기에 API 키를 입력하세요.
+  // 페이지당 카드 수
+  const PAGE_SIZE = 20; 
 
-    // const pokemonImages = {
-    //     pokemon1: '/public/img/pokemon1.png',
-    //     pokemon2: '/public/img/pokemon2.png',
-    //     pokemon3: '/public/img/pokemon3.png',
-    //     pokemon4: '/public/img/pokemon4.png',
-    //     pokemon5: '/public/img/pokemon5.png',
-
-    // };
-
-    const fightBtn = () => {
-        setFight(true);
-        setItem(false);
-        setPokemonList(false);
+  useEffect(() => {
+    const fetchTypes = async () => {
+      try {
+        const response = await fetch('https://api.pokemontcg.io/v2/types', {
+          headers: {
+            'X-Api-Key': API_KEY
+          }
+        });
+        const data = await response.json();
+        setTypes(data.data);
+      } catch (error) {
+        console.error('Error fetching the types:', error);
+      }
     };
 
-    const itemBtn = () => {
-        setItem(true);
-        setFight(false);
-        setPokemonList(false);
-    };
+    fetchTypes();
+  }, [API_KEY]);
 
-    const runBtn = () => {
-        alert("you can't run!");
-    };
+  const fetchCards = async (reset = false) => {
+    try {
+      setLoading(true);
+      let url = `https://api.pokemontcg.io/v2/cards?page=${page}&pageSize=${PAGE_SIZE}`;
+      if (searchTerm) {
+        url += `&q=name:${searchTerm}`;
+      } else if (selectedType) {
+        url += `&q=types:${selectedType}`;
+      }
 
-    const showPokemonList = () => {
-        setPokemonList(true);
-        setFight(false);
-        setItem(false);
-    };
+      const response = await fetch(url, {
+        headers: {
+          'X-Api-Key': API_KEY
+        }
+      });
+      const data = await response.json();
+      setCards(prevCards => reset ? data.data : [...prevCards, ...data.data]);
+    } catch (error) {
+      console.error('Error fetching the cards:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const pokemonCardList = (pokemonId) => {
-        setSelectedPokemon(pokemonId);
-        window.confirm(`${pokemonId}를 선택하시겠습니까?`);
-    };
+  useEffect(() => {
+    setPage(1);
+    fetchCards(true);
+  }, [searchTerm, selectedType, API_KEY]);
 
-    const itemCardList = (itemId) => {
-        setSelectedItem(itemId);
-        window.confirm(`${itemId}를 선택하시겠습니까?`);
-    };
+  useEffect(() => {
+    if (page > 1) {
+      fetchCards();
+    }
+  }, [page]);
 
-    const handleAttack = () => {
-        setHp((prevHp) => Math.max(0, prevHp - 20)); // HP를 20 줄이고 0 아래로 내려가지 않게 설정
-    };
+  const loadMore = () => {
+    setPage(prevPage => prevPage + 1);
+  };
 
-    const getHpColor = (hp) => {
-        if (hp > 60) return '#4CAF50'; // Green
-        if (hp > 30) return '#FFEB3B'; // Yellow
-        return '#F44336'; // Red
-    };
-
-    return (
-        <html>
-
-        <div className={styles.container}>
-            <div className={styles.head}>
-                <div className={styles.myPokemonInfo}>
-                    <div className={styles.pokemonCardAttackMethod}>
-
-                    <div className={styles.pokemonCardImage}>
-                        {selectedPokemon && <img className={styles.pokemon1}></img>}
+  return (
+    <div className="App">
+      <h1>Pokémon TCG Cards</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="Search for a Pokémon"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+        />
+        <select
+          value={selectedType}
+          onChange={e => setSelectedType(e.target.value)}
+        >
+          <option value="">Select Type</option>
+          {types.map(type => (
+            <option key={type} value={type}>{type}</option>
+          ))}
+        </select>
+      </div>
+      <div className="card-container">
+        {cards.length > 0 ? (
+          cards.map(card => (
+            <div key={card.id} className="card">
+              <img src={card.images.small} alt={card.name} />
+              <h2>{card.name}</h2>
+              <p>{card.set.name}</p>
+              <p>Type: {card.types.join(', ')}</p>
+              {card.attacks && (
+                <div>
+                  <h3>Attacks</h3>
+                  {card.attacks.map((attack, index) => (
+                    <div key={index} className="attack">
+                      <p><strong>{attack.name}</strong></p>
+                      <p>Damage: {attack.damage}</p>
+                      <p>{attack.text}</p>
                     </div>
-                    <div className={styles.pokemonCardInfo}>
-                        <div className={styles.pokemonAttack}>
-                        <div className={styles.waterImage}></div>
-                         <p>Shinobi Blade 170</p>
-                        </div>
-                        <div className={styles.pokemonAttack}>
-                        <div className={styles.waterImage}></div>
-                        <div className={styles.colorlessImage}></div>
-                        <div className={styles.colorlessImage}></div>
-                         <p>Mirage Barrage</p>
-                        </div>
-                    </div>
-                    </div>
-                    <ul>
-                        <li className={styles.pokemonName}>my pokemon name</li>
-                        <li className={styles.hp}>HP</li>
-                        <input 
-                            type='range' 
-                            value={hp} 
-                            readOnly 
-                            style={{ background: getHpColor(hp) }} 
-                            alt='포켓몬 HP 박스'
-                        ></input> {/* HP 상태를 input range에 반영 */}
-                    </ul>
+                  ))}
                 </div>
+              )}
             </div>
-            <div className={styles.body}>
-                <div className={styles.vs} ></div>
-            </div>
-            <div className={styles.foot}>
-                <div className={styles.enemyPokemonInfo}>
-                    <div className={styles.pokemonCardImage}></div>
-                    <div className={styles.pokemonCardInfo}>
-                        <div className={styles.pokemonAttack}>
-                        <div className={styles.grassImage}></div>
-                    <p>Bug Bite 20</p>
-                        </div>
-                    </div>
-                    <ul>
-                        <li className={styles.pokemonName}>enemy pokemon name</li>
-                        <li className={styles.hp}>HP</li>
-                        <input type='range' alt='포켓몬 HP 박스'></input>
-                    </ul>
-                </div>
-            </div>
-            <div className={styles.gamebox}>
-                <div className={styles.bottomMenu}>
-                    <p>What will Spinarak do?</p>
-                    <div className={styles.Menu}>
-                        <button onClick={fightBtn}>FIGHT</button>
-                        <button onClick={showPokemonList}>POKeMON</button>
-                        <button onClick={itemBtn}>ITEM</button>
-                        <button onClick={runBtn}>RUN</button>
-                    </div>
-                </div>
-                {fight && (
-                    <div className={styles.attackMethod}>
-                        <button onClick={handleAttack}>Attack example1</button>
-                        <button onClick={handleAttack}>Attack example2</button>
-                        <button onClick={handleAttack}>Attack example3</button>
-                        <button onClick={handleAttack}>Attack example4</button>
-                    </div>
-                )}
-                {item && (
-                    <div className={styles.ItemCardList}>
-                        <a href="#item1" onClick={() => itemCardList('item1')}> <div className={styles.item1}></div></a><br/>
-                        <a href="#item2" onClick={() => itemCardList('item2')}><div className={styles.item2}></div></a><br/>
-                        <a href="#item3" onClick={() => itemCardList('item3')}> <div className={styles.item3}></div></a><br/>
-                        <a href="#item4" onClick={() => itemCardList('item4')}> <div className={styles.item4}></div></a><br/>
-                        <a href="#item5" onClick={() => itemCardList('item5')}> <div className={styles.item5}></div></a>
-                    </div>
-                )}
-                {pokemonList && (
-                    <div className={styles.PokemonList}>
-                        <a href="#pokemon1" onClick={() => pokemonCardList('pokemon1')}> <div className={styles.pokemon1}></div></a><br/>
-                        <a href="#pokemon2" onClick={() => pokemonCardList('pokemon2')}> <div className={styles.pokemon2}></div></a><br/>
-                        <a href="#pokemon3" onClick={() => pokemonCardList('pokemon3')}> <div className={styles.pokemon3}></div></a><br/>
-                        <a href="#pokemon4" onClick={() => pokemonCardList('pokemon4')}> <div className={styles.pokemon4}></div></a><br/>
-                        <a href="#pokemon5" onClick={() => pokemonCardList('pokemon5')}> <div className={styles.pokemon5}></div></a>
-                    </div>
-                )}
-                {selectedPokemon && (
-                    <div className={styles.SelectedPokemonInfo}>
-                        <p>{selectedPokemon}을(를) 선택하셨습니다.</p>
-                    </div>
-                )}
-                {selectedItem && (
-                    <div className={styles.SelectedItemInfo}>
-                        <p>{selectedItem}을(를) 선택하셨습니다.</p>
-                    </div>
-                )}
-            </div>
-        </div>
-        <div>
-
-        <h1>전투 규칙 과 그외 내용</h1><br/>
-        <p>아이템 카드 5개 선택, 포켓몬 카드 5개 선택, 본인 턴일때 run 버튼 실행 가능</p><br/>
-                <p>처음 스타팅 카드를 고를때 카드 하나에 120HP 이상 금지, 카드는 3개까지 선택 가능, 스타팅 카드의 최대 합 HP는 310HP</p><br/>
-                <p>npm i react-jss / npm i react-router-dom</p>
-                <h2>기능 구현</h2>
-                <p>HP 슬라이드 버튼 삭제</p><br/>
-                <p>HP 데이터 변경 시 사라진 HP 는 회색으로 데이터 처리</p><br/>
-                <p>포켓몬/아이템 카드 데이터 받는 테스트</p><br/>
-                <p>포켓몬 카드에 있는 공격 리스트 받는 테스트</p><br/>
-
-        </div>
-                </html>
-    );
+          ))
+        ) : (
+          <p>No cards found</p>
+        )}
+      </div>
+      {loading && <p>Loading...</p>}
+      {!loading && cards.length > 0 && (
+        <button onClick={loadMore}>Load More</button>
+      )}
+    </div>
+  );
 }
+
+export default FightContent;
+

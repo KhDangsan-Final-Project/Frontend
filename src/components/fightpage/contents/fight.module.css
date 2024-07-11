@@ -40,7 +40,7 @@ html{
 ul {
     list-style-type: none;
     padding: 0;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
@@ -183,7 +183,7 @@ input[type="range"].grayed {
   margin-top: 200px;
   background-image: url(/public/img/vs.png);
   width: 100px;
-  height: 150px;
+  height: 200px;
   background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
   background-repeat: no-repeat;
   background-position: center;
@@ -309,6 +309,14 @@ margin: 5px 40px;
 .selectedPokemon{
   width: 228px;
   height: 318px;
+  background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.pokemonImage{
+  width: 228px;
+  height: 318px;
+  background-image: url(/public/img/pokemonImage.png);
   background-size: cover; /* contain, auto, 100% 100% 등으로 변경 가능 */
   background-repeat: no-repeat;
   background-position: center;
