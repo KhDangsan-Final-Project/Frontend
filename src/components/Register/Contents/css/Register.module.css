@@ -219,3 +219,73 @@
     font-size: 20px;
     color: #ffffff;
 }
+
+@media screen and (max-width:480px) {
+  *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+
+  }
+ 
+  .page{
+    background-image: url('/public/img/fantasy-style-galaxy-background.jpg');
+    background-size: cover;
+    background-position: center;
+
+  }
+
+  .body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+   
+  }
+  .container{
+    width: 70%;
+  }
+
+  .title{
+    font-size: 100%;
+  }
+
+
+  .name{
+    width: 100%;
+  }
+  
+  .name input{
+    width: 100%;
+    font-size: 70%;
+  }
+
+  .txt_box{
+    width: 100%;
+  }
+
+  .txt_box input{
+    width: 100%;
+    font-size: 70%;
+  }
+
+  .email_box {
+    width: 100%;
+  }
+
+  .email_box input {
+    width: 100%;
+    font-size: 70%;
+  }
+  .email_option {
+    width: 100%;
+  }
+
+.email_option select {
+    width: 100%;
+    font-size: 70%;
+  }
+
+
+}

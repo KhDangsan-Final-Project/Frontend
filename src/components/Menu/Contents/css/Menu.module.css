@@ -6,7 +6,7 @@
 .container > ul{
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .container > ul > li{
@@ -23,4 +23,24 @@
 .pokeimg{
     width: 192px;
     height: 122px;
+}
+
+@media screen and (max-width:480px) {
+
+    .container > ul{
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
+
+    .container > ul > li > a{
+        color: white;
+        text-decoration: none;
+        font-size: 90%;
+        
+    }
+    .pokeimg{
+        width: 81px;
+        height: 61px;
+    }
 }
