@@ -37,7 +37,7 @@ export default function Login({ setToken }) {
   return (
     <div className={styles.body}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Login</h1>
+        <h1 className={styles.title}>로그인</h1>
         <form onSubmit={handleSubmit}>
           <div className={styles.txt_box}>
             <input
