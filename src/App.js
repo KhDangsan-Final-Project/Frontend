@@ -1,30 +1,24 @@
-import Login from "./components/Login/Login";
-import Card from "./components/Menu/Contents/Card";
-import Library from "./components/Menu/Contents/Library";
-import Menu from "./components/Menu/Contents/Menu";
-import MyPage from "./components/Menu/Contents/Mypage";
-import News from "./components/Menu/Contents/News";
-import Search from "./components/Menu/Contents/Search";
-import Register from "./components/Register/Register";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from './components/LoginPage/LoginPage';
 
 function App() {
   return (
+<<<<<<< HEAD
     <Router>
       
       <Routes>
-      <Route exact path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/menu" element={<Menu />} />
-      <Route path="/library" element={<Library />} />
-      <Route path="/card" element={<Card />} />
-      <Route path="/search" element={<Search />} />
-      <Route path="/news" element={<News />} />
-      <Route path="/mypage" element={<MyPage />} />
+      <Route exact path="/login" element={<LoginPage />} />
 
       </Routes>
       
     </Router>
+=======
+    <div className="App">
+        <p>hello react</p>
+        <p>react</p>
+        <p>Test</p>
+    </div>
+>>>>>>> d2a86a69f5e3722b1853d39b7e162707effe39a6
   );
 }
 

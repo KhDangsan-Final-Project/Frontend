@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from './css/Register.module.css';
-import MenuContents from '../../Menu/Contents/MenuContents';
 
 export default function RegisterContents() {
     const [id, setId] = useState('');
