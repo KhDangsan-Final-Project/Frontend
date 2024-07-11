@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from './css/Register.module.css';
-import MenuContents from '../../Menu/Contents/MenuContents';
 
 export default function RegisterContents() {
     const [id, setId] = useState('');
@@ -68,7 +67,6 @@ export default function RegisterContents() {
 
 return (
     <div className={styles.page}>
-        <MenuContents />
         <div className={styles.body}>
             <div className={styles.container}>
                 <h1 className={styles.title}>Sign-in</h1>
