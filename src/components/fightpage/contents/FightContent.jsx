@@ -12,7 +12,7 @@ function FightContent() {
   const [selectedCards, setSelectedCards] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
   const navigate = useNavigate();
-  const API_KEY = 'YOUR_API_KEY'; // 사용자의 API 키로 대체 필요
+  const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // 사용자의 API 키로 대체 필요
   const PAGE_SIZE = 20;
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function FightContent() {
         const data = await response.json();
         setTypes(data.data);
       } catch (error) {
-        console.error('타입 데이터를 불러오는 중 오류 발생:', error);
+        alert('타입 데이터를 불러오는 중 오류 발생:', error);
       }
     };
 
@@ -49,7 +49,7 @@ function FightContent() {
       setLoading(true);
       let url = `https://api.pokemontcg.io/v2/cards?page=${page}&pageSize=${PAGE_SIZE}`;
       if (searchTerm) {
-        url += `&q=name:${searchTerm}`;
+        url += `&q=name:${encodeURIComponent(searchTerm)}`; // 한글 검색어 처리
       } else if (selectedType) {
         url += `&q=types:${selectedType}`;
       }
@@ -65,6 +65,19 @@ function FightContent() {
       console.error('카드 데이터를 불러오는 중 오류 발생:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const inputValue = e.target.value;
+    setSearchTerm(inputValue);
+
+    // 입력된 값에 한글이 포함되어 있는지 검사
+    const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(inputValue);
+    if (hasKorean) {
+      alert('한글 입력은 허용되지 않습니다.');
+      // 한글 입력이 감지되면 검색어를 초기화할 수도 있습니다.
+      setSearchTerm('');
     }
   };
 
@@ -129,7 +142,7 @@ function FightContent() {
           type="text"
           placeholder="포켓몬 검색"
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+          onChange={handleChange} // handleChange 함수를 onChange 이벤트 핸들러로 할당
         />
         <select
           value={selectedType}
