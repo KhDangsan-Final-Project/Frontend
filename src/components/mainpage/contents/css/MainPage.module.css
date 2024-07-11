@@ -56,9 +56,10 @@
   width: 600px;
   font-size: 32px;
   margin-top: 60px;
-  text-align: center; /* 텍스트 중앙 정렬 */
-  margin-left: auto; /* 좌측 여백 자동으로 설정 */
-  margin-right: auto; /* 우측 여백 자동으로 설정 */
+  text-align: center; 
+  margin-left: auto;
+  margin-right: auto; 
+  font-weight: bold;
 }
 
 .footer {
@@ -99,13 +100,28 @@
   justify-content: center;
 }
 
-.pikachuWrapper { background: #ffe23b; }
-.charmanderWrapper { background: #FF7043; }
-.meltanWrapper { background: #6a99c9; }
+.pikachuWrapper { 
+  background: #ffe23b; 
+}
+.charmanderWrapper { 
+  background: #FF7043; 
+}
+.meltanWrapper { 
+  background: #6a99c9; 
+}
 
-.pikachuText, .pikachuCategory { color: #FFEB3B; }
-.charmanderText, .charmanderCategory { color: #FF7043; }
-.meltanText, .meltanCategory { color: #6a99c9; }
+.pikachuText, .pikachuCategory { 
+  color: #FFEB3B; 
+  font-weight: bold;
+}
+.charmanderText, .charmanderCategory { 
+  color: #FF7043; 
+  font-weight: bold;
+}
+.meltanText, .meltanCategory { 
+  color: #6a99c9; 
+  font-weight: bold;
+}
 
 .imageContainer {
   flex: 1;

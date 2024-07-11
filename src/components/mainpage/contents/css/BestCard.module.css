@@ -1,0 +1,66 @@
+.bestCardContainer {
+  padding: 20px;
+}
+
+.header {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+  gap: 100px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 250px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+}
+
+.card img {
+  max-width: 200px; 
+  border-radius: 10px;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardInfo {
+  margin-top: 10px;
+}
+
+.cardInfo h2 {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
+
+.cardInfo p {
+  margin: 5px 0;
+}
+
+.lightning {
+  background-color: #ffeb3b;
+}
+
+.water {
+  background-color: #03a9f4;
+}
+
+.grass {
+  background-color: #8bc34a;
+}
+
+.fire {
+  background-color: #ff5722;
+}
