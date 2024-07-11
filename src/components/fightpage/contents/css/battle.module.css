@@ -1,0 +1,140 @@
+/* battle.module.css */
+.html {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.App {
+    font-family: Arial, sans-serif;
+    max-width: 2000px;
+    background-color: antiquewhite;
+  }
+  
+  .stage {
+    border: 1px solid black;
+    height: 900px;
+  }
+  
+  .selectedPokemonContainer {
+    display: flex;
+    flex-wrap: row nowrap;
+    gap: 20px;
+  }
+  
+  .enemyContainer {
+    border: 1px solid red;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+  }
+  
+  .body {
+    border: 1px solid green;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    padding-top: 50px;
+    height: 200px;
+  }
+  
+  .menu {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center; /* 중앙 정렬 추가 */
+    margin-top: 20px;
+  }
+  
+  .menu button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  
+  .pokemonCard {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: calc(33.33% - 20px);
+    text-align: center;
+    background-color: aqua;
+  }
+  
+  .pokemonCard img {
+
+
+  }
+  
+  .vs {
+    background-image: url(/public/img/vs.png);
+    width: 100px;
+    height: 200px;
+    background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .pokemonCard h2 {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+  
+  .pokemonCard p {
+    margin: 5px 0;
+  }
+  
+  .pokemonAttacks {
+    margin-top: 10px;
+  }
+  
+  .attack {
+    margin-top: 5px;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+  }
+  
+  .attack p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .hpBarContainer {
+    background-color: #eee;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 3px;
+    width: 100%;
+    max-width: 200px;
+    height: 24px;
+    position: relative;
+  }
+  
+  .hpBar {
+    background-color: #4caf50;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    line-height: 24px;
+    height: 100%;
+  }
+  
+  .types {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .typeLogo {
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+    background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  

@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+  background-color: palegoldenrod;
+}
+
+.cardContainer {
+  max-height: 500px; /* Limit the height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  display: flex;
+  flex-wrap: wrap; /* Ensure cards stay in a single row */
+  justify-content: flex-start; /* Start from the left */
+  gap: 20px;
+  padding: 10px;
+}
+
+.cardContainer .card {
+  flex: 0 0 auto; /* Allow cards to shrink to fit content */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 200px; /* Set a fixed width for each card */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.cardContainer .card img {
+  max-width: 100%;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.cardContainer .card h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.cardContainer .card p {
+  color: #555;
+}
+
+.selectedCards {
+  margin-top: 20px;
+}
+
+.selectedCardContainer {
+  display: flex;
+  flex-wrap: nowrap; /* Ensure cards stay in a single row */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.selectedCardContainer .card {
+  flex: 0 0 auto; /* Allow cards to shrink to fit content */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 200px; /* Set a fixed width for each card */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.selectedCardContainer .card img {
+  max-width: 100%;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.selectedCardContainer .card h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.selectedCardContainer .card p {
+  color: #555;
+}
+/* ================================================================================ */
+.selectedCardContainer{
+border: 1px solid crimson;
+}
+.myCardArea{
+  border: 1px solid skyblue;
+}
