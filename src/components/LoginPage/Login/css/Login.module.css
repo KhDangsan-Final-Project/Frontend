@@ -14,6 +14,7 @@
 }
 
 .title {
+  font-family: "Aclonica", sans-serif;
   text-align: center;
   font-weight: normal;
   font-size: 70px;
@@ -61,16 +62,22 @@
   flex-flow: row nowrap;
   justify-content: space-between;
   margin: 20px 0;
+  align-items: center;
 }
 
 .chk_bar>label:hover {
   color: white;
 }
 
-input[type=checkbox] {
+.checkbox {
   width: 20px;
   height: 15px;
 }
+
+.checkboxLabel:hover {
+  color: #ffffff;
+}
+
 
 .chk_bar > a {
   font-size: 15px;
@@ -90,6 +97,7 @@ input[type=checkbox] {
   font-size: 30px;
   color: #000000;
   border: 1px solid #bababa;
+  font-family: "Irish Grover", system-ui;
 }
 
 .btn_login:hover {
@@ -105,15 +113,15 @@ input[type=checkbox] {
   justify-content: center;
 }
 
-.register_bar>p>a {
+.register_bar>a {
   color: #bababa;
 }
 
-.register_bar>p>a:hover {
+.register_bar>a:hover {
   color: white;
 }
 
-@media (max-width:450px) {
+@media (max-width:510px) {
   .container {
     padding: 20px;
   }
@@ -136,5 +144,22 @@ input[type=checkbox] {
 
   .btn_login {
     padding: 0px 0px;
+  }
+  
+  .checkbox {
+    width: 15px;
+    height: 10px;
+  }
+  
+  .checkboxLabel {
+    font-size: 12px;
+  }
+  
+  .chk_bar > a {
+    font-size: 12px;
+  }
+
+  .register_bar {
+    font-size: 13px;
   }
 }

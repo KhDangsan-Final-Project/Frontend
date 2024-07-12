@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import Menu from '../../MenuPage/Menu';
+import React, { useState } from 'react';
 import styles from './css/Register.module.css';
 
 export default function Register() {
@@ -13,7 +12,6 @@ export default function Register() {
     const [idValid, setIdValid] = useState(true);
     const [passwordValid, setPasswordValid] = useState(true);
     const [passwordMatch, setPasswordMatch] = useState(true);
-    const memoizedMenu = useMemo(() => <Menu />, []);
 
     function checkId(id) {
         let reg = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/;
@@ -96,15 +94,21 @@ export default function Register() {
                             <div className={styles.name}>
                                 <input type="text" value={id} onChange={handleIdChange} placeholder="아이디를 입력해주세요" />
                             </div>
-                            {!idValid && <span className={styles.error}>*아이디는 8글자 이상 20자 이하로 알파벳 숫자 조합으로 입력하세요</span>}
+                            <span className={`${styles.error} ${idValid ? styles.hidden : ''}`}>
+                                *아이디는 8글자 이상 20자 이하로 알파벳 숫자 조합으로 입력하세요
+                            </span>
                             <div className={styles.txt_box}>
                                 <input type="password" value={password} onChange={handlePasswordChange} placeholder="패스워드를 입력해주세요" />
                             </div>
-                            {!passwordValid && <span className={styles.error}>*암호는 숫자, 특수문자 1글자씩 포함되어야합니다.8~32글자 사이로 입력하세요</span>}
+                            <span className={`${styles.error} ${passwordValid ? styles.hidden : ''}`}>
+                                *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요
+                            </span>
                             <div className={styles.txt_box}>
                                 <input type="password" value={passwordCheck} onChange={handlePasswordCheckChange} placeholder="패스워드 확인" />
                             </div>
-                            {!passwordMatch && <span className={styles.error}>*암호가 일치하지 않습니다.</span>}
+                            <span className={`${styles.error} ${passwordMatch ? styles.hidden : ''}`}>
+                                *암호가 일치하지 않습니다.
+                            </span>
                             <div className={styles.email}>
                                 <div className={styles.email_box}>
                                     <input type="text" value={email} onChange={handleEmailChange} placeholder="이메일을 입력해주세요" />

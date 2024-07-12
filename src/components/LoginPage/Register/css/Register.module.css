@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 80vh;
   padding: 10px;
 }
 
@@ -17,27 +17,33 @@
   padding: 30px 40px;
   border: 3px solid rgba(255, 255, 255, .2);
   backdrop-filter: blur(15px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  box-shadow: 0 0 10px black;
 }
 
 .title {
+  font-family: "Aclonica", sans-serif;
   text-align: center;
   font-weight: normal;
   font-size: 70px;
   color: #ffffff;
+  margin-bottom: 30px;
 }
 
 .error {
-  font-size: 12px;
+  font-size: 13px;
   padding-left: 20px;
   color: red;
   font-weight: bold;
 }
 
+.hidden{
+  display: none;
+}
+
 .txt_box {
   width: 500px;
   height: 65px;
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 15px 25px;
   border: 2px solid #bababa;
   border-radius: 50px;
@@ -120,6 +126,7 @@
   background: transparent;
   font-size: 20px;
   color: #ffffff;
+  
 }
 
 .email_option select option {
@@ -129,7 +136,7 @@
 .name {
   width: 500px;
   height: 65px;
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 15px 25px;
   border: 2px solid #bababa;
   border-radius: 50px;
@@ -157,7 +164,7 @@
 .nick {
   width: 500px;
   height: 65px;
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 15px 25px;
   border: 2px solid #bababa;
   border-radius: 50px;
@@ -192,21 +199,33 @@
   box-sizing: border-box;
   background: transparent;
   font-size: 20px;
-  color: #ffffff;
+  color: #000000;
   margin-right: 40px;
+  font-family: "Aclonica", sans-serif;
+  background-color: #f6f6f6;
+}
+
+.btn_submit:hover{
+  background-color: #ffffff;
 }
 
 .btn_cancel {
   width: 230px;
   height: 65px;
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 15px 25px;
   border: 2px solid #bababa;
   border-radius: 50px;
   box-sizing: border-box;
   background: transparent;
   font-size: 20px;
-  color: #ffffff;
+  color: #000000;
+  font-family: "Aclonica", sans-serif;
+  background-color: #f6f6f6;
+}
+
+.btn_cancel:hover {
+  background-color: #ffffff;
 }
 
 @media (max-width: 450px) {
@@ -238,6 +257,7 @@
   .email_option select {
     font-size: 16px;
   }
+
 
   .btn_submit,
   .btn_cancel {
