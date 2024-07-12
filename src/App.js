@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage/LoginPage';
-import React, { useState } from 'react';
 import MainPage from './components/MainPage/MainPage';
+import React, { useState } from 'react';
 
 function App() {
   const [token, setToken] = useState(null);

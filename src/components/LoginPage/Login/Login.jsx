@@ -25,7 +25,7 @@ export default function Login({ setToken }) {
       if (response.data.result) {
         alert('로그인 성공');
         setToken(response.data.token);
-        navigate('/main');
+        navigate('/');
       } else {
         alert('로그인 실패: ' + response.data.msg);
       }
@@ -37,7 +37,7 @@ export default function Login({ setToken }) {
   return (
     <div className={styles.body}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Login</h1>
+        <h1 className={styles.title}>Poké Library</h1>
         <form onSubmit={handleSubmit}>
           <div className={styles.txt_box}>
             <input
