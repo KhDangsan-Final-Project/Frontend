@@ -2,12 +2,16 @@
 .html {
     display: flex;
     flex-flow: row nowrap;
-}
-
-.App {
+  }
+  
+  .App {
     font-family: Arial, sans-serif;
     max-width: 2000px;
-    background-color: antiquewhite;
+    background-image: url(/public/img/wallpaper8k.jpg);
+    background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+    background-repeat: no-repeat;
+    background-position: center;
+
   }
   
   .stage {
@@ -33,8 +37,7 @@
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
-    padding-top: 50px;
-    height: 200px;
+    height: 160px;
   }
   
   .menu {
@@ -57,9 +60,19 @@
     width: calc(33.33% - 20px);
     text-align: center;
     background-color: aqua;
+display: flex;
+flex-flow: row nowrap;
+  
 
   }
-
+.pokemonCardInfo{
+  border: 3px solid black;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+}
   
   .vs {
     background-image: url(/public/img/vs.png);
@@ -69,7 +82,7 @@
     background-repeat: no-repeat;
     background-position: center;
   }
-  
+
   .pokemonCard h2 {
     margin: 10px 0;
     font-size: 24px;
@@ -104,6 +117,7 @@
     max-width: 200px;
     height: 24px;
     position: relative;
+
   }
   
   .hpBar {

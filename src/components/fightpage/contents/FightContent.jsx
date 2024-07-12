@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, useNavigate,Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import styles from './css/fight.module.css';
 
 function FightContent() {
@@ -15,7 +15,22 @@ function FightContent() {
   const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // 사용자의 API 키로 대체 필요
   const PAGE_SIZE = 20;
 
-  // 포켓몬 카드 타입 목록을 불러오는 함수
+  // 이미지 경로 설정
+  const typeBackgroundImages = {
+    Colorless: 'url(/img/types/colorless.png)',
+    Darkness: 'url(/img/types/darkness.png)',
+    Dragon: 'url(/img/types/dragon.png)',
+    Fairy: 'url(/img/types/fairy.png)',
+    Fighting: 'url(/img/types/fighting.png)',
+    Fire: 'url(/img/types/fire.png)',
+    Grass: 'url(/img/types/grass.png)',
+    Lightning: 'url(/img/types/lightning.png)',
+    Metal: 'url(/img/types/metal.png)',
+    Psychic: 'url(/img/types/psychic.png)',
+    Water: 'url(/img/types/water.png)',
+    // 다른 타입들에 대한 이미지 경로 추가
+  };
+
   useEffect(() => {
     const fetchTypes = async () => {
       try {
@@ -34,26 +49,23 @@ function FightContent() {
     fetchTypes();
   }, [API_KEY]);
 
-  // 검색어와 선택된 타입에 따라 페이지를 1로 초기화하고 카드를 불러오는 함수
   useEffect(() => {
     setPage(1);
     fetchCards(true);
   }, [searchTerm, selectedType, API_KEY]);
 
-  // 페이지 번호가 변경될 때마다 카드를 추가로 불러오는 함수
   useEffect(() => {
     if (page > 1) {
       fetchCards();
     }
   }, [page]);
 
-  // 카드 데이터를 불러오는 함수
   const fetchCards = async (reset = false) => {
     try {
       setLoading(true);
       let url = `https://api.pokemontcg.io/v2/cards?page=${page}&pageSize=${PAGE_SIZE}`;
       if (searchTerm) {
-        url += `&q=name:${encodeURIComponent(searchTerm)}`; // 한글 검색어 처리
+        url += `&q=name:${encodeURIComponent(searchTerm)}`;
       } else if (selectedType) {
         url += `&q=types:${selectedType}`;
       }
@@ -72,21 +84,21 @@ function FightContent() {
     }
   };
 
-  // 검색어 변경 시 호출되는 함수
   const handleChange = (e) => {
     const inputValue = e.target.value;
     setSearchTerm(inputValue);
 
-    // 입력된 값에 한글이 포함되어 있는지 검사
     const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(inputValue);
     if (hasKorean) {
       alert('한글 입력은 허용되지 않습니다.');
-      // 한글 입력이 감지되면 검색어를 초기화할 수도 있습니다.
       setSearchTerm('');
     }
   };
 
-  // 카드 클릭 시 선택된 카드 목록에 추가하는 함수
+  const handleTypeClick = (type) => {
+    setSelectedType(type);
+  };
+
   const handleCardClick = (card) => {
     if (selectedCount < 3 && !selectedCards.some(selectedCard => selectedCard.id === card.id)) {
       setSelectedCards(prevSelected => [...prevSelected, card]);
@@ -94,13 +106,11 @@ function FightContent() {
     }
   };
 
-  // 선택된 카드 목록에서 제거하는 함수
   const handleRemoveCard = (cardId) => {
     setSelectedCards(prevSelected => prevSelected.filter(card => card.id !== cardId));
     setSelectedCount(prevCount => prevCount - 1);
   };
 
-  // 선택된 포켓몬 카드를 로컬 스토리지에 저장하고 배틀 페이지로 이동하는 함수
   const sendBattlePokemon = () => {
     const selectedPokemon = selectedCards.slice(0, 3);
     const selectedPokemonWithMiniImages = selectedPokemon.map(card => ({
@@ -115,7 +125,6 @@ function FightContent() {
     navigate('/battle');
   };
 
-  // 적 포켓몬 데이터를 랜덤으로 선택하는 함수
   const getRandomEnemyPokemons = () => {
     const randomPokemon = [];
     const shuffledCards = cards.sort(() => 0.5 - Math.random());
@@ -137,12 +146,10 @@ function FightContent() {
     return randomPokemon;
   };
 
-  // 더 많은 카드를 불러오는 함수
   const loadMore = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  // Return 부분에 추가된 버튼
   return (
     <div className={styles.App}>
       <h1>가져갈 포켓몬 카드를 3장 선택하세요 (중복 선택 불가)</h1>
@@ -154,15 +161,20 @@ function FightContent() {
           value={searchTerm}
           onChange={handleChange}
         />
-        <select
-          value={selectedType}
-          onChange={e => setSelectedType(e.target.value)}
-        >
-          <option value="">모든 타입</option>
+        <div className={`${styles.typeContainer} ${styles[selectedType.toLowerCase()]}`}>
+          <a href="#" onClick={() => handleTypeClick('')} style={{ backgroundImage: 'url(/img/pokeball.png)' }}>모든 타입</a>
           {types.map(type => (
-            <option key={type} value={type}>{type}</option>
+            <a
+              key={type}
+              href="#"
+              onClick={() => handleTypeClick(type)}
+              style={{ backgroundImage: typeBackgroundImages[type] || 'none' }}
+              className={styles.typeLink}
+            >
+              {type}
+            </a>
           ))}
-        </select>
+        </div>
       </div>
       <div className={styles.cardContainer}>
         {cards.length > 0 ? (

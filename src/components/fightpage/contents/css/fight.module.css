@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: rgb(91, 91, 91);
+background-color: #555;
 }
 
 .cardContainer {
@@ -250,4 +250,42 @@
   66% {
     transform: rotateZ(3deg) rotateX(7deg) rotateY(-6deg);
   }
+}
+.typeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.typeContainer a {
+  display: inline-block;
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 5px;
+  text-indent: -9999px; /* 텍스트 숨기기 */
+}
+
+.typeLink {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 5px;
+}
+
+/* --------------------------------------------------------------------------------- */
+.fire{
+  background-color:#E56C3E ;
+}
+.water{
+  background-color:#5185C5 ;
+}
+.grass{
+  background-color: #66A945;
 }

@@ -102,6 +102,7 @@ function Battle() {
             enemyPokemon.map((pokemon, index) => (
               <div key={pokemon.id} className={styles.pokemonCard} onClick={() => selectEnemyPokemon(pokemon)}>
                 <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} className={styles.myCard} />
+                      <div className={styles.pokemonCardInfo}>
                 <div className={styles.types}>
                   {pokemon.types.map((type, index) => (
                     <div key={index} className={`${styles.typeLogoContainer} ${getTypeLogoContainerClass(type)}`}>
@@ -129,6 +130,7 @@ function Battle() {
                     ))}
                   </div>
                 )}
+                </div>
               </div>
             ))
           ) : (
@@ -137,6 +139,7 @@ function Battle() {
         </div>
         <div className={styles.body}>
           <div className={styles.vs}></div>
+
         </div>
         {/* 선택된 사용자 포켓몬을 표시합니다. */}
         <div className={styles.selectedPokemonContainer}>
@@ -144,6 +147,8 @@ function Battle() {
             selectedPokemon.map((pokemon, index) => (
               <div key={pokemon.id} className={styles.pokemonCard}>
                 <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} />
+               <div className={styles.pokemonCardInfo}>
+
                 <div className={styles.types}>
                   {pokemon.types.map((type, index) => (
                     <div key={index} className={`${styles.typeLogoContainer} ${getTypeLogoContainerClass(type)}`}>
@@ -153,7 +158,7 @@ function Battle() {
                   <h2 className={styles.pokemonName}>{pokemon.name}</h2>
                 </div>
                 <div className={styles.hpBarContainer}>
-                  <div className={styles.hpBar} style={{ width: `${Math.min((pokemon.hp / MAX_HP) * 100, 100)}%` }}>
+                  <div className={styles.hpBar} style={{ width: `${Math.min((pokemon.hpBar / MAX_HP) * 100, 100)}%` }}>
                     HP: {pokemon.hp}
                   </div>
                 </div>
@@ -171,6 +176,7 @@ function Battle() {
                     ))}
                   </div>
                 )}
+                </div>
               </div>
             ))
           ) : (

@@ -9,71 +9,74 @@ export default function Encyclopedia() {
       <h1>Pokemon Card Encyclopedia (TCG)</h1>
       <div className={styles.container}>
         <div className={styles.colorlessContainer}>
-        <div className={`${styles.typeContainer} ${styles.colorless}`}>
+        <a href='colorless'className={`${styles.typeContainer} ${styles.colorless}`}>
           <div className={styles.colorlessImage}></div>
-        </div>
+        </a>
           <p>Colorless</p>
         </div>
         <div className={styles.darknessContainer}>
-        <div className={`${styles.typeContainer} ${styles.darkness}`}>
+        <a href='darkness' className={`${styles.typeContainer} ${styles.darkness}`}>
           <div className={styles.darknessImage}></div>
-        </div>
+        </a>
           <p>Darkness</p>
 </div>
 <div className={styles.dragonContainer}>
-        <div className={`${styles.typeContainer} ${styles.dragon}`}>
+        <a href='dragon' className={`${styles.typeContainer} ${styles.dragon}`}>
           <div className={styles.dragonImage}></div>
-        </div>
+        </a>
           <p>Dragon</p>
 </div>
 <div className={styles.fairyContainer}>
-        <div className={`${styles.typeContainer} ${styles.fairy}`}>
+        <a href='fairy' className={`${styles.typeContainer} ${styles.fairy}`}>
           <div className={styles.fairyImage}></div>
-        </div>
+        </a>
           <p>Fairy</p>
 </div>
 <div className={styles.fightingContainer}>
-        <div className={`${styles.typeContainer} ${styles.fighting}`}>
+        <a href='fighting' className={`${styles.typeContainer} ${styles.fighting}`}>
           <div className={styles.fightingImage}></div>
-        </div>
+        </a>
           <p>Fighting</p>
 </div>
 <div className={styles.fireContainer}>
-        <div className={`${styles.typeContainer} ${styles.fire}`}>
+        <a href='fire' className={`${styles.typeContainer} ${styles.fire}`}>
           <div className={styles.fireImage}></div>
-        </div>
+        </a>
           <p>Fire</p>
 </div>
 <div className={styles.grassContainer}>
-        <div className={`${styles.typeContainer} ${styles.grass}`}>
+        <a href='grass' className={`${styles.typeContainer} ${styles.grass}`}>
           <div className={styles.grassImage}></div>
-        </div>
+        </a>
           <p>Grass</p>
 </div>
 <div className={styles.lightningContainer}>
-        <div className={`${styles.typeContainer} ${styles.lightning}`}>
+        <a href='lightning' className={`${styles.typeContainer} ${styles.lightning}`}>
           <div className={styles.lightningImage}></div>
-        </div>
+        </a>
           <p>Lightning</p>
 </div>
 <div className={styles.metalContainer}>
-        <div className={`${styles.typeContainer} ${styles.metal}`}>
+        <a href='metal' className={`${styles.typeContainer} ${styles.metal}`}>
           <div className={styles.metalImage}></div>
-        </div>
+        </a>
           <p>Metal</p>
 </div>
 <div className={styles.psychicContainer}>
-        <div className={`${styles.typeContainer} ${styles.psychic}`}>
+        <a href='psychic' className={`${styles.typeContainer} ${styles.psychic}`}>
           <div className={styles.psychicImage}></div>
-        </div>
+        </a>
           <p>Psychic</p>
 </div>
 <div className={styles.waterContainer}>
-        <div className={`${styles.typeContainer} ${styles.water}`}>
+        <a href='water' className={`${styles.typeContainer} ${styles.water}`}>
           <div className={styles.waterImage}></div>
-        </div>
+        </a>
           <p>Water</p>
           </div>
+      </div>
+      <div className={styles.pokemonImage}>
+        <span>z...z..zZz...       </span>
       </div>
     </html>
   );

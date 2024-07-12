@@ -248,3 +248,11 @@
   background-position: center;
 }
 /* ------------------------------------------------------------------------ */
+.pokemonImage{
+  background-image: url(/public/img/pokemonImage.png);
+  width: 200px;
+  height: 100px;
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
