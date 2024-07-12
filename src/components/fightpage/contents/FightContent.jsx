@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Route, useNavigate,Link } from 'react-router-dom';
 import styles from './css/fight.module.css';
 
 function FightContent() {
@@ -15,6 +15,7 @@ function FightContent() {
   const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // 사용자의 API 키로 대체 필요
   const PAGE_SIZE = 20;
 
+  // 포켓몬 카드 타입 목록을 불러오는 함수
   useEffect(() => {
     const fetchTypes = async () => {
       try {
@@ -33,17 +34,20 @@ function FightContent() {
     fetchTypes();
   }, [API_KEY]);
 
+  // 검색어와 선택된 타입에 따라 페이지를 1로 초기화하고 카드를 불러오는 함수
   useEffect(() => {
     setPage(1);
     fetchCards(true);
   }, [searchTerm, selectedType, API_KEY]);
 
+  // 페이지 번호가 변경될 때마다 카드를 추가로 불러오는 함수
   useEffect(() => {
     if (page > 1) {
       fetchCards();
     }
   }, [page]);
 
+  // 카드 데이터를 불러오는 함수
   const fetchCards = async (reset = false) => {
     try {
       setLoading(true);
@@ -68,6 +72,7 @@ function FightContent() {
     }
   };
 
+  // 검색어 변경 시 호출되는 함수
   const handleChange = (e) => {
     const inputValue = e.target.value;
     setSearchTerm(inputValue);
@@ -81,6 +86,7 @@ function FightContent() {
     }
   };
 
+  // 카드 클릭 시 선택된 카드 목록에 추가하는 함수
   const handleCardClick = (card) => {
     if (selectedCount < 3 && !selectedCards.some(selectedCard => selectedCard.id === card.id)) {
       setSelectedCards(prevSelected => [...prevSelected, card]);
@@ -88,13 +94,14 @@ function FightContent() {
     }
   };
 
+  // 선택된 카드 목록에서 제거하는 함수
   const handleRemoveCard = (cardId) => {
     setSelectedCards(prevSelected => prevSelected.filter(card => card.id !== cardId));
     setSelectedCount(prevCount => prevCount - 1);
   };
 
+  // 선택된 포켓몬 카드를 로컬 스토리지에 저장하고 배틀 페이지로 이동하는 함수
   const sendBattlePokemon = () => {
-    // 선택된 포켓몬 데이터 중 3건을 랜덤으로 선택하여 Battle 컴포넌트로 전달
     const selectedPokemon = selectedCards.slice(0, 3);
     const selectedPokemonWithMiniImages = selectedPokemon.map(card => ({
       ...card,
@@ -102,13 +109,13 @@ function FightContent() {
     }));
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemonWithMiniImages));
     
-    // 랜덤으로 적 포켓몬 데이터 3건을 설정
     const randomEnemyPokemon = getRandomEnemyPokemons();
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
 
     navigate('/battle');
   };
 
+  // 적 포켓몬 데이터를 랜덤으로 선택하는 함수
   const getRandomEnemyPokemons = () => {
     const randomPokemon = [];
     const shuffledCards = cards.sort(() => 0.5 - Math.random());
@@ -130,19 +137,22 @@ function FightContent() {
     return randomPokemon;
   };
 
+  // 더 많은 카드를 불러오는 함수
   const loadMore = () => {
     setPage(prevPage => prevPage + 1);
   };
 
+  // Return 부분에 추가된 버튼
   return (
     <div className={styles.App}>
       <h1>가져갈 포켓몬 카드를 3장 선택하세요 (중복 선택 불가)</h1>
+      <Link to="/encyclopedia">도감페이지로 이동</Link>
       <div>
         <input
           type="text"
           placeholder="포켓몬 검색"
           value={searchTerm}
-          onChange={handleChange} // handleChange 함수를 onChange 이벤트 핸들러로 할당
+          onChange={handleChange}
         />
         <select
           value={selectedType}
@@ -211,6 +221,10 @@ function FightContent() {
           </div>
         </div>
       )}
+      <button onClick={() => navigate('/encyclopedia')}>도감 페이지로 가기</button>
+      <div className={styles.card2}></div>
+      <div className={styles.card2}></div>
+      <style className={styles.hover}></style>
     </div>
   );
 }

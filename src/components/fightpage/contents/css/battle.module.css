@@ -57,12 +57,9 @@
     width: calc(33.33% - 20px);
     text-align: center;
     background-color: aqua;
-  }
-  
-  .pokemonCard img {
-
 
   }
+
   
   .vs {
     background-image: url(/public/img/vs.png);
@@ -75,7 +72,7 @@
   
   .pokemonCard h2 {
     margin: 10px 0;
-    font-size: 18px;
+    font-size: 24px;
   }
   
   .pokemonCard p {
@@ -120,13 +117,23 @@
   
   .types {
     display: flex;
+    flex-flow: row nowrap;
     justify-content: center;
     margin: 10px 0;
+    align-items: center;
   }
-  
-  .typeLogo {
+  .typeLogoContainer{
+    background-color: #4caf50;
     width: 32px;
     height: 32px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .typeLogo {
+    width: 60%;
+    height: 60%;
     margin: 0 5px;
     background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
     background-repeat: no-repeat;
@@ -137,4 +144,73 @@
     font-size: 24px;
     margin-bottom: 20px;
   }
+
+  
+  .typeLogoContainer.colorless {
+    background-color: rgb(160, 162, 159); /* Colorless */
+  }
+  
+  .typeLogoContainer.darkness {
+    background-color: rgb(30, 52, 57); /* Darkness */
+  }
+  
+  .typeLogoContainer.dragon {
+    background-color: rgb(121, 107, 68); /* Dragon */
+  }
+.typeLogoContainer.colorless {
+  background-color: #A8A878; /* Colorless */
+}
+
+.typeLogoContainer.darkness {
+  background-color: #705848; /* Darkness */
+}
+
+.typeLogoContainer.dragon {
+  background-color: #7038F8; /* Dragon */
+}
+
+.typeLogoContainer.fairy {
+  background-color: rgb(238, 144, 230); /* Fairy */
+}
+
+.typeLogoContainer.fighting {
+  background-color: rgb(142, 67, 27); /* Fighting */
+}
+
+.typeLogoContainer.fire {
+  background-color: rgb(221, 25, 25); /* Fire */
+}
+
+.typeLogoContainer.grass {
+  background-color: rgb(95, 189, 88); /* Grass */
+}
+
+.typeLogoContainer.lightning {
+  background-color: rgb(242, 217, 78); /* Lightning */
+}
+
+.typeLogoContainer.metal {
+  background-color: rgb(91, 86, 84); /* Metal */
+}
+
+.typeLogoContainer.psychic {
+  background-color: rgb(114, 75, 141); /* Psychic */
+}
+
+.typeLogoContainer.water {
+  background-color: rgb(83, 157, 223); /* Water */
+}
+/* --------------------------------------------------------------------- */
+.pokemonName{
+  padding-left: 5px;
+
+  font-family: "Source Code Pro";
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 400;
+  font-style: normal;
+}
+  
+
   

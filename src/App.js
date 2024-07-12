@@ -4,14 +4,16 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Battle from './components/fightpage/contents/Battle';
 import FightContent from './components/fightpage/contents/FightContent';
-
+import Encyclopedia from './components/encyclopediapage/contents/EncyclopediaContent';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<FightContent />} />
         <Route path="/battle" element={<Battle/>} />
+        <Route path="/encyclopedia" element={<Encyclopedia/>}/>
       </Routes>
+      
     </Router>
   );
 }

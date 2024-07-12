@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: palegoldenrod;
+  background-color: rgb(91, 91, 91);
 }
 
 .cardContainer {
@@ -19,7 +19,7 @@
   border-radius: 8px;
   padding: 10px;
   width: 200px; /* Set a fixed width for each card */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cardContainer .card img {
@@ -55,7 +55,7 @@
   border-radius: 8px;
   padding: 10px;
   width: 200px; /* Set a fixed width for each card */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .selectedCardContainer .card img {
@@ -72,10 +72,182 @@
 .selectedCardContainer .card p {
   color: #555;
 }
+
 /* ================================================================================ */
-.selectedCardContainer{
-border: 1px solid crimson;
+.selectedCardContainer {
+  border: 1px solid crimson;
 }
-.myCardArea{
+
+.myCardArea {
   border: 1px solid skyblue;
+}
+
+/* ========================================================================= */
+
+.card2 {
+  width: 320px;
+  height: 446px;
+  background-image: url("/public/img/pokemon1.png"); /* 수정된 배경 이미지 경로 */
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+  box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+    3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+    0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+    0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 20px 10px;
+  animation: haloCard 15s ease infinite;
+}
+
+.card2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(0, 231, 255) 30%,
+    rgb(255, 0, 231) 70%
+  );
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  mix-blend-mode: color-dodge;
+  opacity: 0.2;
+  z-index: 1;
+  animation: halaGradient 15s ease infinite;
+}
+
+.card2::after {
+  /* 수정된 부분: 반짝이는 효과 이미지 적용 */
+  background-image: url("https://assets.codepen.io/13471/sparkles.gif"),url("https://assets.codepen.io/13471/holo.png");
+  background-size: 180%;
+  position: center;
+  mix-blend-mode: color-dodge;
+  opacity: 1;
+}
+
+.card2::before {
+  /* 수정된 부분: 배경 그라데이션 수정 */
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(0, 231, 255) 30%,
+    rgb(255, 0, 231) 70%
+  );
+}
+
+.card2.active::before {
+  opacity: 1;
+  animation: none;
+  transition: none;
+
+  /* 수정된 부분: 활성화된 상태의 배경 그라데이션 색상 */
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+}
+
+.card2.active::before,
+.card2.active::after {
+  animation: none;
+}
+
+.card2:nth-of-type(1),
+.card2:nth-of-type(2),
+.card2:nth-of-type(3) {
+  width: 160px;
+  height: 226px;
+  box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.4),
+    0 25px 15px -10px rgba(0, 0, 0, 0.5);
+}
+
+.card2:nth-of-type(1),
+.card2:nth-of-type(2),
+.card2:nth-of-type(3)::before,
+.card2:nth-of-type(1)::before,
+.card2:nth-of-type(2)::before,
+.card2:nth-of-type(3)::before,
+.card2:nth-of-type(1)::after,
+.card2:nth-of-type(2)::after,
+.card2:nth-of-type(3)::after {
+  display: none;
+}
+
+.card2:nth-of-type(1)::before,
+.card2:nth-of-type(1)::after {
+  display: none; /* 첫 번째 특수 카드에 대한 배경 제거 */
+}
+
+.operator {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 45px;
+}
+
+@keyframes holoSparkle {
+  0%, 5% {
+    opacity: 0.1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes holoGradient {
+  0%, 100% {
+    opacity: 0;
+    background-position: 0% 0%;
+  }
+  8% {
+    opacity: 0;
+  }
+  10% {
+    background-position: 0% 0%;
+  }
+  19% {
+    background-position: 100% 100%;
+    opacity: 0.5;
+  }
+  35% {
+    background-position: 100% 100%;
+  }
+  55% {
+    background-position: 0% 0%;
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0;
+  }
+}
+
+@keyframes holoCard {
+  0%, 100% {
+    transform: none;
+  }
+  25% {
+    transform: rotateZ(-3deg) rotateX(-7deg) rotateY(6deg);
+  }
+  25% {
+    transform: rotateZ(-3deg) rotateX(-7deg) rotateY(6deg);
+  }
+  66% {
+    transform: rotateZ(3deg) rotateX(7deg) rotateY(-6deg);
+  }
 }
