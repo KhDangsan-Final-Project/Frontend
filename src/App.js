@@ -1,11 +1,18 @@
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from './components/LoginPage/LoginPage';
+import MainPage from './components/MainPage/MainPage';
+import React, { useState } from 'react';
 
 function App() {
+  const [token, setToken] = useState(null);
+
   return (
-    <div className="App">
-        <p>hello react</p>
-        <p>react2</p>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage setToken={setToken} />} />
+        <Route path="/" element={<MainPage setToken={setToken} />} />
+      </Routes>
+    </Router>
   );
 }
 

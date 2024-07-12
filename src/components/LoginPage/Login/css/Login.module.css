@@ -1,0 +1,165 @@
+.container {
+  position: absolute;
+  display: flex;
+  flex-flow: column nowrap;
+  border-radius: 20px;
+  padding: 30px 40px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 10px black;
+  width: 80%;
+  max-width: 700px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  font-family: "Jua", sans-serif;
+  text-align: center;
+  font-weight: normal;
+  font-size: 70px;
+  color: #ffffff;
+}
+
+.txt_box {
+  width: 100%;
+  margin-top: 30px;
+  padding: 5px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.txt_box > input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.txt_box > input::placeholder {
+  color: #ffffff;
+  transition: opacity 0.3s;
+}
+
+.txt_box > input:focus::placeholder {
+  opacity: 0;
+}
+
+.txt_box i {
+  font-size: 36px;
+  color: #ffffff;
+}
+
+.chk_bar {
+  font-size: 15px;
+  color: #bababa;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 20px 0;
+  align-items: center;
+}
+
+.chk_bar>label:hover {
+  color: white;
+}
+
+.checkbox {
+  width: 20px;
+  height: 15px;
+}
+
+.checkboxLabel:hover {
+  color: #ffffff;
+}
+
+
+.chk_bar > a {
+  font-size: 15px;
+  text-decoration: none;
+  color: #bababa;
+}
+
+.chk_bar > a:hover {
+  color: white;
+}
+
+.btn_login {
+  width: 100%;
+  padding: 5px 0px;
+  margin-bottom: 20px;
+  border-radius: 50px;
+  font-size: 30px;
+  color: #000000;
+  border: 1px solid #bababa;
+  font-family: "Irish Grover", system-ui;
+}
+
+.btn_login:hover {
+  background-color: #ffffff;
+}
+
+.register_bar {
+  width: 100%;
+  font-size: 15px;
+  color: #bababa;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.register_bar>p>a {
+  color: #bababa;
+}
+
+.register_bar>p>a:hover {
+  color: white;
+}
+
+@media (max-width:510px) {
+  .container {
+    padding: 20px;
+  }
+
+  .txt_box > input {
+    font-size: 16px;
+  }
+
+  .txt_box {
+    padding: 5px 12px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
+
+  .txt_box i {
+    display: none;
+  }
+
+  .btn_login {
+    padding: 0px 0px;
+  }
+  
+  .checkbox {
+    width: 15px;
+    height: 10px;
+  }
+  
+  .checkboxLabel {
+    font-size: 12px;
+  }
+  
+  .chk_bar > a {
+    font-size: 12px;
+  }
+
+  .register_bar {
+    font-size: 13px;
+  }
+}
