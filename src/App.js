@@ -1,25 +1,42 @@
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import React, { useState } from 'react';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
-import Sidebar from './components/SidebarPage/Sidebar';
-import Menu from './components/SidebarPage/Pages/Menu';
-import Library from './components/SidebarPage/Pages/Library';
-import Card from './components/SidebarPage/Pages/Card';
-import Search from './components/SidebarPage/Pages/Search';
-import News from './components/SidebarPage/Pages/News';
-import MyPage from './components/SidebarPage/Pages/MyPage';
+import Sidebar from './components/Menu/Sidebar';
+import Shop from './components/Menu/Pages/Shop';
+import Library from './components/Menu/Pages/Library';
+import Card from './components/Menu/Pages/Card';
+import Search from './components/Menu/Pages/Search';
+import News from './components/Menu/Pages/News';
+import MyPage from './components/Menu/Pages/MyPage';
+import Menu from './components/Menu/Menu';
+
 
 function App() {
   const [token, setToken] = useState(null);
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
+  };
+
   return (
+    
     <Router>
+      <Menu token={token} logout={logout}/>
+      <Sidebar token={token} logout={logout}/>
       <Routes>
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path='/Sidebar' element={<Sidebar />} />
-        <Route path="/Menu" element={<Menu />} />
+        <Route path='/Shop' element={<Shop />} />
         <Route path="/Library" element={<Library />} />
         <Route path="/Card" element={<Card />} />
         <Route path="/Search" element={<Search />} />

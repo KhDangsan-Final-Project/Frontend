@@ -1,12 +1,11 @@
-import Menu from "../MenuPage/Menu";
 import React, { useState } from 'react';
+import Sidebar from '../Menu/Sidebar';
 
 export default function MainPage() {
-    const [token, setToken] = useState(null);
 
     return (
         <>
-        <Menu setToken={setToken} />
+        
         </>
     )
 }
