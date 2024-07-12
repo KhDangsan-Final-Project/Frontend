@@ -3,11 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/Login.module.css';
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, showRegister }) {
   const [formData, setFormData] = useState({
     id: '',
     password: ''
   });
+
+  const handleRegisterClick = () => {
+    showRegister();
+};
 
   const navigate = useNavigate();
 
@@ -69,8 +73,8 @@ export default function Login({ setToken }) {
           <button type="submit" className={styles.btn_login}>Login</button>
         </form>
         <div className={styles.register_bar}>
-          <p>계정을 가지고 있지 않나요? <Link to="/register">회원가입</Link></p>
-        </div>
+          <p>계정을 가지고 있지 않나요?</p> 
+          <a href='#' onClick={handleRegisterClick}>회원가입</a></div>
       </div>
     </div>
   );

@@ -113,11 +113,11 @@
   justify-content: center;
 }
 
-.register_bar>p>a {
+.register_bar>a {
   color: #bababa;
 }
 
-.register_bar>p>a:hover {
+.register_bar>a:hover {
   color: white;
 }
 
