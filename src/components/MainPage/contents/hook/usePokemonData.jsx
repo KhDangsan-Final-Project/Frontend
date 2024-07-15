@@ -43,8 +43,9 @@ const typeColors = {
   "페어리": "#DAB4D4",
 };
 
-const usePokemonData = (count = 20, maxId = 151) => { // 기본값으로 포켓몬 1세대까지 가져옴
+const usePokemonData = (count = 20, maxId = 151) => {
   const [pokemonData, setPokemonData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPokemonData = async () => {
@@ -83,12 +84,13 @@ const usePokemonData = (count = 20, maxId = 151) => { // 기본값으로 포켓�
       }));
 
       setPokemonData(data);
+      setLoading(false);
     };
 
     fetchPokemonData();
   }, [count, maxId]);
 
-  return pokemonData;
+  return { pokemonData, loading };
 };
 
 export default usePokemonData;

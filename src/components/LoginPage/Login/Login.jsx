@@ -41,7 +41,7 @@ export default function Login({ setToken, showRegister }) {
   return (
     <div className={styles.body}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Poké Library</h1>
+        <h1 className={styles.title}>Poke Library</h1>
         <form onSubmit={handleSubmit}>
           <div className={styles.txt_box}>
             <input
