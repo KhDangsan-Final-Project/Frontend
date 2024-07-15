@@ -5,8 +5,8 @@ import usePokemonData from './contents/hook/usePokemonData';
 import Loading from '../Loading/Loding';
 
 export default function MainPage({ setToken }) {
-  const count = 20; // 원하는 포켓몬 개수
-  const maxId = 151; // 원하는 포켓몬 ID 범위 (1세대)
+  const count = 20;
+  const maxId = 151;
   const { pokemonData, loading } = usePokemonData(count, maxId);
 
   return (

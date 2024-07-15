@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/Login.module.css';
 
@@ -29,6 +29,7 @@ export default function Login({ setToken, showRegister }) {
       if (response.data.result) {
         alert('로그인 성공');
         setToken(response.data.token);
+        localStorage.setItem('token', response.data.token);  // 추가된 부분
         navigate('/');
       } else {
         alert('로그인 실패: ' + response.data.msg);
