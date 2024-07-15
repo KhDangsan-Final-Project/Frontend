@@ -20,14 +20,13 @@ const PokemonCardSlider = () => {
       </div>
     </div>
   );
-};
+};  
 
 const PokemonCard = ({ card }) => {
   const typeColorClass = styles[card.types[0].toLowerCase()];
 
   return (
     <div className={`${styles.card} ${typeColorClass}`}>
-      <div className={styles.cardId}>#{card.id}</div>
       <img src={card.images.large} alt={card.name} className={styles.cardImage} />
       <div className={styles.cardName}>{card.name}</div>
       <div className={styles.cardType}>{card.types[0]} 타입</div>
