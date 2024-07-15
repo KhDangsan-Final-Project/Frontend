@@ -1,8 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 .body {
   display: flex;
@@ -97,7 +93,7 @@
   border: none;
   outline: none;
   background: transparent;
-  font-size: 20px;
+  font-size: 18px;
   color: #ffffff;
 }
 
@@ -144,10 +140,14 @@
   border: 2px solid #bababa;
   border-radius: 50px;
   box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
 }
 
 .name input {
   width: 100%;
+  padding-right: 20px;
   border: none;
   outline: none;
   background: transparent;
@@ -162,6 +162,15 @@
 
 .name input:focus::placeholder {
   opacity: 0;
+}
+
+.name button{
+  width: 100px;
+  font-size: 20px;
+  color: #ffffff;
+  border: none;
+  outline: none;
+  background: transparent;
 }
 
 .nick {

@@ -8,13 +8,13 @@
   box-shadow: 0 0 10px black;
   width: 80%;
   max-width: 700px;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .title {
-  font-family: "Jua", sans-serif;
+  font-family: "Aclonica", sans-serif;
   text-align: center;
   font-weight: normal;
   font-size: 70px;

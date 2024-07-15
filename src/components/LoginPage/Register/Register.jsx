@@ -87,6 +87,7 @@ export default function Register( {showLoginComponent} ) {
             .catch(error => console.error('Error:', error));
     }
 
+        
     return (
         <header>
             <div className={styles.page}>
@@ -99,6 +100,7 @@ export default function Register( {showLoginComponent} ) {
                             </div>
                             <div className={styles.name}>
                                 <input type="text" value={id} onChange={handleIdChange} placeholder="아이디를 입력해주세요" />
+                                <button type='button' >중복확인</button>
                             </div>
                             <span className={`${styles.error} ${idValid ? styles.hidden : ''}`}>
                                 *아이디는 8글자 이상 20자 이하로 알파벳 숫자 조합으로 입력하세요
