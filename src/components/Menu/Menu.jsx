@@ -17,7 +17,7 @@ export default function Menu({ token, logout }) {
         <div className={styles.container}>
             <ul>
                 <li><a href="#">Shop</a></li>
-                <li><a href="#">Library</a></li>
+                <li><Link to="/library">Library</Link></li>
                 <li><a href="#">Card</a></li>
                 <Link to="/"><img src="/img/poke.png" className={styles.menuimg} /></Link>
                 <li><a href="#">Search</a></li>

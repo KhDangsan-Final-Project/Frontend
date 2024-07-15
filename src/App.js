@@ -29,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
-        <Route path="/Library" element={<LibraryPage setToken={setToken} />} />
+        <Route path="/library" element={<LibraryPage setToken={setToken} />} />
       </Routes>
     </Router>
   );

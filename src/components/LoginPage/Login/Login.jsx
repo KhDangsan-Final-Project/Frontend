@@ -25,11 +25,11 @@ export default function Login({ setToken, showRegister }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8090/ms3/user/select', formData);
+      const response = await axios.post('http://teeput.synology.me:30112/ms3/user/select', formData);
       if (response.data.result) {
         alert('로그인 성공');
         setToken(response.data.token);
-        localStorage.setItem('token', response.data.token);  // 추가된 부분
+        localStorage.setItem('token', response.data.token);
         navigate('/');
       } else {
         alert('로그인 실패: ' + response.data.msg);
