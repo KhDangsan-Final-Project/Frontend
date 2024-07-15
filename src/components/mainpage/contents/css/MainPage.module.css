@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: url('../images/background.png') no-repeat center center fixed;
+  background: url('/public/img/background.png') no-repeat center center fixed;
   background-size: cover;
   color: white;
   font-family: 'Arial', sans-serif;

@@ -1,0 +1,283 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 10px;
+}
+
+.container {
+  position: absolute;
+  display: flex;
+  flex-flow: column nowrap;
+  border-radius: 20px;
+  padding: 30px 40px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 10px black;
+  top: 20%;
+}
+
+.title {
+  font-family: "Aclonica", sans-serif;
+  text-align: center;
+  font-weight: normal;
+  font-size: 70px;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+.error {
+  font-size: 13px;
+  padding-left: 20px;
+  color: red;
+  font-weight: bold;
+}
+
+.hidden{
+  display: none;
+}
+
+.txt_box {
+  width: 500px;
+  height: 65px;
+  margin-top: 10px;
+  padding: 15px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.txt_box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.txt_box input::placeholder {
+  color: #ffffff;
+  transition: opacity 0.3s;
+}
+
+.txt_box input:focus::placeholder {
+  opacity: 0;
+}
+
+.email {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.email_box {
+  width: calc(50% - 10px);
+  margin-top: 30px;
+  padding: 15px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.email_box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.email_box input::placeholder {
+  color: #ffffff;
+  transition: opacity 0.3s;
+}
+
+.email_box input:focus::placeholder {
+  opacity: 0;
+}
+
+.email_option {
+  width: calc(50% - 10px);
+  margin-top: 30px;
+  padding: 15px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.email_option select {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  color: #ffffff;
+  
+}
+
+.email_option select option {
+  color: #000000;
+}
+
+.name {
+  width: 500px;
+  height: 65px;
+  margin-top: 10px;
+  padding: 15px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+}
+
+.name input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.name input::placeholder {
+  color: #ffffff;
+  transition: opacity 0.3s;
+}
+
+.name input:focus::placeholder {
+  opacity: 0;
+}
+
+.nick {
+  width: 500px;
+  height: 65px;
+  margin-top: 10px;
+  padding: 15px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+}
+
+.nick input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.nick input::placeholder {
+  color: #ffffff;
+  transition: opacity 0.3s;
+}
+
+.nick input:focus::placeholder {
+  opacity: 0;
+}
+
+.btn_submit {
+  width: 230px;
+  height: 65px;
+  margin-top: 30px;
+  padding: 15px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+  background: transparent;
+  font-size: 20px;
+  color: #000000;
+  margin-right: 40px;
+  font-family: "Aclonica", sans-serif;
+  background-color: #f6f6f6;
+}
+
+.btn_submit:hover{
+  background-color: #ffffff;
+}
+
+.btn_cancel {
+  width: 230px;
+  height: 65px;
+  margin-top: 10px;
+  padding: 15px 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+  background: transparent;
+  font-size: 20px;
+  color: #000000;
+  font-family: "Aclonica", sans-serif;
+  background-color: #f6f6f6;
+}
+
+.btn_cancel:hover {
+  background-color: #ffffff;
+}
+
+@media (max-width: 609px) {
+  .title {
+    font-size: 35px;
+  }
+
+  
+
+  .container {
+    width: 80%;
+    padding: 20px;
+  }
+
+  .txt_box,
+  .name,
+  .nick,
+  .email_box,
+  .email_option,
+  .btn_submit,
+  .btn_cancel {
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+  }
+
+  .txt_box input,
+  .name input,
+  .nick input,
+  .email_box input,
+  .email_option select {
+    font-size: 16px;
+  }
+
+
+  .btn_submit,
+  .btn_cancel {
+    width: 100%;
+    font-size: 16px;
+    margin-right: 0;
+  }
+
+  .email {
+    flex-direction: column;
+  }
+
+  .email_box,
+  .email_option {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
