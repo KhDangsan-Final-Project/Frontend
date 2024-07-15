@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import usePokemonData from './hook/usePokemonData';
-import styles from './css/MainPage.module.css';
+import styles from './css/SliderText.module.css';
 import Loading from '../../Loading/Loding';
 
 export default function SliderText() {
@@ -16,7 +16,7 @@ export default function SliderText() {
     if (!loading) {
       setTimeout(() => {
         setAdditionalLoading(false);
-      }, 1000); // 1초 추가 로딩
+      }, 10);
     }
   }, [loading]);
 
@@ -61,7 +61,7 @@ export default function SliderText() {
         {pokemonData.map((pokemon, index) => (
           <div
             key={index}
-            className={`${styles.slide} ${index === currentImageIndex ? styles['slide-active2'] : styles['slide-exit2']}`}
+            className={`${styles.slide2} ${index === currentImageIndex ? styles['slide-active2'] : styles['slide-exit2']}`}
           >
             <div
               className={styles.imageContainer}

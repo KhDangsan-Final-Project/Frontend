@@ -1,34 +1,38 @@
-import { Link } from 'react-router-dom';
 import styles from './css/Menu.module.css';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function Menu() {
-    const [isLoggedIn, SetIsLoggedIn] = useState(false);
-
-    useEffect(() =>{
-        const token = localStorage.getItem('id');
-        if(token){
-            SetIsLoggedIn(true);
+export default function Menu({ token, logout }) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+    useEffect(() => {
+        if (token) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
         }
-    },[]);
- 
+      }, [token]);
     return (
 
         <div className={styles.container}>
             <ul>
-                <li><a href="#">Menu</a></li>
-                <li><Link to='/library'>Library</Link></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Library</a></li>
                 <li><a href="#">Card</a></li>
-                <Link to='/'><img src="/img/poke.png" className={styles.menuimg} /></Link>
+                <Link to="/"><img src="/img/poke.png" className={styles.menuimg} /></Link>
                 <li><a href="#">Search</a></li>
-                <li><a href="#">News</a></li>
                 {isLoggedIn ? (
-                    <li><Link to='#'>MyPage</Link></li>
+                    <li><Link to="/mypage">MyPage</Link></li>
                 ) : (
-                    <li><Link to='/Login'>Login</Link></li>
+                    <li><Link to="/login">Mypage</Link></li>
+                )}
+                {isLoggedIn ? (
+                    <li><a href="#" onClick={logout}>Logout</a></li>
+                ) : (
+                    <li><Link to="/login">Login</Link></li>
                 )}
             </ul>
-            
         </div>
+        
     )
 }

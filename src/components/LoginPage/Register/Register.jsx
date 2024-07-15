@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './css/Register.module.css';
 
-export default function Register() {
+export default function Register( {showLoginComponent} ) {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -12,7 +12,7 @@ export default function Register() {
     const [idValid, setIdValid] = useState(true);
     const [passwordValid, setPasswordValid] = useState(true);
     const [passwordMatch, setPasswordMatch] = useState(true);
-
+   
     function checkId(id) {
         let reg = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/;
         return reg.test(id);
@@ -53,6 +53,12 @@ export default function Register() {
     function handleNicknameChange(e) {
         setNickname(e.target.value);
     }
+
+    function handleCancelClick(){
+        showLoginComponent();
+    }
+
+
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -126,7 +132,7 @@ export default function Register() {
                                 <input type="text" value={nickname} onChange={handleNicknameChange} placeholder="닉네임을 입력해주세요" />
                             </div>
                             <button type="submit" id="submit" className={styles.btn_submit}>Submit</button>
-                            <button type="reset" className={styles.btn_cancel}>Cancel</button>
+                            <button type="reset" className={styles.btn_cancel} onClick={handleCancelClick}>Cancel</button>
                         </form>
                     </div>
                 </div>
