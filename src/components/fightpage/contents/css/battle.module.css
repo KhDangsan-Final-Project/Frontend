@@ -1,230 +1,252 @@
-/* battle.module.css */
-.html {
-    display: flex;
-    flex-flow: row nowrap;
-  }
-  
-  .App {
-    font-family: Arial, sans-serif;
-    max-width: 2000px;
-    background-image: url(/public/img/wallpaper8k.jpg);
-    background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
-    background-repeat: no-repeat;
-    background-position: center;
+/* ------------------------------------------전체 스타일링 ------------------------------------------*/
 
-  }
-  
-  .stage {
-    border: 1px solid black;
-    height: 900px;
-  }
-  
-  .selectedPokemonContainer {
-    display: flex;
-    flex-wrap: row nowrap;
-    gap: 20px;
-  }
-  
-  .enemyContainer {
-    border: 1px solid red;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-  }
-  
-  .body {
-    border: 1px solid green;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    height: 160px;
-  }
-  
-  .menu {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center; /* 중앙 정렬 추가 */
-    margin-top: 20px;
-  }
-  
-  .menu button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-  
-  .pokemonCard {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    width: calc(33.33% - 20px);
-    text-align: center;
-    background-color: aqua;
-display: flex;
-flex-flow: row nowrap;
-  
-
-  }
-.pokemonCardInfo{
-  border: 3px solid black;
-  width: 50%;
+.App {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  margin: 0 auto;
-}
-  
-  .vs {
-    background-image: url(/public/img/vs.png);
-    width: 100px;
-    height: 200px;
-    background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
-    background-repeat: no-repeat;
-    background-position: center;
-  }
 
-  .pokemonCard h2 {
-    margin: 10px 0;
-    font-size: 24px;
-  }
-  
-  .pokemonCard p {
-    margin: 5px 0;
-  }
-  
-  .pokemonAttacks {
-    margin-top: 10px;
-  }
-  
-  .attack {
-    margin-top: 5px;
-    padding: 5px;
-    background-color: #f0f0f0;
-    border-radius: 3px;
-  }
-  
-  .attack p {
-    margin: 5px 0;
-    font-size: 14px;
-  }
-  
-  .hpBarContainer {
-    background-color: #eee;
-    border-radius: 5px;
-    margin: 10px 0;
-    padding: 3px;
-    width: 100%;
-    max-width: 200px;
-    height: 24px;
-    position: relative;
 
-  }
-  
-  .hpBar {
-    background-color: #4caf50;
-    border-radius: 5px;
-    color: white;
-    text-align: center;
-    line-height: 24px;
-    height: 100%;
-  }
-  
-  .types {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    margin: 10px 0;
-    align-items: center;
-  }
-  .typeLogoContainer{
-    background-color: #4caf50;
-    width: 32px;
-    height: 32px;
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .typeLogo {
-    width: 60%;
-    height: 60%;
-    margin: 0 5px;
-    background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  
-  h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
 
-  
-  .typeLogoContainer.colorless {
-    background-color: rgb(160, 162, 159); /* Colorless */
-  }
-  
-  .typeLogoContainer.darkness {
-    background-color: rgb(30, 52, 57); /* Darkness */
-  }
-  
-  .typeLogoContainer.dragon {
-    background-color: rgb(121, 107, 68); /* Dragon */
-  }
-.typeLogoContainer.colorless {
-  background-color: #A8A878; /* Colorless */
+  background-image: url(/public/img/backgroundImg.jpg);
 }
 
-.typeLogoContainer.darkness {
-  background-color: #705848; /* Darkness */
+.stage {
+  display: flex;
+flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px;
 }
 
-.typeLogoContainer.dragon {
-  background-color: #7038F8; /* Dragon */
+.enemyContainer {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
 }
 
-.typeLogoContainer.fairy {
-  background-color: rgb(238, 144, 230); /* Fairy */
+.body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.typeLogoContainer.fighting {
-  background-color: rgb(142, 67, 27); /* Fighting */
+.selectedPokemonContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
 }
 
-.typeLogoContainer.fire {
-  background-color: rgb(221, 25, 25); /* Fire */
+.menu {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
 }
 
-.typeLogoContainer.grass {
-  background-color: rgb(95, 189, 88); /* Grass */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
-.typeLogoContainer.lightning {
-  background-color: rgb(242, 217, 78); /* Lightning */
+button:hover {
+  background-color: #0056b3;
+}
+/* ------------------------------------------포켓몬 카드 스타일링------------------------------------------ */
+.pokemonCard {
+  width: 200px;
+
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease;
 }
 
-.typeLogoContainer.metal {
-  background-color: rgb(91, 86, 84); /* Metal */
+.pokemonCard:hover {
+  transform: scale(1.05);
 }
 
-.typeLogoContainer.psychic {
-  background-color: rgb(114, 75, 141); /* Psychic */
+.myCard {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
 }
 
-.typeLogoContainer.water {
-  background-color: rgb(83, 157, 223); /* Water */
-}
-/* --------------------------------------------------------------------- */
-.pokemonName{
-  padding-left: 5px;
+.pokemonCardInfo {
 
-  font-family: "Source Code Pro";
-  font-size: 18px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-weight: 400;
-  font-style: normal;
+  margin-top: 10px;
+  text-align: center;
 }
-  
 
-  
+.types {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.typeLogoContainer {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.typeLogo {
+  width: 100%;
+  height: 100%;
+}
+
+.hpBarContainer {
+  width: 100%;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.hpBar {
+  height: 100%;
+  background-color: #28a745;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  line-height: 10px;
+}
+/* ------------------------------------------적 포켓몬 카드 스타일링------------------------------------------ */
+.pokemonCard.selected {
+  border: 2px solid #007bff;
+}
+
+.pokemonCard.selected:hover {
+  transform: scale(1);
+}
+/* ------------------------------------------기타 요소 스타일링------------------------------------------ */
+.vs {
+  width: 100px;
+  height: 100px;
+  background-image: url('/public/img/vsPokeball.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.menu button {
+  width: 120px;
+}
+
+.attackButton {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.attackButton:hover {
+  background-color: #c82333;
+}
+
+.toggleButton {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.toggleButton:hover {
+  background-color: #e0a800;
+}
+/* ------------------------------------------타입로고 스타일링------------------------------------------ */
+.dragon {
+  background-color: #7038f8;
+}
+
+.fairy {
+  background-color: #ee99ac;
+}
+
+.fighting {
+  background-color: #c03028;
+}
+
+.fire {
+  background-color: #f08030;
+}
+
+.grass {
+  background-color: #78c850;
+}
+
+.lightning {
+  background-color: #f8d030;
+}
+
+.metal {
+  background-color: #b8b8d0;
+}
+
+.psychic {
+  background-color: #f85888;
+}
+
+.water {
+  background-color: #6890f0;
+}
+
+.colorless {
+  background-color: #a8a878;
+}
+
+.darkness {
+  background-color: #705848;
+}
+
+.typeLogoContainer {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-right: 5px;
+}
+
+.typeLogo {
+  width: 100%;
+  height: 100%;
+}
+.pokemonImage{
+  display: flex;
+  flex-flow: column nowrap;
+}
+.footer{
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: self-end;
+}
+.margin{
+  width: 400px;
+  height: 300px;
+  border: 1px solid black;
+  margin: 200px 0px;
+}

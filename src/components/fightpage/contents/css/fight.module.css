@@ -1,10 +1,18 @@
 .App {
   text-align: center;
-background-color: #555;
+background-image: url(/public/img/backgroundImg.jpg);
+}
+.container{
+  display: flex;
+  flex-flow: row nowrap;
+
+  max-height: 740px; /* Limit the height */
 }
 
+
 .cardContainer {
-  max-height: 500px; /* Limit the height */
+  max-height: 740px; /* Limit the height */
+  max-width: 730px;
   overflow-y: auto; /* Enable vertical scrolling */
   display: flex;
   flex-wrap: wrap; /* Ensure cards stay in a single row */
@@ -37,9 +45,6 @@ background-color: #555;
   color: #555;
 }
 
-.selectedCards {
-  margin-top: 20px;
-}
 
 .selectedCardContainer {
   display: flex;
@@ -80,6 +85,8 @@ background-color: #555;
 
 .myCardArea {
   border: 1px solid skyblue;
+  padding: 0;
+  width: 708px;
 }
 
 /* ========================================================================= */
@@ -101,6 +108,7 @@ background-color: #555;
   vertical-align: middle;
   margin: 20px 10px;
   animation: haloCard 15s ease infinite;
+
 }
 
 .card2::after {
@@ -161,36 +169,12 @@ background-color: #555;
   );
 }
 
-.card2.active::before,
-.card2.active::after {
-  animation: none;
-}
 
-.card2:nth-of-type(1),
-.card2:nth-of-type(2),
-.card2:nth-of-type(3) {
-  width: 160px;
-  height: 226px;
-  box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.4),
-    0 25px 15px -10px rgba(0, 0, 0, 0.5);
-}
 
-.card2:nth-of-type(1),
-.card2:nth-of-type(2),
-.card2:nth-of-type(3)::before,
-.card2:nth-of-type(1)::before,
-.card2:nth-of-type(2)::before,
-.card2:nth-of-type(3)::before,
-.card2:nth-of-type(1)::after,
-.card2:nth-of-type(2)::after,
-.card2:nth-of-type(3)::after {
-  display: none;
-}
+  
+  /* box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.4),
+    0 25px 15px -10px rgba(0, 0, 0, 0.5); */
 
-.card2:nth-of-type(1)::before,
-.card2:nth-of-type(1)::after {
-  display: none; /* 첫 번째 특수 카드에 대한 배경 제거 */
-}
 
 .operator {
   display: inline-block;
@@ -198,59 +182,7 @@ background-color: #555;
   font-size: 45px;
 }
 
-@keyframes holoSparkle {
-  0%, 5% {
-    opacity: 0.1;
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.1;
-  }
-}
 
-@keyframes holoGradient {
-  0%, 100% {
-    opacity: 0;
-    background-position: 0% 0%;
-  }
-  8% {
-    opacity: 0;
-  }
-  10% {
-    background-position: 0% 0%;
-  }
-  19% {
-    background-position: 100% 100%;
-    opacity: 0.5;
-  }
-  35% {
-    background-position: 100% 100%;
-  }
-  55% {
-    background-position: 0% 0%;
-    opacity: 0.3;
-  }
-  75% {
-    opacity: 0;
-  }
-}
-
-@keyframes holoCard {
-  0%, 100% {
-    transform: none;
-  }
-  25% {
-    transform: rotateZ(-3deg) rotateX(-7deg) rotateY(6deg);
-  }
-  25% {
-    transform: rotateZ(-3deg) rotateX(-7deg) rotateY(6deg);
-  }
-  66% {
-    transform: rotateZ(3deg) rotateX(7deg) rotateY(-6deg);
-  }
-}
 .typeContainer {
   display: flex;
   flex-wrap: wrap;
@@ -280,12 +212,175 @@ background-color: #555;
 }
 
 /* --------------------------------------------------------------------------------- */
-.fire{
-  background-color:#E56C3E ;
+
+.nav{
+/* border: 2px solid palegreen; */
+display: flex;
+flex-flow: row nowrap;
+justify-content: center;
+align-items: center;
 }
-.water{
-  background-color:#5185C5 ;
+.typeColor{
+  background-color: #5185C5;
+  width: 80px;
 }
-.grass{
-  background-color: #66A945;
+.allTypes{
+  background-image: url(/public/img/pokeball.png);
+  width: 96px;
+  height: 96px;
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.navTypes {
+  width: 83px;
+  height: 83px;
+  border-radius:100% ;
+  margin: 0px 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.typeLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+.navTypes:hover , .allTypes:hover {
+  transform: scale(1.2); /* 1.1배 확대 */
+  transition: transform 0.3s ease-in-out; /* 변환 효과 부드럽게 적용 */
+}
+
+.typeName.Colorless{
+  color: #949495;
+  
+}
+.typeName.Darkness{
+  color:#4C4948 ;
+}
+.typeName.Dragon{
+  color: #535CA8;
+}
+.typeName.Fairy{
+  color: #DAB4D4;
+}
+.typeName.Fighting{
+  color: #E09C40;
+}
+.typeName.Fire{
+  color:#E56C3E;
+}
+.typeName.Grass{
+  color:#66A945 ;
+}
+.typeName.Lightning{
+  color: #FBB917;
+}
+.typeName.Metal{
+  color:#69A9C7 ;
+}
+.typeName.Psychic{
+  color:#DD6B7B ;
+}
+.typeName.Water{
+  color:#5185C5 ;
+}
+.allTypeBtn{
+  display: flex;
+  flex-flow: column nowrap;
+}
+.customFont {
+  font-family: "Source Code Pro";
+
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.navTypesAll{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------------------- */
+/* styles.module.css */
+
+.settingContainer {
+  margin-top: 20px;
+  padding: 20px;
+  
+  box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+    5px 12px 15px -10px rgba(0, 0, 0, 0.5);
+ 
+
+  width: 400px;
+}
+.settingContainer > h2{
+  font-family: "Source Code Pro";
+
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.userInfoContainer{
+  display: flex;
+  flex-flow: row nowrap;
+}
+.userImg{
+
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  border-radius: 15px;
+  width: 180px;
+  height: 180px;
+}
+.rankImage{
+background-image: url(/public/img/rankIcon.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.userNick{
+  margin-left: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.nick , .victory{
+  font-family: "Source Code Pro";
+
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+ .ptag{
+  font-family: "Source Code Pro";
+margin: 0;
+  line-height: 1.35em;
+  letter-spacing: 0px;
+  font-weight: 400;
+  font-size: 33px;
+}
+
+/* ---------------------------------------------------------------------------------------- */
+.card,
+.selectedCard {
+    font-family: "Source Code Pro";
+    /* text-transform: uppercase; */
+    letter-spacing: 3px; 
 }

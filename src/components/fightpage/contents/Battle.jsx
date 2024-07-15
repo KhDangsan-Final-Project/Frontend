@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import styles from './css/battle.module.css';
-
+import SettingContainer from './SettingFightContent';
 const MAX_HP = 100;
 
 function Battle() {
@@ -102,34 +102,34 @@ function Battle() {
             enemyPokemon.map((pokemon, index) => (
               <div key={pokemon.id} className={styles.pokemonCard} onClick={() => selectEnemyPokemon(pokemon)}>
                 <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} className={styles.myCard} />
-                      <div className={styles.pokemonCardInfo}>
-                <div className={styles.types}>
-                  {pokemon.types.map((type, index) => (
-                    <div key={index} className={`${styles.typeLogoContainer} ${getTypeLogoContainerClass(type)}`}>
-                      <img src={getTypeLogo(type)} alt={type} className={styles.typeLogo} />
-                    </div>
-                  ))}
-                  <h2 className={styles.pokemonName}>{pokemon.name}</h2>
-                </div>
-                <div className={styles.hpBarContainer}>
-                  <div className={styles.hpBar} style={{ width: `${Math.min((pokemon.hpBar / MAX_HP) * 100, 100)}%` }}>
-                    HP: {pokemon.hp}
-                  </div>
-                </div>
-                {/* 공격 기술 표시 여부에 따라 공격 기술 목록을 보여줍니다. */}
-                {showAttacks && pokemon.attacks && (
-                  <div className={styles.pokemonAttacks}>
-                    <h3>공격 기술</h3>
-                    {pokemon.attacks.map((attack, index) => (
-                      <button key={index} className={styles.attackButton} onClick={() => handleAttack(attack.damage)}>
-                        <div className={styles.attack}>
-                          <p><strong>{attack.name}</strong></p>
-                          <p>피해: {attack.damage}</p>
-                        </div>
-                      </button>
+                <div className={styles.pokemonCardInfo}>
+                  <div className={styles.types}>
+                    {pokemon.types.map((type, index) => (
+                      <div key={index} className={`${styles.typeLogoContainer} ${getTypeLogoContainerClass(type)}`}>
+                        <img src={getTypeLogo(type)} alt={type} className={styles.typeLogo} />
+                      </div>
                     ))}
+                    <h2 className={styles.pokemonName}>{pokemon.name}</h2>
                   </div>
-                )}
+                  <div className={styles.hpBarContainer}>
+                    <div className={styles.hpBar} style={{ width: `${Math.min((pokemon.hpBar / MAX_HP) * 100, 100)}%` }}>
+                      HP: {pokemon.hp}
+                    </div>
+                  </div>
+                  {/* 공격 기술 표시 여부에 따라 공격 기술 목록을 보여줍니다. */}
+                  {showAttacks && pokemon.attacks && (
+                    <div className={styles.pokemonAttacks}>
+                      <h3>공격 기술</h3>
+                      {pokemon.attacks.map((attack, index) => (
+                        <button key={index} className={styles.attackButton} onClick={() => handleAttack(attack.damage)}>
+                          <div className={styles.attack}>
+                            <p><strong>{attack.name}</strong></p>
+                            <p>피해: {attack.damage}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))
@@ -139,43 +139,41 @@ function Battle() {
         </div>
         <div className={styles.body}>
           <div className={styles.vs}></div>
-
         </div>
         {/* 선택된 사용자 포켓몬을 표시합니다. */}
         <div className={styles.selectedPokemonContainer}>
           {selectedPokemon.length > 0 ? (
             selectedPokemon.map((pokemon, index) => (
               <div key={pokemon.id} className={styles.pokemonCard}>
-                <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} />
-               <div className={styles.pokemonCardInfo}>
-
-                <div className={styles.types}>
-                  {pokemon.types.map((type, index) => (
-                    <div key={index} className={`${styles.typeLogoContainer} ${getTypeLogoContainerClass(type)}`}>
-                      <img src={getTypeLogo(type)} alt={type} className={styles.typeLogo} />
-                    </div>
-                  ))}
-                  <h2 className={styles.pokemonName}>{pokemon.name}</h2>
-                </div>
-                <div className={styles.hpBarContainer}>
-                  <div className={styles.hpBar} style={{ width: `${Math.min((pokemon.hpBar / MAX_HP) * 100, 100)}%` }}>
-                    HP: {pokemon.hp}
-                  </div>
-                </div>
-                {/* 공격 기술 표시 여부에 따라 공격 기술 목록을 보여줍니다. */}
-                {showAttacks && pokemon.attacks && (
-                  <div className={styles.pokemonAttacks}>
-                    <h3>공격 기술</h3>
-                    {pokemon.attacks.map((attack, index) => (
-                      <button key={index} className={styles.attackButton}>
-                        <div className={styles.attack}>
-                          <p><strong>{attack.name}</strong></p>
-                          <p>피해: {attack.damage}</p>
-                        </div>
-                      </button>
+                <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} className={styles.myCard} />
+                <div className={styles.pokemonCardInfo}>
+                  <div className={styles.types}>
+                    {pokemon.types.map((type, index) => (
+                      <div key={index} className={`${styles.typeLogoContainer} ${getTypeLogoContainerClass(type)}`}>
+                        <img src={getTypeLogo(type)} alt={type} className={styles.typeLogo} />
+                      </div>
                     ))}
+                    <h2 className={styles.pokemonName}>{pokemon.name}</h2>
                   </div>
-                )}
+                  <div className={styles.hpBarContainer}>
+                    <div className={styles.hpBar} style={{ width: `${Math.min((pokemon.hpBar / MAX_HP) * 100, 100)}%` }}>
+                      HP: {pokemon.hp}
+                    </div>
+                  </div>
+                  {/* 공격 기술 표시 여부에 따라 공격 기술 목록을 보여줍니다. */}
+                  {showAttacks && pokemon.attacks && (
+                    <div className={styles.pokemonAttacks}>
+                      <h3>공격 기술</h3>
+                      {pokemon.attacks.map((attack, index) => (
+                        <button key={index} className={styles.attackButton} onClick={() => handleAttack(attack.damage)}>
+                          <div className={styles.attack}>
+                            <p><strong>{attack.name}</strong></p>
+                            <p>피해: {attack.damage}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))
@@ -185,11 +183,17 @@ function Battle() {
         </div>
       </div>
       {/* 메뉴 영역에는 Fight, Run, 이미지 토글 버튼을 표시합니다. */}
-      <div className={styles.menu}>
-        <button onClick={handleFightClick}>Fight</button>
-        <button onClick={runBtn}>Run</button>
-        <button onClick={toggleSmallImages}>Toggle Small Images</button>
-      </div>
+      <div className={styles.footer}>
+
+<SettingContainer/>
+<div className={styles.margin}></div>
+<SettingContainer/>
+<div className={styles.menu}>
+  <button onClick={handleFightClick}>Fight</button>
+  <button onClick={runBtn}>Run</button>
+  <button onClick={toggleSmallImages}>Toggle Small Images</button>
+</div>
+</div>
     </div>
   );
 }
