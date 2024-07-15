@@ -5,3 +5,6 @@
                 radial-gradient(circle at 50% 70%, rgba(154, 223, 239, 0.6), transparent);
     background-repeat: repeat;
   }
+.section {
+    height: 500px;
+}

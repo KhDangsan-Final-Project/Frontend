@@ -1,0 +1,200 @@
+.container {
+  background: url('/public/img/background.png') no-repeat center center;
+  background-size: cover;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.slide {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  position: absolute;
+}
+
+.slide2 {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  position: absolute;
+}
+
+.noneSliderContainer {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  position: relative;
+  bottom: -180px;
+  width: 530px;
+  max-width: 600px;
+  left: 18%;
+}
+
+.category {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  position: relative;
+  bottom: -220px;
+  width: 530px;
+  max-width: 600px;
+  left: 18%;
+}
+
+.categoryTitle {
+  width: 100%;
+  font-size: 20px;
+}
+
+.subtext {
+  font-size: 25px;
+  font-weight: bold;
+  width: 100%;
+}
+
+.textContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 0 15%;
+}
+
+.imageContainer {
+  position: relative;
+  border-radius: 100%;
+  left: 999px;
+  top: 50px;
+}
+
+.imageContainer {
+  position: relative;
+}
+
+.imageContainer::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+.pokemonImage {
+  width: 240px;
+  height: 240px;
+}
+
+.header {
+  font-size: 110px;
+  margin-top: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  background: linear-gradient(150deg, #FFE500 0%, #14FF00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Poor Story", sans-serif;
+}
+
+.type {
+  font-size: 64px;
+  background: linear-gradient(800deg, #FFE500 0%, #14FF00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Poor Story", sans-serif;
+}
+
+.description {
+  margin-top: 40px;
+  font-size: 20px;
+  max-width: 900px;
+  width: 100%;
+  margin-bottom: 100px;
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  margin: 0 20px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.slide-active {
+  animation: slideIn 1s forwards;
+}
+
+.slide-exit {
+  animation: slideOut 1s forwards;
+}
+
+
+
+
+/* 이미지 슬라이더! */
+
+@keyframes slideIn2 {
+  from {
+    opacity: 0;
+    transform: translate(-200px, 400px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slideOut2 {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(300px, -200px);
+  }
+}
+
+.slide-active2 {
+  animation: slideIn2 1s forwards;
+}
+
+.slide-exit2 {
+  animation: slideOut2 1s forwards;
+}
