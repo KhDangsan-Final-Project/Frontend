@@ -25,18 +25,24 @@
   font-weight: normal;
   font-size: 70px;
   color: #ffffff;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .error {
+  height: 20px;
+  opacity: 0;;
   font-size: 13px;
   padding-left: 20px;
   color: red;
   font-weight: bold;
 }
 
-.hidden{
-  display: none;
+.hidden {
+  opacity: 0;
+}
+
+.error.visible {
+  opacity: 1;
 }
 
 .txt_box {
@@ -70,7 +76,9 @@
   opacity: 0;
 }
 
+
 .email {
+  width: 500px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -78,7 +86,7 @@
 
 .email_box {
   width: calc(50% - 10px);
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 15px 25px;
   border: 2px solid #bababa;
   border-radius: 50px;
@@ -108,14 +116,14 @@
 
 .email_option {
   width: calc(50% - 10px);
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 15px 25px;
   border: 2px solid #bababa;
   border-radius: 50px;
   box-sizing: border-box;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .email_option select {
@@ -135,18 +143,18 @@
 .name {
   width: 500px;
   height: 65px;
-  margin-top: 10px;
-  padding: 15px 25px;
+  margin-top: 30px;
+  padding: 0 25px;
   border: 2px solid #bababa;
   border-radius: 50px;
   box-sizing: border-box;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .name input {
-  width: 100%;
+  width: 80%;
   padding-right: 20px;
   border: none;
   outline: none;
@@ -165,8 +173,8 @@
 }
 
 .name button{
-  width: 100px;
-  font-size: 20px;
+  width: 120px;
+  font-size: 19px;
   color: #ffffff;
   border: none;
   outline: none;
@@ -176,7 +184,7 @@
 .nick {
   width: 500px;
   height: 65px;
-  margin-top: 10px;
+  margin-top: 30px;
   padding: 15px 25px;
   border: 2px solid #bababa;
   border-radius: 50px;

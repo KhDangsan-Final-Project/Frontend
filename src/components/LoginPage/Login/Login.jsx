@@ -12,6 +12,7 @@ export default function Login({ setToken, showRegister }) {
   });
   const [isRemember, setIsRemember] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["rememberUserAccount"]);
+  const [error, setError] = useState('');
 
   useEffect(() =>{
     if (cookies.rememberUserAccount !== undefined){
@@ -44,17 +45,18 @@ export default function Login({ setToken, showRegister }) {
     });
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8090/ms3/user/select', formData);
+      const response = await axios.post('http://teeput.synology.me:30112/ms3/user/select', formData);
       if (response.data.result) {
         alert('로그인 성공');
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);  // 추가된 부분
         navigate('/');
-      } else {
-        alert('로그인 실패: ' + response.data.msg);
+      } else{
+       setError('! 아이디 또는 비밀번호를 정확히 입력해 주세요.'); 
       }
     } catch (error) {
       alert('로그인 중 오류 발생: ' + error.message);
@@ -89,12 +91,13 @@ export default function Login({ setToken, showRegister }) {
           </div>
           <div className={styles.chk_bar}>
             <div>
-                <label for="check1" className={styles.checkboxLabel}>이 계정 기억하기
+                <label htmlFor="check1" className={styles.checkboxLabel}>이 계정 기억하기
                 <input type="checkbox" id="check1" className={styles.checkbox} onChange={handleOnChange} checked={isRemember} />
                 </label>
             </div>
             <a href="#" className={styles.searchPS}>비밀번호 찾기</a>
           </div>
+          <div className={`${styles.error} ${error ? styles.visible : styles.hidden}`}>{error}</div>
           <button type="submit" className={styles.btn_login}>Login</button>
         </form>
         <div className={styles.register_bar}>

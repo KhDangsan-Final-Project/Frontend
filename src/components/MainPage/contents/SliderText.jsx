@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import usePokemonData from './hook/usePokemonData';
-import styles from './css/MainPage.module.css';
+import styles from './css/SliderText.module.css';
+import Loading from '../../Loading/Loding';
 
 export default function SliderText() {
+  const { pokemonData, loading } = usePokemonData(20); // usePokemonData에서 로딩 상태와 데이터를 반환
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const pokemonData = usePokemonData(20);
+  const [additionalLoading, setAdditionalLoading] = useState(true);
 
   const handleNext = () => setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pokemonData.length);
   const handlePrev = () => setCurrentImageIndex((prevIndex) => (prevIndex - 1 + pokemonData.length) % pokemonData.length);
+
+
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        setAdditionalLoading(false);
+      }, 10);
+    }
+  }, [loading]);
+
+  if (loading || additionalLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className={styles.container}>
@@ -26,9 +41,7 @@ export default function SliderText() {
             </div>
           </div>
         ))}
-        <div
-          className={styles.slide}
-        >
+        <div className={styles.slide}>
           <div className={styles.noneSliderContainer}>
             <div className={styles.categoryTitle}>Category</div>
             <div className={styles.categoryTitle}>Ability</div>
@@ -48,14 +61,14 @@ export default function SliderText() {
         {pokemonData.map((pokemon, index) => (
           <div
             key={index}
-            className={`${styles.slide} ${index === currentImageIndex ? styles['slide-active2'] : styles['slide-exit2']}`}
+            className={`${styles.slide2} ${index === currentImageIndex ? styles['slide-active2'] : styles['slide-exit2']}`}
           >
-              <div 
-                className={styles.imageContainer}
-                style={{ backgroundColor: pokemon.backgroundColor }}
-              >
-                  <img src={pokemon.image} alt={pokemon.name} className={styles.pokemonImage} />
-              </div>
+            <div
+              className={styles.imageContainer}
+              style={{ backgroundColor: pokemon.backgroundColor }}
+            >
+              <img src={pokemon.image} alt={pokemon.name} className={styles.pokemonImage} />
+            </div>
           </div>
         ))}
       </div>

@@ -4,7 +4,7 @@ export default function Footer() {
 
   return(
     <div className={styles.container}>
-        <img src="/img/poke.png" alt="logo" className={styles.logo} />
+        <img src="/img/pokeball_footer.png" alt="logo" className={styles.logo} />
         <ul className={styles.menu}>
           <li>개인정보처리방침</li>
           <li>회사 소개</li>

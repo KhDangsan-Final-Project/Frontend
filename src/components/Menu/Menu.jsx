@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 export default function Menu({ token, logout }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
 
     
     useEffect(() => {

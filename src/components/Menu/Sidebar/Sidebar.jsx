@@ -4,7 +4,7 @@ import styles from "./css/Sidebar.module.css";
 
 
 
-export default function Header( {token, logout} ) {
+export default function Sidebar( {token, logout} ) {
   const [isToggleOpen, setIsToggleOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
