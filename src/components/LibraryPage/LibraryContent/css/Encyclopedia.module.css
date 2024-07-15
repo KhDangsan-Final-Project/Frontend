@@ -1,0 +1,33 @@
+.cardContainer {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    gap: 40px;
+  }
+
+  .title {
+    text-align: center;
+    padding: 50px 0;
+  }
+
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    width: 150px;
+    background-color: #fff;
+  }
+  
+  .cardImage {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  button {
+    margin: 8px;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+  
