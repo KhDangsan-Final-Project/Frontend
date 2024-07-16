@@ -45,7 +45,8 @@
   opacity: 1;
 }
 
-.id {
+.id,
+.name {
   width: 500px;
   height: 65px;
   margin-top: 30px;
@@ -68,12 +69,20 @@
   color: #ffffff;
 }
 
-.id input::placeholder {
+.id input::placeholder,
+.password input::placeholder,
+.email_box input::placeholder,
+.name input::placeholder,
+.nick input::placeholder {
   color: #ffffff;
   transition: opacity 0.3s;
 }
 
-.id input:focus::placeholder {
+.id input:focus::placeholder,
+.password input:focus::placeholder,
+.email_box input:focus::placeholder,
+.name input:focus::placeholder,
+.nick input:focus::placeholder {
   opacity: 0;
 }
 
@@ -99,7 +108,9 @@
   justify-content: space-between;
 }
 
-.password input {
+.password input,
+.name input,
+.nick input {
   width: 100%;
   border: none;
   outline: none;
@@ -107,16 +118,6 @@
   font-size: 20px;
   color: #ffffff;
 }
-
-.password input::placeholder {
-  color: #ffffff;
-  transition: opacity 0.3s;
-}
-
-.password input:focus::placeholder {
-  opacity: 0;
-}
-
 
 .email {
   width: 500px;
@@ -146,15 +147,6 @@
   color: #ffffff;
 }
 
-.email_box input::placeholder {
-  color: #ffffff;
-  transition: opacity 0.3s;
-}
-
-.email_box input:focus::placeholder {
-  opacity: 0;
-}
-
 .email_option {
   width: calc(50% - 10px);
   margin-top: 10px;
@@ -181,38 +173,6 @@
   color: #000000;
 }
 
-.name {
-  width: 500px;
-  height: 65px;
-  margin-top: 30px;
-  padding: 0 25px;
-  border: 2px solid #bababa;
-  border-radius: 50px;
-  box-sizing: border-box;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-}
-
-.name input {
-  width: 100%;
-  padding-right: 20px;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 20px;
-  color: #ffffff;
-}
-
-.name input::placeholder {
-  color: #ffffff;
-  transition: opacity 0.3s;
-}
-
-.name input:focus::placeholder {
-  opacity: 0;
-}
-
 .name button{
   width: 120px;
   font-size: 19px;
@@ -230,24 +190,6 @@
   border: 2px solid #bababa;
   border-radius: 50px;
   box-sizing: border-box;
-}
-
-.nick input {
-  width: 100%;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 20px;
-  color: #ffffff;
-}
-
-.nick input::placeholder {
-  color: #ffffff;
-  transition: opacity 0.3s;
-}
-
-.nick input:focus::placeholder {
-  opacity: 0;
 }
 
 .btn_submit {
