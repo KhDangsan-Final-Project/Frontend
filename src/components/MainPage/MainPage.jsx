@@ -1,24 +1,15 @@
 import React from 'react';
 import SliderText from "./contents/SliderText";
 import styles from './css/MainPage.module.css';
-import usePokemonData from './contents/hook/usePokemonData';
-import Loading from '../Loading/Loding';
 
 export default function MainPage({ setToken }) {
-  const count = 20;
-  const maxId = 151;
-  const { pokemonData, loading } = usePokemonData(count, maxId);
 
   return (
     <div className={styles.background}>
-      {loading ? (
-        <Loading />
-      ) : (
         <>
-          <SliderText pokemonData={pokemonData} />
+          <SliderText/>
           <section className={styles.section}></section>
         </>
-      )}
     </div>
   );
 }

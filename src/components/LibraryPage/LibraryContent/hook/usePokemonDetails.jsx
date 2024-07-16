@@ -4,13 +4,13 @@ import axios from 'axios';
 const fetchTypeInKorean = async (typeUrl) => {
     const { data: typeData } = await axios.get(typeUrl);
     const koreanName = typeData.names.find(name => name.language.name === 'ko')?.name;
-    return koreanName || typeData.name; // 한글명이 없으면 기본 영어명 반환
+    return koreanName || typeData.name;
 };
 
 const fetchAbilityInKorean = async (abilityUrl) => {
     const { data: abilityData } = await axios.get(abilityUrl);
     const koreanName = abilityData.names.find(name => name.language.name === 'ko')?.name;
-    return koreanName || abilityData.name; // 한글명이 없으면 기본 영어명 반환
+    return koreanName || abilityData.name;
 };
 
 const fetchPokemonDetails = async (id) => {
@@ -37,12 +37,14 @@ const fetchPokemonDetails = async (id) => {
 
 const usePokemonDetails = (pokemonCards) => {
     const [pokemonDetails, setPokemonDetails] = useState({});
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadPokemonDetails = async () => {
+            setLoading(true);
             const details = {};
             const fetchDetailsPromises = pokemonCards.map(async (card) => {
-                const id = card.nationalPokedexNumbers[0]; // Assuming TCG API provides national Pokedex number
+                const id = card.nationalPokedexNumbers[0]; 
                 if (id) {
                     const detail = await fetchPokemonDetails(id);
                     details[card.id] = detail;
@@ -50,14 +52,17 @@ const usePokemonDetails = (pokemonCards) => {
             });
             await Promise.all(fetchDetailsPromises);
             setPokemonDetails(details);
+            setLoading(false);
         };
 
         if (pokemonCards.length > 0) {
             loadPokemonDetails();
+        } else {
+            setLoading(false);
         }
     }, [pokemonCards]);
 
-    return pokemonDetails;
+    return { pokemonDetails, loading };
 };
 
 export default usePokemonDetails;
