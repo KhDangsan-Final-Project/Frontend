@@ -9,6 +9,7 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
   const [loading, setLoading] = useState(false);
   const [selectedCards, setSelectedCards] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   const typeBackgroundImages = {
     Colorless: 'url(/img/types/colorless.png)',
@@ -70,6 +71,7 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
       });
       const data = await response.json();
       setCards(prevCards => reset ? data.data : [...prevCards, ...data.data]);
+      setHasMore(data.data.length === PAGE_SIZE);
     } catch (error) {
       console.error('카드 데이터를 불러오는 중 오류 발생:', error);
     } finally {
@@ -139,6 +141,7 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
     selectedCards,
     selectedCount,
     typeBackgroundImages,
+    hasMore,
     setSearchTerm,
     handleChange,
     handleTypeClick,

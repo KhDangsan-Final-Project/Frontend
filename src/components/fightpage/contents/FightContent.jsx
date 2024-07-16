@@ -6,7 +6,7 @@ import FightNavBar from './navFightContent';
 import SettingContainer from './SettingFightContent';
 
 function FightContent() {
-  const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // 사용자의 API 키로 대체 필요
+  const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // API 키 확인
   const PAGE_SIZE = 20;
   const navigate = useNavigate();
   
@@ -20,6 +20,7 @@ function FightContent() {
     selectedCards,
     selectedCount,
     typeBackgroundImages,
+    hasMore,
     setSearchTerm,
     handleChange,
     handleTypeClick,
@@ -45,8 +46,6 @@ function FightContent() {
 
   return (
     <div className={styles.App}>
-      {/* <h1>가져갈 포켓몬 카드를 3장 선택하세요 (중복 선택 불가)</h1> */}
-      {/* <Link to="/encyclopedia">도감페이지로 이동</Link> */}
       <div>
         <input
           type="text"
@@ -61,54 +60,55 @@ function FightContent() {
         />
       </div>
       <div className={styles.container}>
-     
-      <div className={styles.cardContainer}>
-        {cards.length > 0 ? (
-          cards.map(card => (
-            <div key={card.id} className={styles.card} onClick={() => handleCardClick(card)}>
-              <img src={card.images.small} alt={card.name} />
-              <h2>{card.name}</h2>
-              <p>타입: {card.types.join(', ')}</p>
-              <p>HP: {card.hp}</p>
-              {card.attacks && (
-                <div className={styles.cardAttack}>
-                  <h3>공격 기술</h3>
-                  {card.attacks.map((attack, index) => (
-                    <div key={index} className={styles.attack}>
-                      <p><strong>{attack.name}</strong></p>
-                      <p>피해: {attack.damage}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>카드를 찾을 수 없습니다.</p>
-        )}
-      {loading && <p>로딩 중...</p>}
-      {!loading && cards.length > 0 && (
-        <button onClick={loadMore}>더 불러오기</button>
-      )}
-      </div>
-      {selectedCards.length > 0 && (
-        <div className={styles.selectedCards}>
+        <div className={styles.cardContainer}>
+          {cards.length > 0 ? (
+            cards.map(card => (
+              <div key={card.id} className={styles.card} onClick={() => handleCardClick(card)}>
+                <img src={card.images.small} alt={card.name} />
+                <h2>{card.name}</h2>
+                <p>타입: {card.types ? card.types.join(', ') : '알 수 없음'}</p>
+                <p>HP: {card.hp}</p>
+                {card.attacks && (
+                  <div className={styles.cardAttack}>
+                    <h3>공격 기술</h3>
+                    {card.attacks.map((attack, index) => (
+                      <div key={index} className={styles.attack}>
+                        <p><strong>{attack.name}</strong></p>
+                        <p>피해: {attack.damage}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <p>카드를 찾을 수 없습니다.</p>
+          )}
+          {loading && <p>로딩 중...</p>}
+          {!loading && cards.length > 0 && hasMore && (
+            <button onClick={loadMore}>더 불러오기</button>
+          )}
+        </div>
+        {/* myCardArea */}
+        <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
           <h4>선택된 포켓몬 카드</h4>
-          <button onClick={sendBattlePokemon}>결정</button>
-          <div className={`${styles.selectedCardContainer} ${styles.myCardArea}`}>
+          {selectedCards.length > 0 && (
+            <button onClick={sendBattlePokemon}>결정</button>
+          )}
+          <div className={styles.selectedCardContainer}>
             {selectedCards.map(card => (
               <div key={card.id} className={`${styles.card} ${styles.selectedCard}`}>
                 <img src={card.images.small} alt={card.name} />
                 <h2>{card.name}</h2>
-                <p>type: {card.types.join(', ')}</p>
+                <p>타입: {card.types ? card.types.join(', ') : '알 수 없음'}</p>
                 <p>HP: {card.hp}</p>
                 {card.attacks && (
                   <div className={styles.cardAttack}>
-                    <h3>Attack</h3>
+                    <h3>공격 기술</h3>
                     {card.attacks.map((attack, index) => (
                       <div key={index} className={styles.attack}>
                         <p><strong>{attack.name}</strong></p>
-                        <p>damage: {attack.damage}</p>
+                        <p>피해: {attack.damage}</p>
                       </div>
                     ))}
                   </div>
@@ -118,8 +118,8 @@ function FightContent() {
             ))}
           </div>
         </div>
-      )}
- <SettingContainer/>
+        <SettingContainer />
+ 
       </div>
       <div className={styles.card2}></div>
       <style className={styles.hover}></style>

@@ -246,7 +246,17 @@ button:hover {
 }
 .margin{
   width: 400px;
-  height: 300px;
+  height: 200px;
   border: 1px solid black;
-  margin: 200px 0px;
+  margin-top: 20px;
+}
+/* battle.module.css */
+
+.pokemonCard {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pokemonCard.selected {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
 }

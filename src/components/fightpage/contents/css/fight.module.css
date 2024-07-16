@@ -79,12 +79,12 @@ background-image: url(/public/img/backgroundImg.jpg);
 }
 
 /* ================================================================================ */
-.selectedCardContainer {
+/* .selectedCardContainer {
   border: 1px solid crimson;
-}
+} */
 
 .myCardArea {
-  border: 1px solid skyblue;
+  /* border: 1px solid skyblue; */
   padding: 0;
   width: 708px;
 }
