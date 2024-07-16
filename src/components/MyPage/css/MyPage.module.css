@@ -62,7 +62,7 @@
   font-weight: bold;
 }
 
-.infoSection input {
+.infoSection input, select {
   width: 290px; 
   padding: 10px;
   margin-left: 10px;

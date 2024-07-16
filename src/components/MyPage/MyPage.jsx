@@ -23,7 +23,10 @@ export default function MyPage() {
           </label>
           <label>
             <span>성별</span>
-            <input type="text" placeholder="성별" className={styles.info} />
+            <select className={styles.info}>
+              <option value="남자">남자</option>
+              <option value="여자">여자</option>
+          </select>
           </label>
         </div>
       </div>
