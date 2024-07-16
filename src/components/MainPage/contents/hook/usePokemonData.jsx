@@ -63,6 +63,7 @@ const usePokemonData = (count = 20, maxId = 151) => {
         const types = await Promise.all(pokemon.types.map(async (typeInfo) => {
           return await fetchTypeInKorean(typeInfo.type.url);
         }));
+        
 
         const firstType = types[0];
         const backgroundColor = typeColors[firstType] || '#fff';

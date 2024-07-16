@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
-import Sidebar from './components/Menu/Sidebar/Sidebar';
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
-
+import Sidebar from './components/Menu/Sidebar/Sidebar';
+import MyPage from './components/MyPage/MyPage';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -23,14 +23,14 @@ function App() {
   };
 
   return (
-    
     <Router>
-      <Menu token={token} logout={logout}/>
-      <Sidebar token={token} logout={logout}/>
+      <Menu token={token} logout={logout} />
+      <Sidebar token={token} logout={logout} />
       <Routes>
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
+        <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </Router>
   );

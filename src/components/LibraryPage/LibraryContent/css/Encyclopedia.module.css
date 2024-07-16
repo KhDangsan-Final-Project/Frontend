@@ -184,6 +184,8 @@
     justify-content: center;
     margin-bottom: 40px;
     align-items: center;
+    max-width: 1660px;
+    margin: 0 auto;
   }
 
   .searchInput {

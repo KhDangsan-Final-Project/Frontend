@@ -1,8 +1,12 @@
 import React from 'react';
 import SliderText from "./contents/SliderText";
 import styles from './css/MainPage.module.css';
-import FooterImg from '../Menu/Footer/FooterImg';
-import Footer from '../Menu/Footer/Footer';
+import PokemonCardSlider from './contents/PokemonCardSlider';
+import PlayBattle from './contents/PlayBattle';
+import Footer from '../Menu/Footer/Footer'
+import FooterImg from '../Menu/Footer/FooterImg'
+import ViewText from './contents/ViewText';
+import View from './contents/View';
 
 export default function MainPage({ setToken }) {
 
@@ -10,7 +14,14 @@ export default function MainPage({ setToken }) {
     <div className={styles.background}>
         <>
           <SliderText/>
+          <section className={styles.ViewSection}>
+            <View />
+            <ViewText />
+          </section>
           <section className={styles.section}></section>
+            <PokemonCardSlider/>
+          <section className={styles.section}></section>
+            <PlayBattle/>
           <FooterImg />
           <Footer />
         </>
