@@ -28,7 +28,7 @@ export default function Scroll() {
 
     return(
         <div onClick={scrollToTop} className={`${styles.scrollBtn} ${isVisible ? styles.show : ''}`}>
-        <img src="/img/scroll.png" className={styles.scroll}/>
+        <img src="/img/scroll.png" className={styles.scrollImg}/>
         </div>
     )
 }
