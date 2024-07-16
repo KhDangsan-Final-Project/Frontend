@@ -6,6 +6,7 @@ import Sidebar from './components/Menu/Sidebar/Sidebar';
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
 import Footer from './components/Menu/Footer/Footer';
+import Scroll from './components/Menu/Scroll/Scroll';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/Library" element={<LibraryPage setToken={setToken} />} />
       </Routes>
+      <Scroll/>
       <Footer/>
     </Router>
   );
