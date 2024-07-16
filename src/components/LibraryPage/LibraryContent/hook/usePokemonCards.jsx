@@ -1,38 +1,28 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import fetchPokemonCards from './fetchPokemonCards';
 
-const fetchPokemonCards = async (currentPage, selectedType) => {
-    const startId = (currentPage - 1) * 25 + 1;
-    const endId = currentPage * 25;
-    const query = selectedType
-        ? `types:${selectedType}`
-        : `nationalPokedexNumbers:[${startId} TO ${endId}]`;
-
-    const response = await axios.get(`https://api.pokemontcg.io/v2/cards`, {
-        params: {
-            q: query,
-            pageSize: 25
-        }
-    });
-    return response.data.data;
-};
-
-const usePokemonCards = (currentPage, selectedType) => {
+const usePokemonCards = (currentPage, selectedType, pokemonId) => {
     const [pokemonCards, setPokemonCards] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const loadPokemonCards = async () => {
             setLoading(true);
-            const cards = await fetchPokemonCards(currentPage, selectedType);
-            setPokemonCards(cards);
+            try {
+                const { cards, totalPages } = await fetchPokemonCards(currentPage, selectedType, pokemonId);
+                setPokemonCards(cards);
+                setTotalPages(totalPages);
+            } catch (error) {
+                console.error('Error fetching Pokémon cards:', error);
+            }
             setLoading(false);
         };
 
         loadPokemonCards();
-    }, [currentPage, selectedType]);
+    }, [currentPage, selectedType, pokemonId]);
 
-    return { pokemonCards, loading };
+    return { pokemonCards, loading, totalPages };
 };
 
 export default usePokemonCards;

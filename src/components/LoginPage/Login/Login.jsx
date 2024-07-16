@@ -1,13 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/Login.module.css';
+import { useCookies } from 'react-cookie';
+
 
 export default function Login({ setToken, showRegister }) {
   const [formData, setFormData] = useState({
     id: '',
     password: ''
   });
+  const [isRemember, setIsRemember] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserAccount"]);
+  const [error, setError] = useState('');
+
+  useEffect(() =>{
+    if (cookies.rememberUserAccount !== undefined){
+      setFormData({ ...formData, id: cookies.rememberUserAccount});
+   //   setFormData({ ...formData, password: cookies.rememberUserAccount});
+      setIsRemember(true);
+    }
+  }, []);
+
+  const handleOnChange = (e) => {
+    setIsRemember(e.target.checked);
+    if(e.target.checked){
+      setCookie("rememberUserAccount", formData.id, {maxAge: 2000});
+    //  setCookie("rememberUserAccount", formData.password, {maxAge: 2000});
+    } else {
+      removeCookie("rememberUserAccount");
+    }
+  };
 
   const handleRegisterClick = () => {
     showRegister();
@@ -22,6 +45,7 @@ export default function Login({ setToken, showRegister }) {
     });
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -31,19 +55,20 @@ export default function Login({ setToken, showRegister }) {
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
         navigate('/');
-      } else {
-        alert('로그인 실패: ' + response.data.msg);
+      } else{
+       setError('! 아이디 또는 비밀번호를 정확히 입력해 주세요.'); 
       }
     } catch (error) {
       alert('로그인 중 오류 발생: ' + error.message);
     }
   };
 
+ 
   return (
     <div className={styles.body}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Poke Library</h1>
-        <form onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Poké Library</h1>
+        <form name='loginForm' onSubmit={handleSubmit}>
           <div className={styles.txt_box}>
             <input
               type="text"
@@ -66,11 +91,13 @@ export default function Login({ setToken, showRegister }) {
           </div>
           <div className={styles.chk_bar}>
             <div>
-                <input type="checkbox" id="check1" className={styles.checkbox} />
-                <label htmlFor="check1" className={styles.checkboxLabel}>이 계정 기억하기</label>
+                <label htmlFor="check1" className={styles.checkboxLabel}>이 계정 기억하기
+                <input type="checkbox" id="check1" className={styles.checkbox} onChange={handleOnChange} checked={isRemember} />
+                </label>
             </div>
             <a href="#" className={styles.searchPS}>비밀번호 찾기</a>
           </div>
+          <div className={`${styles.error} ${error ? styles.visible : styles.hidden}`}>{error}</div>
           <button type="submit" className={styles.btn_login}>Login</button>
         </form>
         <div className={styles.register_bar}>

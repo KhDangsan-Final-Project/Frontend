@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage/LoginPage';
-import MainPage from './components/MainPage/MainPage'
+import MainPage from './components/MainPage/MainPage';
+import Sidebar from './components/Menu/Sidebar/Sidebar';
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
-import Sidebar from './components/Menu/Sidebar';
+
 
 function App() {
   const [token, setToken] = useState(null);
