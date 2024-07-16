@@ -30,7 +30,7 @@
 
 .error {
   height: 20px;
-  opacity: 0;;
+  opacity: 0;
   font-size: 13px;
   padding-left: 20px;
   color: red;
@@ -45,7 +45,48 @@
   opacity: 1;
 }
 
-.txt_box {
+.id {
+  width: 500px;
+  height: 65px;
+  margin-top: 30px;
+  padding: 0 25px;
+  border: 2px solid #bababa;
+  border-radius: 50px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.id input {
+  width: 80%;
+  padding-right: 20px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.id input::placeholder {
+  color: #ffffff;
+  transition: opacity 0.3s;
+}
+
+.id input:focus::placeholder {
+  opacity: 0;
+}
+
+.id button {
+  width: 120px;
+  font-size: 19px;
+  color: #ffffff;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.password {
   width: 500px;
   height: 65px;
   margin-top: 10px;
@@ -58,7 +99,7 @@
   justify-content: space-between;
 }
 
-.txt_box input {
+.password input {
   width: 100%;
   border: none;
   outline: none;
@@ -67,12 +108,12 @@
   color: #ffffff;
 }
 
-.txt_box input::placeholder {
+.password input::placeholder {
   color: #ffffff;
   transition: opacity 0.3s;
 }
 
-.txt_box input:focus::placeholder {
+.password input:focus::placeholder {
   opacity: 0;
 }
 
@@ -154,7 +195,7 @@
 }
 
 .name input {
-  width: 80%;
+  width: 100%;
   padding-right: 20px;
   border: none;
   outline: none;
@@ -225,7 +266,7 @@
   background-color: #f6f6f6;
 }
 
-.btn_submit:hover{
+.btn_submit:hover {
   background-color: #ffffff;
 }
 
@@ -248,19 +289,20 @@
   background-color: #ffffff;
 }
 
-@media (max-width: 609px) {
+@media (max-width: 699px) {
   .title {
     font-size: 35px;
   }
 
-  
+
 
   .container {
     width: 80%;
     padding: 20px;
   }
 
-  .txt_box,
+
+  .password,
   .name,
   .nick,
   .email_box,
@@ -270,9 +312,47 @@
     width: 100%;
     height: auto;
     padding: 10px 15px;
+    margin: 10px 0px;
+  }
+  
+  .email {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    flex-direction: column;
   }
 
-  .txt_box input,
+  .email_box,
+  .email_option {
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+    margin: 0;
+  }
+
+  .email_option {
+    margin-top: 10px;
+  }
+
+  .id {
+    width: 100%;
+    height: 50px;
+    padding: 10px 15px;
+  }
+
+  .id button {
+    font-size: 16px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .password {
+    margin: 0;
+  }
+
+  .password input,
+  .id input,
   .name input,
   .nick input,
   .email_box input,
@@ -295,6 +375,5 @@
   .email_box,
   .email_option {
     width: 100%;
-    margin-top: 10px;
   }
 }

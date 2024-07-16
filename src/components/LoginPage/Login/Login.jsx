@@ -11,13 +11,15 @@ export default function Login({ setToken, showRegister }) {
     password: ''
   });
   const [isRemember, setIsRemember] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserAccount"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserId"]);
   const [error, setError] = useState('');
 
   useEffect(() =>{
-    if (cookies.rememberUserAccount !== undefined){
-      setFormData({ ...formData, id: cookies.rememberUserAccount});
-   //   setFormData({ ...formData, password: cookies.rememberUserAccount});
+    if (cookies.rememberUserId !== undefined){
+      setFormData({ ...formData, 
+        id: cookies.rememberUserId, 
+        password: cookies.rememberUserPassword
+      });
       setIsRemember(true);
     }
   }, []);
@@ -25,10 +27,11 @@ export default function Login({ setToken, showRegister }) {
   const handleOnChange = (e) => {
     setIsRemember(e.target.checked);
     if(e.target.checked){
-      setCookie("rememberUserAccount", formData.id, {maxAge: 2000});
-    //  setCookie("rememberUserAccount", formData.password, {maxAge: 2000});
+      setCookie("rememberUserId", formData.id, {maxAge: 2000});
+      setCookie("rememberUserPassword", formData.password, {maxAge: 2000});
     } else {
-      removeCookie("rememberUserAccount");
+      removeCookie("rememberUserId");
+      removeCookie("rememberUserPassword");
     }
   };
 
