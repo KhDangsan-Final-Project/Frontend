@@ -13,25 +13,14 @@ export default function MyPage() {
       <div className={styles.profileSection}>
         <img src="../img/jiwoo.jpg" alt="프로필 이미지" />
         <div className={styles.infoSection}>
-          <label>
-            <span>이름</span>
-            <input type="text" placeholder="이름" className={styles.info} />
-          </label>
-          <label>
-            <span>나이</span>
-            <input type="text" placeholder="나이" className={styles.info} />
-          </label>
-          <label>
-            <span>성별</span>
-            <select className={styles.info}>
-              <option value="남자">남자</option>
-              <option value="여자">여자</option>
-          </select>
-          </label>
         </div>
       </div>
 
       <form className={styles.form}>
+        <label>
+          <span>이름</span>
+         <input type="text" placeholder="이름" className={styles.info} />
+        </label>
         <label>
           <span>아이디</span>
           <input type="text" placeholder="아이디" />
