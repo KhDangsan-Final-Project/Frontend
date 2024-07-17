@@ -246,9 +246,11 @@ button:hover {
 }
 .margin{
   width: 400px;
-  height: 200px;
+  max-height: 200px;
   border: 1px solid black;
   margin-top: 20px;
+  overflow-y: auto;
+
 }
 /* battle.module.css */
 
@@ -259,4 +261,15 @@ button:hover {
 .pokemonCard.selected {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+/* ---------------------------------------------------------------- */
+
+.textContainer{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+width: 402px;
+}
+.chatInput{
+  width: 100%;
 }
