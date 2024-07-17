@@ -1,8 +1,7 @@
 .background {
     width: 100%;
     background: radial-gradient(circle at 20% 40%, rgba(255, 182, 193, 0.6), transparent),
-                radial-gradient(circle at 80% 60%, rgba(173, 216, 230, 0.6), transparent),
-                radial-gradient(circle at 50% 70%, rgba(221, 160, 221, 0.6), transparent);
+                radial-gradient(circle at 80% 60%, rgba(173, 216, 230, 1), transparent);
     background-size: cover;
     background-repeat: no-repeat;
   }

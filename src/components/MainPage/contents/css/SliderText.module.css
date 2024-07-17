@@ -92,7 +92,7 @@
 }
 
 .header {
-  font-size: 110px;
+  font-size: 100px;
   margin-top: 20px;
   text-decoration: none;
   font-weight: bold;
@@ -103,7 +103,7 @@
 }
 
 .type {
-  font-size: 64px;
+  font-size: 55px;
   background: linear-gradient(800deg, #FFE500 0%, #14FF00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

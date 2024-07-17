@@ -1,5 +1,5 @@
 .container {
-    background-image: url('/public/img/bg.jpg');
+    background-image: url('/public/img/backgroundImg.jpg');
     background-size: cover;
     background-position: center;
     min-height: 105vh;

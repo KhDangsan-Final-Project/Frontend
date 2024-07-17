@@ -1,0 +1,194 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: url('/public/img/background.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.sliderWrapper, .slider {
+  width: 100%;
+  height: 100%;
+}
+
+.slider {
+  display: flex;
+  flex-direction: column;
+}
+
+.slide {
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.textContainer {
+  flex: 1;
+  padding: 20px;
+  font-family: 'K2D', sans-serif;
+}
+
+.header {
+  font-size: 64px;
+  margin-top: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.type {
+  font-size: 40px;
+  margin-top: 30px;
+}
+
+.description {
+  width: 600px;
+  font-size: 32px;
+  margin-top: 60px;
+  text-align: center; 
+  margin-left: auto;
+  margin-right: auto; 
+  font-weight: bold;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1rem;
+  margin-top: 70px;
+}
+
+.footer div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.pikachuCategory,
+.charmanderCategory,
+.meltanCategory {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.pikachuCategory { color: #FFEB3B; }
+.charmanderCategory { color: #FF7043; }
+.meltanCategory { color: #6a99c9; }
+
+.pikachuWrapper, .charmanderWrapper, .meltanWrapper {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pikachuWrapper { 
+  background: #ffe23b; 
+}
+.charmanderWrapper { 
+  background: #FF7043; 
+}
+.meltanWrapper { 
+  background: #6a99c9; 
+}
+
+.pikachuText, .pikachuCategory { 
+  color: #FFEB3B; 
+  font-weight: bold;
+}
+.charmanderText, .charmanderCategory { 
+  color: #FF7043; 
+  font-weight: bold;
+}
+.meltanText, .meltanCategory { 
+  color: #6a99c9; 
+  font-weight: bold;
+}
+
+.imageContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.imageWrapper {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20%;
+}
+
+.pokemonImage {
+  width: 240px;
+  height: 240px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  margin: 0 20px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.slide-active {
+  animation: slideIn 0.5s forwards;
+}
+
+.slide-exit {
+  animation: slideOut 0.5s forwards;
+}

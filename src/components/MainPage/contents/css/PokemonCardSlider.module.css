@@ -1,0 +1,64 @@
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  display: inline-block;
+  width: 270px;
+  border-radius: 20px;
+  border: 1px solid  black;
+  background-color:  rgba(255, 182, 193, 0.2);
+  padding: 10px 2em;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  justify-items: center;
+}
+
+.card {
+  margin-top: 70px;
+  border-radius: 15px;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+  transition: transform 0.1s;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.cardImage {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.cardName {
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.cardType {
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  color: black;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.lightning { background-color: #F9E79F; }
+.fire { background-color: #F5B7B1; }
+.water { background-color: #AED6F1; }
+.grass { background-color: #A9DFBF; }

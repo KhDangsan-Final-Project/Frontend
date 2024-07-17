@@ -56,7 +56,7 @@ export default function Login({ setToken, showRegister }) {
       if (response.data.result) {
         alert('로그인 성공');
         setToken(response.data.token);
-        localStorage.setItem('token', response.data.token);  // 추가된 부분
+        localStorage.setItem('token', response.data.token);
         navigate('/');
       } else{
        setError('! 아이디 또는 비밀번호를 정확히 입력해 주세요.'); 

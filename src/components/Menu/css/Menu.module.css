@@ -16,13 +16,11 @@
     text-decoration: none;
     font-size: 25px;
     color: black;
-    font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 80px;
     font-family: 'Cafe24Moyamoya-Regular-v1.0', sans-serif;
-
 }
 
 .container ul li a{

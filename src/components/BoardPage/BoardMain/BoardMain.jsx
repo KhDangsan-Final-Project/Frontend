@@ -1,6 +1,11 @@
 import styles from './css/BoardMain.module.css'
+import { Link } from 'react-router-dom'
 
 export default function BoardMain() {
+
+    function write(){
+
+    }
 
     return (
         <div className={styles.container}>
@@ -9,7 +14,7 @@ export default function BoardMain() {
                     <button>공지사항</button>
                     <button>이벤트</button>
                 </div>
-                <h3>게시판</h3>
+                <Link to={'#'}>더보기</Link>
                 <hr />
                 <section>
                     <article>
@@ -108,20 +113,19 @@ export default function BoardMain() {
             </div>
             <div className={styles.side}>
                 <div className={styles.write}>
-                    <button className={styles.writeBtn}>글쓰기</button>
+                    <button className={styles.writeBtn} onClick={write}>글쓰기</button>
                 </div>
                 <div className={styles.notice}>
-                    <h3>포켓몬 카드 라운지 에티켓</h3>
+                    <h3>포켓몬 카드 커뮤니티 에티켓</h3>
                     <hr />
-                    <h5>'포켓몬 카드' 라운지에 오신 것을 환영합니다.</h5><br />
+                    <h5>'포켓몬 카드' 커뮤니티에 오신 것을 환영합니다.</h5><br />
                     <h5>'포켓몬 카드' 게임을 사랑하는 모든 분들의 공간이며 서로 즐겁고 도움이 될 수 있도록 도와주세요.</h5>
                     <hr />
                     <p>
                         1. '포켓몬 카드’ 게임과 관련된 글을 올려주세요.<br />
-                        2. 도움이 된 글에는 버프를 해주세요.<br />
-                        3. 개인 공격은 서로 상처가 됩니다.<br />
-                        4. 개인 정보(전화번호, email, 계정 등)를 노출하시면 위험해요.<br />
-                        5. 광고글과 사기글, 지나치게 폭력적이고 성적인 콘텐츠는 예고 없이 삭제됩니다.</p>
+                        2. 개인 공격은 서로 상처가 됩니다.<br />
+                        3. 개인 정보(전화번호, email, 계정 등)를 노출하시면 위험해요.<br />
+                        4. 광고글과 사기글, 지나치게 폭력적이고 성적인 콘텐츠는 예고 없이 삭제됩니다.</p>
                 </div>
             </div>
         </div>
