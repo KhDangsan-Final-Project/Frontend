@@ -1,10 +1,15 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation ,Link } from 'react-router-dom';
 import styles from './css/battle.module.css';
 import SettingContainer from './SettingFightContent';
 import usePokemonBattle from './hooks/useBattle'; // 훅 가져오기
 
+
+
 function Battle() {
+
+
+
   const {
     selectedPokemon,
     enemyPokemon,
@@ -133,7 +138,9 @@ function Battle() {
       </div>
       <div className={styles.footer}>
         <SettingContainer />
-        <div className={styles.margin}></div>
+        <div className={styles.margin}>
+          <Link to="/Chat">Chat page</Link>
+        </div>
         <SettingContainer />
         <div className={styles.menu}>
           <button onClick={handleFightClick}>Fight</button>
