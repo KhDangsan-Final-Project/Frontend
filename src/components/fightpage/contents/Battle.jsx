@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import styles from './css/battle.module.css';
 import SettingContainer from './SettingFightContent';
 import usePokemonBattle from './hooks/useBattle';
-import useChat from './hooks/useChat'; // useChat 훅 가져오기
+import Chat from './Chat';
+
 
 const Battle = () => {
     const {
@@ -19,7 +20,7 @@ const Battle = () => {
         runBtn
     } = usePokemonBattle();
 
-    const { messages, message, setMessage, sendMessage } = useChat(); // useChat 훅 사용
+
 
     const getTypeLogo = (type) => `/img/types/${type}.png`;
 
@@ -132,23 +133,8 @@ const Battle = () => {
             <div className={styles.footer}>
                 <SettingContainer />
                 <div className={styles.margin}>
-                    <div className={styles.chatContainer}>
-                        <div id="messages">
-                            {messages.map((msg, index) => (
-                                <div key={index}>{msg.sender}: {msg.content}</div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.textContainer}>
-                        <input
-                            className={styles.chatInput}
-                            type="text"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Type a message..."
-                            />
-                        <button className={styles.chatButton} onClick={sendMessage}>Send</button>
+                 
+                          <Chat/>
                             </div>
                 <SettingContainer />
                 <div className={styles.menu}>
