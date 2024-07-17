@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import styles from './css/Profile.module.css';
-import Loading from '../../Loading/Loding';
+import Loading from '../../Loading/Loading';
 
 export default function Profile() {
   const [loading, setLoading] = useState(true);
@@ -12,6 +13,11 @@ export default function Profile() {
     password: '',
     nickname: ''
   });
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [passwordValid, setPasswordValid] = useState(true);
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -21,7 +27,7 @@ export default function Profile() {
       return;
     }
 
-    axios.get('http://localhost:8090/ms3/mypage', { params: { token } }) // 서버 주소를 명확히 적어줍니다.
+    axios.get('http://localhost:8090/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
           setUserData(response.data);
@@ -48,15 +54,40 @@ export default function Profile() {
     }));
   };
 
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setUserData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+    setPasswordValid(checkPassword(value));
+  };
+
+  const handlePasswordCheckChange = (e) => {
+    setPasswordCheck(e.target.value);
+    setPasswordMatch(e.target.value === userData.password);
+  };
+
+  const checkPassword = (password) => {
+    let reg = /(?=.*\d)(?=.*[!@#$%^&*~])[A-Za-z\d!@#$%^&*~]{7,32}$/;
+    return reg.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+
+    if (!passwordValid || !passwordMatch) {
+      return;
+    }
+
     try {
       const response = await axios.put('http://localhost:8090/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
         alert('정보가 성공적으로 업데이트되었습니다.');
+        navigate('/');
       } else {
         alert('정보 업데이트에 실패했습니다.');
       }
@@ -86,7 +117,7 @@ export default function Profile() {
           <label>
             <span>이메일</span>
             <input 
-              type="email" 
+              type="text" 
               placeholder="이메일을 입력해주세요" 
               className={styles.email} 
               value={userData.email.split('@')[0]} 
@@ -107,13 +138,19 @@ export default function Profile() {
 
         <label>
           <span>비밀번호</span>
-          <input type="password" placeholder="비밀번호" className={styles.info} name="password" onChange={handleInputChange} />
+          <input type="password" placeholder="비밀번호" className={styles.info} name="password" onChange={handlePasswordChange} />
         </label>
+        <span className={`${styles.error} ${passwordValid ? styles.hidden : styles.visible}`}>
+          *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요
+        </span>
 
         <label>
           <span>비밀번호 확인</span>
-          <input type="password" placeholder="비밀번호 확인" className={styles.info} name="passwordConfirm" onChange={handleInputChange} />
+          <input type="password" placeholder="비밀번호 확인" className={styles.info} value={passwordCheck} onChange={handlePasswordCheckChange} />
         </label>
+        <span className={`${styles.error} ${passwordMatch ? styles.hidden : styles.visible}`}>
+          *암호가 일치하지 않습니다.
+        </span>
 
         <label>
           <span>닉네임</span>
@@ -121,8 +158,8 @@ export default function Profile() {
         </label>
 
         <div className={styles.btn}>
-          <button type="submit" className={styles.update_btn}>수정하기</button>
-          <button type="button" className={styles.cancel}>취소</button>
+          <button type="submit" className={styles.update_btn} onClick={handleSubmit}>수정하기</button>
+          <button type="button" className={styles.cancel} onClick={() => navigate('/')}>취소</button>
         </div>
       </form>
     </div>

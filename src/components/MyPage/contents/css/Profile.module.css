@@ -33,7 +33,7 @@
   display: flex;
   align-items: center;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin:  0 auto;
 }
 
 .form label span {
@@ -55,10 +55,27 @@
   border-radius: 5px;
 }
 
+.error {
+  height: 20px;
+  opacity: 0;
+  font-size: 13px;
+  padding-left: 20px;
+  color: red;
+  font-weight: bold;
+}
+
+.error.visible {
+  opacity: 1;
+}
+.error.hidden {
+  opacity: 0;
+}
+
+
+
 .emailSection {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   width: 100%;
 }
 
