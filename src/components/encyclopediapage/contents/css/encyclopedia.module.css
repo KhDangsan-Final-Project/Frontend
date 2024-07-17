@@ -1,0 +1,258 @@
+/* encyclopedia.module.css */
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Common styles for all types */
+.typeContainer {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  transition: transform 0.3s ease-in-out; /* 호버링 시 변화를 부드럽게 만듦 */
+}
+
+.typeContainer p {
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* 호버링 효과 */
+.typeContainer:hover {
+  transform: scale(1.2); /* 호버링 시 크기를 1.2배로 확대 */
+}
+
+/* Individual type styles */
+.colorless {
+  background-color: rgb(160, 162, 159); /* gray */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.colorlessContainer p{
+  color:rgb(160, 162, 159) ;
+}
+.colorlessImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/colorless.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.darkness {
+  background-color: rgb(30, 52, 57); /* dark gray */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.darknessContainer p{
+  color:rgb(160, 162, 159) ;
+}
+.darknessImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/darkness.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.dragon {
+  background-color: rgb(121, 107, 68); /* purple */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dragonContainer p{
+  color:rgb(121, 107, 68) ;
+}
+.dragonImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/dragon.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.fairy {
+  background-color: rgb(238, 144, 230); /* light pink */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fairyContainer p{
+  color:rgb(238, 144, 230) ;
+}
+.fairyImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/fairy.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.fighting {
+  background-color: rgb(142, 67, 27); /* red */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fightingContainer p{
+  color:rgb(142, 67, 27) ;
+}
+.fightingImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/fighting.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.fire {
+  background-color: rgb(221, 25, 25); /* orange */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fireContainer p{
+  color:rgb(221, 25, 25) ;
+}
+.fireImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/fire.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.grass {
+  background-color: rgb(95, 189, 88); /* green */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grassContainer p{
+  color:rgb(95, 189, 88) ;
+}
+.grassImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/grass.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.lightning {
+  background-color: rgb(242, 217, 78); /* yellow */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lightningContainer p{
+  color:rgb(242, 217, 78) ;
+}
+.lightningImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/lightning.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.metal {
+  background-color: rgb(91, 86, 84); /* light gray */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.metalContainer p{
+  color:rgb(91, 86, 84) ;
+}
+.metalImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/metal.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.psychic {
+  background-color: rgb(114, 75, 141); /* pink */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.psychicContainer p{
+  color:rgb(114, 75, 141) ;
+}
+.psychicImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/psychic.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.water {
+  background-color: rgb(83, 157, 223); /* blue */
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.waterContainer p{
+  color:rgb(83, 157, 223) ;
+}
+.waterImage {
+  width: 60%;
+  height: 60%;
+  background-size: cover;
+  background-image: url(/public/img/types/water.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+/* ------------------------------------------------------------------------ */
+.pokemonImage{
+  background-image: url(/public/img/pokemonImage.png);
+  width: 200px;
+  height: 100px;
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}

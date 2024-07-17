@@ -6,5 +6,15 @@
     background-repeat: repeat;
   }
 .section {
-    height: 500px;
+    height: 100px;
+}
+
+.ViewSection {
+  height: 40vh;
+}
+
+@media (max-width: 1360px) {
+  .hide-on-small-screen {
+    display: none;
+  }
 }
