@@ -1,7 +1,7 @@
 import React from 'react';
 import usePokemonCards from './hook/usePokemonCards';
 import styles from './css/PokemonCardSlider.module.css';
-import Loading from '../../Loading/Loding';
+import Loading from '../../Loading/Loading';
 
 const PokemonCardSlider = () => {
   const { cards, loading } = usePokemonCards();

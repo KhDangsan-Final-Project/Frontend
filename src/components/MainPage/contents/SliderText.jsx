@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import usePokemonData from './hook/usePokemonData';
 import styles from './css/SliderText.module.css';
-import Loading from '../../Loading/Loding';
+import Loading from '../../Loading/Loading';
 
 export default function SliderText() {
   const { pokemonData, loading } = usePokemonData(20); // usePokemonData에서 로딩 상태와 데이터를 반환

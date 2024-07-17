@@ -12,7 +12,7 @@ export default function Register( {showLoginComponent} ) {
     const [idValid, setIdValid] = useState(true);
     const [passwordValid, setPasswordValid] = useState(true);
     const [passwordMatch, setPasswordMatch] = useState(true);
-   
+
     function checkId(id) {
         let reg = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/;
         return reg.test(id);
@@ -58,8 +58,6 @@ export default function Register( {showLoginComponent} ) {
         showLoginComponent();
     }
 
-
-
     function handleSubmit(e) {
         e.preventDefault();
         if (!idValid || !passwordValid || !passwordMatch) {
@@ -87,6 +85,7 @@ export default function Register( {showLoginComponent} ) {
             .catch(error => console.error('Error:', error));
     }
 
+        
     return (
         <header>
             <div className={styles.page}>
@@ -99,20 +98,21 @@ export default function Register( {showLoginComponent} ) {
                             </div>
                             <div className={styles.name}>
                                 <input type="text" value={id} onChange={handleIdChange} placeholder="아이디를 입력해주세요" />
+                                <button type='button'>중복확인</button>
                             </div>
-                            <span className={`${styles.error} ${idValid ? styles.hidden : ''}`}>
+                            <span className={`${styles.error} ${idValid ? styles.hidden : styles.visible}`}>
                                 *아이디는 8글자 이상 20자 이하로 알파벳 숫자 조합으로 입력하세요
                             </span>
                             <div className={styles.txt_box}>
                                 <input type="password" value={password} onChange={handlePasswordChange} placeholder="패스워드를 입력해주세요" />
                             </div>
-                            <span className={`${styles.error} ${passwordValid ? styles.hidden : ''}`}>
+                            <span className={`${styles.error} ${passwordValid ? styles.hidden : styles.visible}`}>
                                 *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요
                             </span>
                             <div className={styles.txt_box}>
                                 <input type="password" value={passwordCheck} onChange={handlePasswordCheckChange} placeholder="패스워드 확인" />
                             </div>
-                            <span className={`${styles.error} ${passwordMatch ? styles.hidden : ''}`}>
+                            <span className={`${styles.error} ${passwordMatch ? styles.hidden : styles.visible}`}>
                                 *암호가 일치하지 않습니다.
                             </span>
                             <div className={styles.email}>
