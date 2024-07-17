@@ -23,7 +23,7 @@ export default function Menu({ token, logout }) {
         <div className={styles.container}>
             <ul>
                 <li><Link to="/library">라이브러리</Link></li>
-                <li><a href="#">게임</a></li>
+                <li><Link to="/fight" target="_blank" rel="noopener noreferrer">게임</Link></li>
                 <li><a href="#">AI카드</a></li>
                 <Link to="/"><img src="/img/poke.png" className={styles.menuimg} /></Link>
                 <li><Link to="search">커뮤니티</Link></li>
