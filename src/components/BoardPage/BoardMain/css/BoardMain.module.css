@@ -1,0 +1,134 @@
+.container {
+    width: 100%;
+    max-width: 1500px;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.board {
+    float: left;
+    display: flex;
+    flex-flow: column nowrap;
+    border-radius: 20px;
+    padding: 30px 40px;
+    background-color: white;
+    width: 100%;
+    max-width: 1000px;
+    margin-right: 20px;
+}
+
+.board section article{
+    display: flex;
+    flex-flow: row nowrap;
+    padding-left: 20px;
+}
+
+.board section article ul{
+    width: 430px;
+}
+.board section article ul li{
+    list-style-type: none;
+}
+.board img{
+    width: 20px;
+}
+
+
+.notice {
+    position: absolute;
+    float: right;
+    display: flex;
+    flex-flow: column nowrap;
+    border-radius: 20px;
+    padding: 30px 40px;
+    background-color: white;
+    width: 100%;
+    max-width: 500px;
+    text-align: left;
+    line-height: 1.6;
+}
+
+
+.notice h3,
+.notice p,
+.notice h5,
+.notice h6{
+    font-weight: bold;
+}
+
+
+.button {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.button button {
+    width: 250px;
+    height: 250px;
+    border-radius: 50px;
+    font-size: 40px;
+    font-weight: bold;
+    border: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.writeBtn{
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+    width: 200px;
+    height: 60px;
+    font-size: 25px;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+}
+
+.writeBtn:hover{
+   background-color: #ffffff;
+}
+@media (max-width: 1239px) {
+.container{
+    width: 80%;
+    margin-top: 100px;
+}
+}
+
+
+@media (max-width: 799px) {
+    .container{
+        width: 80%;
+        display: flex;
+        flex-flow: column;
+        margin-top: 100px;
+        height: 160vh;
+        
+    }
+    .notice{
+        width: 80%;
+        font-size: 80%;
+    }
+
+    .board section article{
+        display: flex;
+        flex-flow: column nowrap;
+        padding-left: 20px;
+    }
+    .notice h3,
+    .notice p,
+    .notice h5,
+    .notice h6{
+        font-size: 80%;
+    }
+    
+    .button button{
+        width: 80%;
+        height: 100px;
+        border-radius: 20px;
+        font-size: 80%;
+    }
+}

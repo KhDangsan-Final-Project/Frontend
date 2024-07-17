@@ -22,7 +22,7 @@ export default function Menu({ token, logout }) {
 
         <div className={styles.container}>
             <ul>
-                <li><Link to="shop">샵</Link></li>
+                <li><Link to="boardMain">게시판</Link></li>
                 <li><Link to="library">라이브러리</Link></li>
                 <li><Link to="card">카드</Link></li>
                 <Link to="/"><img src="/img/poke.png" className={styles.menuimg} /></Link>

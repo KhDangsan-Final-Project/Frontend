@@ -61,7 +61,7 @@
 
 .id input {
   width: 80%;
-  padding-right: 20px;
+  padding-right: 30px;
   border: none;
   outline: none;
   background: transparent;
@@ -93,6 +93,10 @@
   border: none;
   outline: none;
   background: transparent;
+  padding-right: 10px;
+  margin: 0;
+  padding: 0;
+  padding-left: 30px;
 }
 
 .password {

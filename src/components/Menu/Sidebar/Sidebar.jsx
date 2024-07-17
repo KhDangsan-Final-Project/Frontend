@@ -34,36 +34,36 @@ export default function Sidebar( {token, logout} ) {
           {isLoggedIn ? (
             <li>
             <Link to="#" onClick={() => { handLinkClick(); logout(); }}>
-                Logout
+                로그아웃
             </Link>
         </li>
           ) : (
-            <li><Link to="/login" onClick={handLinkClick}>Login</Link></li>
+            <li><Link to="/login" onClick={handLinkClick}>로그인</Link></li>
           )}
           {isLoggedIn ? (
-            <li><Link to="/mypage" onClick={handLinkClick}>MyPage</Link></li>
+            <li><Link to="/mypage" onClick={handLinkClick}>내 정보</Link></li>
           ) : (
-            <li><Link to="/login" onClick={handLinkClick}>MyPage</Link></li>
+            <li><Link to="/login" onClick={handLinkClick}>내 정보</Link></li>
           )}
 
           <li>
             <Link to={"/Library"} className="nav-menu-list" onClick={handLinkClick}>
-              Library
+              라이브러리
             </Link>
           </li>
           <li>
             <Link to={"/Card"} className="nav-menu-list" onClick={handLinkClick}>
-              Card
+              카드
             </Link>
           </li>
           <li>
             <Link to={"/Search"} className="nav-menu-list" onClick={handLinkClick}>
-              Search
+              검색
             </Link>
           </li>
           <li>
-            <Link to={"/News"} className="nav-menu-list" onClick={handLinkClick}>
-              News
+            <Link to={"/boardMain"} className="nav-menu-list" onClick={handLinkClick}>
+              게시판
             </Link>
           </li>
         </ul>
