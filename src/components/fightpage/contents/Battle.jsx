@@ -1,22 +1,18 @@
-import React from 'react';
-import { useLocation ,Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
 import styles from './css/battle.module.css';
 import SettingContainer from './SettingFightContent';
 import usePokemonBattle from './hooks/useBattle'; // 훅 가져오기
+import Chat from './Chat'; // Chat 컴포넌트 가져오기
 
-
-
-function Battle() {
-
-
-
+const Battle = () => {
   const {
     selectedPokemon,
     enemyPokemon,
     showAttacks,
     useSmallImages,
     selectedEnemy,
-    enemyHP,
     handleFightClick,
     handleAttack,
     toggleSmallImages,
@@ -139,7 +135,7 @@ function Battle() {
       <div className={styles.footer}>
         <SettingContainer />
         <div className={styles.margin}>
-          <Link to="/Chat">Chat page</Link>
+      <Chat /> {/* Chat 컴포넌트 추가 */}
         </div>
         <SettingContainer />
         <div className={styles.menu}>
@@ -150,6 +146,6 @@ function Battle() {
       </div>
     </div>
   );
-}
+};
 
 export default Battle;
