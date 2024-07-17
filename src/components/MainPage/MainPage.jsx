@@ -14,10 +14,10 @@ export default function MainPage({ setToken }) {
     <div className={styles.background}>
         <>
           <SliderText/>
-          <section className={styles.ViewSection}>
-            <View />
+          <div className={styles['hide-on-small-screen']}>
             <ViewText />
-          </section>
+            <View />
+          </div>
           <section className={styles.section}></section>
             <PokemonCardSlider/>
           <section className={styles.section}></section>

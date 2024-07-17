@@ -73,3 +73,12 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0px 1000px transparent inset !important;
 }
 
+body {
+  background-color: white;
+}
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
+}

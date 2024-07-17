@@ -13,20 +13,5 @@
     text-align: center;
     color: white;
     text-shadow: 0px 0px 3px black;
-}
-
-.View {
-    position: absolute;
-    font-family: 'Jua', sans-serif;
-    font-size: 40px;
-    top: 120vh;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-}
-
-@media (max-width:1200) {
-    .title {
-        display: none;
-    }
+    z-index: 22;
 }
