@@ -1,5 +1,3 @@
-// src/hooks/useVisitorData.js
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -11,8 +9,9 @@ export const useVisitorCount = (setLoading) => {
             try {
                 const { data: ipData } = await axios.get('https://api64.ipify.org?format=json');
                 const ipAddress = ipData.ip;
+                console.log(ipAddress);
 
-                await axios.post('http://teeput.synology.me:30112/ms1/view/up', { ipAddress });
+                await axios.post('http://localhost:8090/ms1/view/up', { ipAddress });
 
                 const { data: count } = await axios.get('http://teeput.synology.me:30112/ms1/view/count');
                 setVisitorCount(count);
@@ -23,7 +22,7 @@ export const useVisitorCount = (setLoading) => {
         };
 
         fetchVisitorCount();
-    }, [setLoading]);
+    }, []);
 
     return visitorCount;
 };
@@ -42,7 +41,7 @@ export const useDisplayedCount = (visitorCount, loading) => {
                     }
                     return prevCount + increment;
                 });
-            }, 50); // 50ms마다 업데이트
+            }, 50);
             return () => clearInterval(interval);
         }
     }, [visitorCount, loading, displayedCount]);
