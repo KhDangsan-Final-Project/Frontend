@@ -49,6 +49,7 @@ const usePokemonData = (count = 20, maxId = 151) => {
 
   useEffect(() => {
     const fetchPokemonData = async () => {
+      console.log('Fetching Pokemon data...');
       const ids = getRandomPokemonIds(count, maxId);
       const data = await Promise.all(ids.map(async (id) => {
         const { data: pokemon } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -63,7 +64,6 @@ const usePokemonData = (count = 20, maxId = 151) => {
         const types = await Promise.all(pokemon.types.map(async (typeInfo) => {
           return await fetchTypeInKorean(typeInfo.type.url);
         }));
-        
 
         const firstType = types[0];
         const backgroundColor = typeColors[firstType] || '#fff';
@@ -84,6 +84,7 @@ const usePokemonData = (count = 20, maxId = 151) => {
         };
       }));
 
+      console.log('Pokemon data fetched:', data);
       setPokemonData(data);
       setLoading(false);
     };
