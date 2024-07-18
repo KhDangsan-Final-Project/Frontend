@@ -1,69 +1,50 @@
 .container {
-    width: 100%;
-    max-width: 1500px;
-    display: flex;
-    flex-flow: row nowrap;
-}
-
-.board {
-    float: left;
+    position: absolute;
     display: flex;
     flex-flow: column nowrap;
+    padding: 30px 40px;
+    width: 80%;
+    max-width: 1500px;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container {
     border-radius: 20px;
     padding: 30px 40px;
-    width: 100%;
-    max-width: 1000px;
-    margin-right: 20px;
     backdrop-filter: blur(15px);
     box-shadow: 0 0 10px black;
 
 }
 
-.board section article {
+.container section article {
     display: flex;
     flex-flow: row nowrap;
     padding-left: 20px;
 }
 
-.board section article ul {
-    width: 430px;
+.container section article ul {
+    width: 100%;
 }
 
-.board section article ul li {
+.container section article ul li {
     list-style-type: none;
 }
 
-.board img {
+.container img {
     width: 20px;
 }
 
-.board a{
+.container a {
     padding-left: 10px;
     color: black;
 }
 
-
-.notice {
-    position: absolute;
-    float: right;
+.option {
     display: flex;
-    flex-flow: column nowrap;
-    border-radius: 20px;
-    padding: 30px 40px;
-    width: 100%;
-    max-width: 500px;
-    text-align: left;
-    line-height: 1.6;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 0 10px black;
-}
-
-
-.notice h3,
-.notice p,
-.notice h5,
-.notice h6 {
-    font-weight: bold;
+    flex-flow: row nowrap;
+    justify-content: space-between;
 }
 
 
@@ -84,20 +65,50 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    transition: transform 0.3s ease;
+    color: white;
+}
+
+.button button:focus {
+    outline: none;
+}
+
+.event {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0)60%, rgba(0, 0, 0, 0.8)140%), url('/public/img/event.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: lightyellow;
+    font-family: 'MaplestoryOTFBold', sans-serif;
+    text-shadow: 5px 5px 1px rgba(0, 0, 0, 1);
+}
+
+.notice {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0)60%, rgba(0, 0, 0, 0.8)140%), url('/public/img/notice.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: lightgreen;
+    font-family: 'MaplestoryOTFBold', sans-serif;
+    text-shadow: 5px 5px 1px rgba(0, 0, 0, 1);
+}
+
+.button button:hover {
+    transform: scale(1.1);
 }
 
 .writeBtn {
     padding: 0;
     margin: 0;
     margin-bottom: 10px;
-    width: 200px;
-    height: 60px;
-    font-size: 25px;
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
     font-weight: bold;
     border: none;
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 0 10px black;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 5px black;
     background-color: transparent;
 }
 
@@ -109,46 +120,28 @@
     background-color: #ffffff;
 }
 
-@media (max-width: 1239px) {
-    .container {
-        width: 80%;
-        margin-top: 100px;
-    }
-}
-
-
 @media (max-width: 799px) {
     .container {
         width: 80%;
         display: flex;
         flex-flow: column;
-        margin-top: 100px;
-        height: 160vh;
 
     }
 
-    .notice {
-        width: 80%;
-        font-size: 80%;
+    .container {
+        padding: none;
     }
 
-    .board section article {
+    .container section article {
         display: flex;
         flex-flow: column nowrap;
         padding-left: 20px;
     }
 
-    .notice h3,
-    .notice p,
-    .notice h5,
-    .notice h6 {
-        font-size: 80%;
-    }
-
     .button button {
-        width: 80%;
+        width: 100%;
         height: 100px;
         border-radius: 20px;
-        font-size: 80%;
+        font-size: 100%;
     }
 }

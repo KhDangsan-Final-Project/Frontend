@@ -11,6 +11,7 @@ import Menu from './components/Menu/Menu';
 import Sidebar from './components/Menu/Sidebar/Sidebar';
 import MyPage from './components/MyPage/MyPage';
 import BoardPage from './components/BoardPage/BoardPage';
+import Scroll from './components/Menu/Scroll/Scroll';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -44,6 +45,7 @@ function App() {
         <Route path="/encyclopedia" element={<Encyclopedia />} />
         <Route path="/boardMain" element={<BoardPage/>}/>
       </Routes>
+        <Scroll/>
     </>
   );
 }
