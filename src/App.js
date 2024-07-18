@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Battle from './components/FightPage/contents/Battle';
-import FightContent from './components/FightPage/contents/FightContent';
+import Battle from './components/BattlePage/contents/Battle';
+import FightContent from './components/BattlePage/contents/FightContent';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
