@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import SliderText from "./contents/SliderText";
 import styles from './css/Main.module.css';
@@ -15,10 +15,17 @@ import usePokemonData from './contents/hook/usePokemonData';
 import useRankData from './contents/hook/useRankData';
 import PlayLibrary from './contents/PlayLibrary';
 import PlayAI from './contents/PlayAI';
+import { useVisitorCount, useDisplayedCount } from './contents/hook/useVisitorData';
 
 export default function MainPage({ setToken }) {
   const { pokemonData, loading: pokemonLoading } = usePokemonData(20);
   const ranks = useRankData();
+  const [loading, setLoading] = useState(true);
+  const [additionalLoading, setAdditionalLoading] = useState(true);
+
+  const visitorCount = useVisitorCount(setLoading);
+  const displayedCount = useDisplayedCount(visitorCount, loading);
+
   const [viewTextRef, viewTextInView] = useInView({ triggerOnce: true });
   const [ContentInfoRef, ContentInfoView] = useInView({ triggerOnce: true });
   const [RankCarouselRef, RankCarouselView] = useInView({ triggerOnce: true });
@@ -27,7 +34,16 @@ export default function MainPage({ setToken }) {
   const [playLibraryRef, playLibraryInView] = useInView({ triggerOnce: true });
   const [playAIRef, playAIInView] = useInView({ triggerOnce: true });
 
-  if (pokemonLoading || ranks.length === 0) {
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        setAdditionalLoading(false);
+        console.log('MainPage loaded');
+      }, 10);
+    }
+  }, [loading]);
+
+  if (pokemonLoading || ranks.length === 0 || loading || additionalLoading) {
     return <Loading />;
   }
 
@@ -36,7 +52,7 @@ export default function MainPage({ setToken }) {
       <SliderText pokemonData={pokemonData} />
       <div className={styles['hide-on-small-screen']}>
         <section ref={viewTextRef} className={`${styles.section1} ${viewTextInView ? styles['slide-in'] : ''}`}>
-          <ViewText />
+          <ViewText visitorCount={visitorCount} displayedCount={displayedCount} />
           <View />
         </section>
       </div>
