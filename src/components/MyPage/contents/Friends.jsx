@@ -228,17 +228,6 @@ const Friends = () => {
                 </ul>
             </div>
             <div>
-                <h2>보낸 친구 요청</h2>
-                <ul>
-                    {pendingRequests.map(request => (
-                        <li key={request.friendId}>
-                            {request.friendId}
-                            <span> (대기 중)</span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div>
                 <h2>친구 검색</h2>
                 <input
                     type="text"
