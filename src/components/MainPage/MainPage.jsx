@@ -1,7 +1,7 @@
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import SliderText from "./contents/SliderText";
-import styles from './css/MainPage.module.css';
+import styles from './css/Main.module.css';
 import PlayBattle from './contents/PlayBattle';
 import Footer from '../Menu/Footer/Footer';
 import FooterImg from '../Menu/Footer/FooterImg';
