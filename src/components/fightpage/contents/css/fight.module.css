@@ -1,0 +1,386 @@
+.App {
+  text-align: center;
+background-image: url(/public/img/backgroundImg.jpg);
+}
+.container{
+  display: flex;
+  flex-flow: row nowrap;
+
+  max-height: 740px; /* Limit the height */
+}
+
+
+.cardContainer {
+  max-height: 740px; /* Limit the height */
+  max-width: 730px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  display: flex;
+  flex-wrap: wrap; /* Ensure cards stay in a single row */
+  justify-content: flex-start; /* Start from the left */
+  gap: 20px;
+  padding: 10px;
+}
+
+.cardContainer .card {
+  flex: 0 0 auto; /* Allow cards to shrink to fit content */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 200px; /* Set a fixed width for each card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cardContainer .card img {
+  max-width: 100%;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.cardContainer .card h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.cardContainer .card p {
+  color: #555;
+}
+
+
+.selectedCardContainer {
+  display: flex;
+  flex-wrap: nowrap; /* Ensure cards stay in a single row */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.selectedCardContainer .card {
+  flex: 0 0 auto; /* Allow cards to shrink to fit content */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 200px; /* Set a fixed width for each card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.selectedCardContainer .card img {
+  max-width: 100%;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.selectedCardContainer .card h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.selectedCardContainer .card p {
+  color: #555;
+}
+
+/* ================================================================================ */
+/* .selectedCardContainer {
+  border: 1px solid crimson;
+} */
+
+.myCardArea {
+  /* border: 1px solid skyblue; */
+  padding: 0;
+  width: 708px;
+}
+
+/* ========================================================================= */
+
+.card2 {
+  width: 320px;
+  height: 446px;
+  background-image: url("/public/img/pokemon1.png"); /* 수정된 배경 이미지 경로 */
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+  box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+    3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+    0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+    0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 20px 10px;
+  animation: haloCard 15s ease infinite;
+
+}
+
+.card2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(0, 231, 255) 30%,
+    rgb(255, 0, 231) 70%
+  );
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  mix-blend-mode: color-dodge;
+  opacity: 0.2;
+  z-index: 1;
+  animation: halaGradient 15s ease infinite;
+}
+
+.card2::after {
+  /* 수정된 부분: 반짝이는 효과 이미지 적용 */
+  background-image: url("https://assets.codepen.io/13471/sparkles.gif"),url("https://assets.codepen.io/13471/holo.png");
+  background-size: 180%;
+  position: center;
+  mix-blend-mode: color-dodge;
+  opacity: 1;
+}
+
+.card2::before {
+  /* 수정된 부분: 배경 그라데이션 수정 */
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(0, 231, 255) 30%,
+    rgb(255, 0, 231) 70%
+  );
+}
+
+.card2.active::before {
+  opacity: 1;
+  animation: none;
+  transition: none;
+
+  /* 수정된 부분: 활성화된 상태의 배경 그라데이션 색상 */
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+}
+
+
+
+  
+  /* box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.4),
+    0 25px 15px -10px rgba(0, 0, 0, 0.5); */
+
+
+.operator {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 45px;
+}
+
+
+.typeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.typeContainer a {
+  display: inline-block;
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 5px;
+  text-indent: -9999px; /* 텍스트 숨기기 */
+}
+
+.typeLink {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 5px;
+}
+
+/* --------------------------------------------------------------------------------- */
+
+.nav{
+/* border: 2px solid palegreen; */
+display: flex;
+flex-flow: row nowrap;
+justify-content: center;
+align-items: center;
+}
+.typeColor{
+  background-color: #5185C5;
+  width: 80px;
+}
+.allTypes{
+  background-image: url(/public/img/pokeball.png);
+  width: 96px;
+  height: 96px;
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.navTypes {
+  width: 83px;
+  height: 83px;
+  border-radius:100% ;
+  margin: 0px 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.typeLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+.navTypes:hover , .allTypes:hover {
+  transform: scale(1.2); /* 1.1배 확대 */
+  transition: transform 0.3s ease-in-out; /* 변환 효과 부드럽게 적용 */
+}
+
+.typeName.Colorless{
+  color: #949495;
+  
+}
+.typeName.Darkness{
+  color:#4C4948 ;
+}
+.typeName.Dragon{
+  color: #535CA8;
+}
+.typeName.Fairy{
+  color: #DAB4D4;
+}
+.typeName.Fighting{
+  color: #E09C40;
+}
+.typeName.Fire{
+  color:#E56C3E;
+}
+.typeName.Grass{
+  color:#66A945 ;
+}
+.typeName.Lightning{
+  color: #FBB917;
+}
+.typeName.Metal{
+  color:#69A9C7 ;
+}
+.typeName.Psychic{
+  color:#DD6B7B ;
+}
+.typeName.Water{
+  color:#5185C5 ;
+}
+.allTypeBtn{
+  display: flex;
+  flex-flow: column nowrap;
+}
+.customFont {
+  font-family: "Source Code Pro";
+
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.navTypesAll{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------------------- */
+/* styles.module.css */
+
+.settingContainer {
+  margin-top: 20px;
+  padding: 20px;
+  
+  box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+    5px 12px 15px -10px rgba(0, 0, 0, 0.5);
+ 
+
+  width: 400px;
+}
+.settingContainer > h2{
+  font-family: "Source Code Pro";
+
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.userInfoContainer{
+  display: flex;
+  flex-flow: row nowrap;
+}
+.userImg{
+
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  border-radius: 15px;
+  width: 180px;
+  height: 180px;
+}
+.rankImage{
+background-image: url(/public/img/rankIcon.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.userNick{
+  margin-left: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.nick , .victory{
+  font-family: "Source Code Pro";
+
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+ .ptag{
+  font-family: "Source Code Pro";
+margin: 0;
+  line-height: 1.35em;
+  letter-spacing: 0px;
+  font-weight: 400;
+  font-size: 33px;
+}
+
+/* ---------------------------------------------------------------------------------------- */
+.card,
+.selectedCard {
+    font-family: "Source Code Pro";
+    /* text-transform: uppercase; */
+    letter-spacing: 3px; 
+}
