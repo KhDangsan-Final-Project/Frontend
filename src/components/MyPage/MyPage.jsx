@@ -26,7 +26,7 @@ export default function MyPage({ setToken }) {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.pageTitle}>MyPage</h1>
+            <h1 className={styles.pageTitle}>My Page</h1>
             <nav className={styles.nav}>
                 <button type='button' onClick={showProfile}>프로필</button>
                 <button type='button' onClick={showMyDex}>내 도감</button>

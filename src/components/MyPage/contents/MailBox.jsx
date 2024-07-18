@@ -7,7 +7,7 @@ export default function MailBox() {
     <div className={styles.container}>
 
       <div className={styles.subcontainer}>
-        <div>내용</div>
+        <div></div>
       </div>
 
     </div>

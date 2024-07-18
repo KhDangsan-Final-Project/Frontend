@@ -29,7 +29,9 @@
     text-shadow: 0 0 4px black;
 }
 
-
+.navi {
+    width: 120px;
+}
 
 .menuimg{
     width: 172px;
