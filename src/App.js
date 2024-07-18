@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Battle from './components/fightpage/contents/Battle';
-import FightContent from './components/fightpage/contents/FightContent';
-import Encyclopedia from './components/encyclopediapage/contents/EncyclopediaContent';
+import Battle from './components/FightPage/contents/Battle';
+import FightContent from './components/FightPage/contents/FightContent';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
@@ -34,13 +33,12 @@ function App() {
       {!hideMenuAndSidebar && <Menu token={token} logout={logout} />}
       {!hideMenuAndSidebar && <Sidebar token={token} logout={logout} />}
       <Routes>
-        <Route path="/" element={<MainPage setToken={setToken} />} />
+        <Route path="/" element={<MainPage token={token} setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/fight" element={<FightContent />} />
         <Route path="/battle" element={<Battle />} />
-        <Route path="/encyclopedia" element={<Encyclopedia />} />
       </Routes>
     </>
   );

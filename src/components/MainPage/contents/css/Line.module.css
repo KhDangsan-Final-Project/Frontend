@@ -1,0 +1,131 @@
+.background {
+    width: 100%;
+    height: 450px;
+    background-color: rgb(17, 24, 39);
+    overflow: hidden;
+    display: flex;
+}
+
+.circle1 {
+    border-radius: 100%;
+    border: 3px solid white;
+    width: 550px;
+    height: 550px;
+    margin: 0 auto;
+    top: -50px;
+    position: relative;
+    justify-content: center;
+    overflow: hidden;
+    animation: rotateCircle 2s linear infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle2 {
+    border-radius: 100%;
+    border: 3px solid white;
+    width: 550px;
+    height: 550px;
+    margin: 0 auto;
+    position: relative;
+    justify-content: center;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column nowrap;
+}
+
+.circle3 {
+    border: none;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column nowrap;
+    font-family: 'Ramche';
+}
+
+.title, .content {
+    color: white;
+    text-align: center;
+}
+
+.title {
+    font-size: 3.2em;
+}
+
+.content {
+    font-size: 1.1em;
+}
+
+@keyframes rotateCircle {
+    0% {
+        border-color: white;
+        width: 550px;
+        height: 550px;
+        top: -50px;
+    }
+    50% {
+        border-color: orangered;
+        width: 700px;
+        height: 700px;
+        top: -125px;
+    }
+    100% {
+        border-color: white;
+        width: 550px;
+        height: 550px;
+        top: -50px;
+    }
+}
+
+@media (max-width:459px) {
+    .title {
+        font-size: 2.1em;
+    }
+    
+    .content {
+        font-size: 0.8em;
+    }
+
+    .circle1 {
+        width: 320px;
+        height: 320px;
+        top: 80px;
+        animation: rotateCircle 2s linear infinite;
+    }
+    
+    .circle2 {
+        width: 320px;
+        height: 320px;
+        top: 0px;
+    }
+
+    .circle3 {
+        width: 250px;
+    }
+
+    @keyframes rotateCircle {
+        0% {
+            border-color: white;
+            width: 320px;
+            height: 320px;
+        }
+        50% {
+            border-color: orangered;
+            width: 350px;
+            height: 350px;
+            top: 65px;
+        }
+        100% {
+            border-color: white;
+            width: 320px;
+            height: 320px;
+        }
+    }
+}
