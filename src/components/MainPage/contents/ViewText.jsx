@@ -1,5 +1,3 @@
-// src/components/ViewText/ViewText.js
-
 import React from 'react';
 import styles from './css/ViewText.module.css';
 

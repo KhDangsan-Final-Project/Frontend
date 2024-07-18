@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useVisitorCount, useDisplayedCount } from './contents/hook/useVisitorData';
 import SliderText from "./contents/SliderText";
 import styles from './css/Main.module.css';
 import PlayBattle from './contents/PlayBattle';
@@ -15,7 +16,6 @@ import usePokemonData from './contents/hook/usePokemonData';
 import useRankData from './contents/hook/useRankData';
 import PlayLibrary from './contents/PlayLibrary';
 import PlayAI from './contents/PlayAI';
-import { useVisitorCount, useDisplayedCount } from './contents/hook/useVisitorData';
 
 export default function MainPage({ setToken }) {
   const { pokemonData, loading: pokemonLoading } = usePokemonData(20);
