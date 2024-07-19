@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import usePokemonData from './hook/usePokemonData';
+import React, { useState, useEffect } from 'react';
 import styles from './css/SliderText.module.css';
-import Loading from '../../Loading/Loading';
 
-export default function SliderText() {
-  const { pokemonData, loading } = usePokemonData(20); // usePokemonData에서 로딩 상태와 데이터를 반환
+export default function SliderText({ pokemonData }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [additionalLoading, setAdditionalLoading] = useState(true);
 
   const handleNext = () => setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pokemonData.length);
   const handlePrev = () => setCurrentImageIndex((prevIndex) => (prevIndex - 1 + pokemonData.length) % pokemonData.length);
 
-
   useEffect(() => {
-    if (!loading) {
-      setTimeout(() => {
-        setAdditionalLoading(false);
-      }, 10);
-    }
-  }, [loading]);
-
-  if (loading || additionalLoading) {
-    return <Loading />;
-  }
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pokemonData.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [pokemonData.length]);
 
   return (
     <div className={styles.container}>

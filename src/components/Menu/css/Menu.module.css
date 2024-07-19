@@ -21,6 +21,7 @@
     align-items: center;
     height: 80px;
     font-family: 'Cafe24Moyamoya-Regular-v1.0', sans-serif;
+    width: 100%;
 }
 
 .container ul li a{
@@ -33,6 +34,21 @@
 .menuimg{
     width: 172px;
     height: auto;
+}
+
+@media (max-width: 904px) {
+    .container ul li {
+        list-style-type: none;
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+        font-family: 'Cafe24Moyamoya-Regular-v1.0', sans-serif;
+        width: 100%;
+    }
 }
 
 @media (max-width: 699px) {

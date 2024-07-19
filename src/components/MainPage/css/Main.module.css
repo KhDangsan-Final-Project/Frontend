@@ -5,12 +5,12 @@
                 radial-gradient(circle at 50% 70%, rgba(154, 223, 239, 0.6), transparent);
     background-repeat: repeat;
   }
-.section {
+.jump {
     height: 100px;
 }
 
-.ViewSection {
-  height: 40vh;
+.hide-on-small-screen {
+  height: 500px;
 }
 
 @media (max-width: 1360px) {
@@ -18,3 +18,26 @@
     display: none;
   }
 }
+
+.section1 {
+  opacity: 0;
+  transform: translateX(-300px);
+  transition: opacity 3s ease-out, transform 3s ease-out;
+}
+
+.section2 {
+  opacity: 0;
+  transform: translateX(300px);
+  transition: opacity 3s ease-out, transform 3s ease-out;
+}
+
+.section3 {
+  opacity: 0;
+  transition: opacity 2s ease-out, transform 2s ease-out;
+}
+
+.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
