@@ -58,8 +58,9 @@ import {
 import 'ckeditor5/ckeditor5.css';
 
 import styles from './css/BoardWrite.module.css'
+import './css/Ckeditor.css'
 
-export default function BoardWrite({showBoard}) {
+export default function BoardWrite({ showBoard }) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -299,29 +300,72 @@ export default function BoardWrite({showBoard}) {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         }
     };
-    const [myEditor, setMyEditor] = useState();
-    const writeClick = () => {
-        console.log(myEditor.getData());
+    const [editorData, setEditorData] = useState('');
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        
+        const formData = JSON.stringify({
+            boardTitle: "제목",  // 제목 필드를 추가하세요
+            content: editorData
+        });
+    
+        fetch("http://localhost:8090/ms3/board/write", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+            },
+            credentials: 'include'
+        }).then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('로그인이 필요합니다.');
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            }
+            return response.json();
+        }).then(result => {
+            console.log(result);
+            // 성공 시 처리 로직
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // 오류 시 처리 로직 (예: 로그인 페이지로 리디렉션)
+            alert(error.message);
+            if (error.message === '로그인이 필요합니다.') {
+                window.location.href = "/login";
+            }
+        });
     }
-    function cancel(){
+    
+
+    function cancel() {
         showBoard();
     }
     return (
         <div>
             <div className={styles.main_container}>
-                <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
-                    <div className={styles.editor_container__editor}>
-                        <div ref={editorRef}>{isLayoutReady && <CKEditor editor={ClassicEditor} config={editorConfig} onReady={(editor) => {
-                            editor.setData(' ');
-                            console.log(editor.getData());
-                            setMyEditor(editor);
-                        }} />}</div>
+                <form onSubmit={handleSubmit}>
+                    <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
+                        <div className={styles.editor_container__editor}>
+                            <div ref={editorRef}>{isLayoutReady && ( <CKEditor
+                                    editor={ClassicEditor}
+                                    config={editorConfig}
+                                    data={editorData}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        setEditorData(data);
+                                    }} />
+                            )}</div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <button className={styles.button} onClick={writeClick}>글쓰기</button>
-                    <button className={styles.button} type='button' onClick={cancel}>취소</button>
-                </div>
+                    <div className='asd'>
+                        <button type="submit" id="submit" className={styles.button}>글쓰기</button>
+                        <button type="reset" className={styles.button} onClick={cancel}>취소</button>
+                    </div>
+                </form>
             </div>
         </div>
     );

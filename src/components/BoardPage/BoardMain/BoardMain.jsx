@@ -1,17 +1,13 @@
 import styles from './css/BoardMain.module.css'
 import { Link } from 'react-router-dom'
 
-export default function BoardMain({ showWrite,showList }) {
+export default function BoardMain({ showWrite }) {
 
     const write = () => {
         showWrite();
     };
 
-    const list = (e) =>{
-        e.preventDefault();
-        showList();
-    };
-
+   
 
     return (
         <div className={styles.container}>
@@ -20,7 +16,7 @@ export default function BoardMain({ showWrite,showList }) {
                 <button className={styles.event}>이벤트</button>
             </div>
             <div className={styles.option}>
-                <Link to={'#'} className={styles.moreView} onClick={list}>더보기</Link>
+                <Link to={'/boardList'} className={styles.moreView}>더보기</Link>
                 <div className={styles.write}>
                     <button className={styles.writeBtn} onClick={write}>글쓰기</button>
                 </div>

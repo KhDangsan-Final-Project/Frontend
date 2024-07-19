@@ -12,6 +12,7 @@ import Sidebar from './components/Menu/Sidebar/Sidebar';
 import MyPage from './components/MyPage/MyPage';
 import BoardPage from './components/BoardPage/BoardPage';
 import Scroll from './components/Menu/Scroll/Scroll';
+import BoardList from './components/BoardPage/BoardContent/BoardList';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -44,6 +45,7 @@ function App() {
         <Route path="/battle" element={<Battle />} />
         <Route path="/encyclopedia" element={<Encyclopedia />} />
         <Route path="/boardMain" element={<BoardPage/>}/>
+        <Route path="/boardList" element={<BoardList/>}/>
       </Routes>
         <Scroll/>
     </>
