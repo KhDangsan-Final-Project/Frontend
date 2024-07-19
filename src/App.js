@@ -10,7 +10,7 @@ import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
 import Sidebar from './components/Menu/Sidebar/Sidebar';
 import MyPage from './components/MyPage/MyPage';
-import Chat from './components/fightpage/contents/Chat';
+import SettingFightContent from './components/fightpage/contents/SettingFightContent';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -39,13 +39,10 @@ function App() {
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/fight" element={<FightContent />} />
-        <Route path="/battle" element={<Battle />} />
+        <Route path="/fight" element={<FightContent token={token}/>} />
+        <Route path="/battle" element={<Battle token={token}/>} />
         <Route path="/encyclopedia" element={<Encyclopedia />} />
-        <Route path="/" element={<FightContent />} />
-        <Route path="/battle" element={<Battle/>} />
-        <Route path="/encyclopedia" element={<Encyclopedia/>}/>
-        <Route path="/chat" element={<Chat/>}/>
+        <Route path="/chat" element={<Chat token={token}/>}/>
       </Routes>
     </>
   );

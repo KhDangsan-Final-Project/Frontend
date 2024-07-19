@@ -6,7 +6,7 @@ import usePokemonBattle from './hooks/useBattle';
 import Chat from './Chat';
 
 
-const Battle = () => {
+function Battle({ token }) {
     const {
         selectedPokemon,
         enemyPokemon,
@@ -131,12 +131,12 @@ const Battle = () => {
                 </div>
             </div>
             <div className={styles.footer}>
-                <SettingContainer />
+                <SettingContainer token={token}/>
                 <div className={styles.margin}>
                  
                           <Chat/>
                             </div>
-                <SettingContainer />
+                <SettingContainer token={token}/>
                 <div className={styles.menu}>
                     <button onClick={handleFightClick}>Fight</button>
                     <button onClick={runBtn}>Run</button>

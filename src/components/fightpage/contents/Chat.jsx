@@ -6,7 +6,7 @@ const Chat = () => {
     const [messageInput, setMessageInput] = useState('');
 
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:9998/ws');
+        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/ws');
         setWebSocket(ws);
 
         ws.onopen = () => {
@@ -16,16 +16,19 @@ const Chat = () => {
         ws.onmessage = function(event) {
             try {
                 const data = JSON.parse(event.data);
-                console.log(data);
-                // 여기서 data를 사용하여 작업을 진행합니다.
+                console.log('Received data:', data);
+                setMessages(prevMessages => [...prevMessages, data]);
             } catch (error) {
                 console.error('Error parsing JSON:', error);
-                // 에러 처리를 추가하거나, 다른 방법으로 데이터를 처리합니다.
             }
         };
 
-        ws.onclose = () => {
-            console.log('Disconnected from WebSocket');
+        ws.onclose = (event) => {
+            console.log('Disconnected from WebSocket:', event);
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
         };
 
         return () => {
@@ -51,10 +54,7 @@ const Chat = () => {
             <h1>WebSocket Chat</h1>
             <div>
                 {messages.map((msg, index) => (
-                    <div key={index}>
-                        <strong>{msg.sender}: </strong>
-                        {msg.content}
-                    </div>
+                    <p key={index}><strong>{msg.sender}: </strong>{msg.content}</p>
                 ))}
             </div>
             <div>

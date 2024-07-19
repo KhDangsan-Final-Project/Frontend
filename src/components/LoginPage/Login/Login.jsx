@@ -51,7 +51,8 @@ export default function Login({ setToken, showRegister }) {
     try {
       const response = await axios.post('http://teeput.synology.me:30112/ms3/user/select', formData);
       if (response.data.result) {
-        alert('로그인 성공');
+        alert(response.data.msg);
+        
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
         navigate('/');
