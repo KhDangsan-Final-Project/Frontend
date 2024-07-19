@@ -1,24 +1,62 @@
-// App.js (또는 라우터를 설정하는 파일)
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Battle from './components/fightpage/contents/Battle';
 import FightContent from './components/fightpage/contents/FightContent';
 import Encyclopedia from './components/encyclopediapage/contents/EncyclopediaContent';
+import Chat from './components/fightpage/contents/Chat';import LoginPage from './components/LoginPage/LoginPage';
+import MainPage from './components/MainPage/MainPage';
+import LibraryPage from './components/LibraryPage/LibraryPage';
+import Menu from './components/Menu/Menu';
+import Sidebar from './components/Menu/Sidebar/Sidebar';
+import MyPage from './components/MyPage/MyPage';
 import Chat from './components/fightpage/contents/Chat';
+
 function App() {
+  const [token, setToken] = useState(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
+  };
+
+  const hideMenuAndSidebar = ['/fight', '/battle', '/encyclopedia'].includes(location.pathname);
+
   return (
-    <Router>
-      
+    <>
+      {!hideMenuAndSidebar && <Menu token={token} logout={logout} />}
+      {!hideMenuAndSidebar && <Sidebar token={token} logout={logout} />}
       <Routes>
+        <Route path="/" element={<MainPage setToken={setToken} />} />
+        <Route path="/login" element={<LoginPage setToken={setToken} />} />
+        <Route path="/library" element={<LibraryPage setToken={setToken} />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/fight" element={<FightContent />} />
+        <Route path="/battle" element={<Battle />} />
+        <Route path="/encyclopedia" element={<Encyclopedia />} />
         <Route path="/" element={<FightContent />} />
         <Route path="/battle" element={<Battle/>} />
         <Route path="/encyclopedia" element={<Encyclopedia/>}/>
         <Route path="/chat" element={<Chat/>}/>
       </Routes>
-      
+    </>
+  );
+}
+
+function AppWrapper() {
+  return (
+    <Router>
+      <App />
     </Router>
   );
 }
 
-export default App;
+export default AppWrapper;

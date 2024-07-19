@@ -52,7 +52,7 @@ flex-direction: column;
   margin-top: 20px;
 }
 
-button {
+.button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -62,7 +62,7 @@ button {
   border-radius: 5px;
 }
 
-button:hover {
+.button:hover {
   background-color: #0056b3;
 }
 /* ------------------------------------------포켓몬 카드 스타일링------------------------------------------ */
