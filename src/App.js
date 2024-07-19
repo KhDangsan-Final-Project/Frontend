@@ -9,6 +9,7 @@ import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
 import Sidebar from './components/Menu/Sidebar/Sidebar';
 import MyPage from './components/MyPage/MyPage';
+import AIPage from './components/AIPage/AIPage';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -33,12 +34,13 @@ function App() {
       {!hideMenuAndSidebar && <Menu token={token} logout={logout} />}
       {!hideMenuAndSidebar && <Sidebar token={token} logout={logout} />}
       <Routes>
-        <Route path="/" element={<MainPage token={token} setToken={setToken} />} />
-        <Route path="/login" element={<LoginPage setToken={setToken} />} />
-        <Route path="/library" element={<LibraryPage setToken={setToken} />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/fight" element={<FightContent />} />
-        <Route path="/battle" element={<Battle />} />
+        <Route path="/" element={<MainPage token={token}/>} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/library" element={<LibraryPage token={token}/>} />
+        <Route path="/mypage" element={<MyPage token={token}/>} />
+        <Route path="/fight" element={<FightContent token={token}/>} />
+        <Route path="/battle" element={<Battle token={token}/>} />
+        <Route path="/ai" element={<AIPage token={token}/>} />
       </Routes>
     </>
   );

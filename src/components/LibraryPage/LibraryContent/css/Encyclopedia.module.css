@@ -64,12 +64,6 @@
     height: auto;
     border-radius: 8px;
   }
-  
-  button {
-    margin: 8px;
-    padding: 8px 16px;
-    font-size: 16px;
-  }
 
   .pagination {
     display: flex;
@@ -88,6 +82,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeFire {
     background-image: url('/public/img/types/fire.svg');
@@ -96,6 +91,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeLightning {
     background-image: url('/public/img/types/lightning.svg');
@@ -104,6 +100,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typePsychic {
     background-image: url('/public/img/types/psychic.svg');
@@ -112,6 +109,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeFighting {
     background-image: url('/public/img/types/fighting.svg');
@@ -120,6 +118,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeDarkness {
     background-image: url('/public/img/types/darkness.svg');
@@ -128,6 +127,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeMetal {
     background-image: url('/public/img/types/metal.svg');
@@ -136,6 +136,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeDragon {
     background-image: url('/public/img/types/dragon.svg');
@@ -144,6 +145,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeColorless {
     background-image: url('/public/img/types/colorless.svg');
@@ -152,6 +154,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeButton {
     background-image: url('/public/img/pngegg.png');
@@ -160,6 +163,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeWater {
     background-image: url('/public/img/types/water.svg');
@@ -168,6 +172,7 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeFairy {
     background-image: url('/public/img/types/colorless.svg');
@@ -176,8 +181,9 @@
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
-
+  
   .searchContainer {
     display: flex;
     flex-flow: row wrap;
@@ -203,4 +209,8 @@
     background-color: transparent;
     cursor: pointer;
     font-size: 30px;
+    margin-left: 20px;
+  }
+  .search_i {
+    cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
   }

@@ -73,7 +73,7 @@ export default function Encyclopedia() {
                     className={styles.searchInput}
                 />
                 <button type="submit" className={styles.searchButton}>
-                    <FontAwesomeIcon icon={faSearch} />
+                    <FontAwesomeIcon icon={faSearch} className={styles.search_i}/>
                 </button>
             </form>
             <div className={styles.typeContainer}>
