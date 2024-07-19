@@ -69,7 +69,7 @@ export default function Login({ setToken, showRegister }) {
                 <input type="checkbox" id="check1" className={styles.checkbox} />
                 <label htmlFor="check1" className={styles.checkboxLabel}>이 계정 기억하기</label>
             </div>
-            <a href="#" className={styles.searchPS}>비밀번호 찾기</a>
+            <a href="/password-reset-request" className={styles.searchPS}>비밀번호 찾기</a>
           </div>
           <button type="submit" className={styles.btn_login}>Login</button>
         </form>

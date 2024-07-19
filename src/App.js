@@ -5,6 +5,8 @@ import MainPage from './components/MainPage/MainPage'
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
 import Sidebar from './components/Menu/Sidebar';
+import PasswordResetRequestPage from './components/PasswdReset/PasswordResetRequestPage';
+
 
 function App() {
   const [token, setToken] = useState(null);
@@ -30,6 +32,7 @@ function App() {
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/Library" element={<LibraryPage setToken={setToken} />} />
+        <Route path="/password-reset-request" element={<PasswordResetRequestPage />} />
       </Routes>
     </Router>
   );
