@@ -71,7 +71,7 @@ export default function Register( {showLoginComponent} ) {
             nickname
         });
 
-        fetch("http://teeput.synology.me:30112/ms3/user/insert", {
+        fetch("http://localhost:8090/ms3/user/insert", {
             method: 'POST',
             body: formData,
             headers: {
