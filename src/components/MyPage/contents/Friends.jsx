@@ -204,9 +204,9 @@ const Friends = () => {
                     <h2 className={styles.heading}>친구 목록</h2>
                     <ul className={styles.list}>
                         {friends.map(friend => (
-                            <li key={friend.friendId} className={styles.listItem}>
-                                {friend.userId}
-                                <button onClick={() => handleDeleteFriend(friend.friendId)} className={styles.button}>삭제</button>
+                            <li key={friend.userId === userId ? friend.friendId : friend.userId} className={styles.listItem}>
+                                {friend.userId === userId ? friend.friendId : friend.userId}
+                                <button onClick={() => handleDeleteFriend(friend.userId === userId ? friend.friendId : friend.userId)} className={styles.button}>삭제</button>
                             </li>
                         ))}
                     </ul>
@@ -227,7 +227,7 @@ const Friends = () => {
                             searchResults.map(result => (
                                 <li key={result.id} className={styles.resultItem}>
                                     <div className={styles.resultInfo}>
-                                        {result.nickname}
+                                        {result.Id}({result.nickname})
                                     </div>
                                     <button onClick={() => handleAddFriend(result.id)} className={styles.button}>친구 추가</button>
                                 </li>
