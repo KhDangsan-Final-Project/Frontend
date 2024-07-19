@@ -4,7 +4,7 @@
   radial-gradient(circle at 80% 60%, rgba(173, 216, 230, 0.6), transparent),
   radial-gradient(circle at 50% 70%, rgba(154, 223, 239, 0.6), transparent);
   background-repeat: repeat;
-  padding: 170px;
+  padding: 120px;
 }
 
 .nav {

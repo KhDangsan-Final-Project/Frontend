@@ -2,10 +2,16 @@
   width: 100%; 
   padding: 20px;
   margin: 0 auto;
-  height: 1500px; 
+  height: 1000px; 
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+.title{
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 40px;
 }
 
 .profileSection {
