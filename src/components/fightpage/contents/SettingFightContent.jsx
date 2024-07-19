@@ -19,8 +19,6 @@ function SettingFightContent({ token }) {
         try {
           const data = JSON.parse(event.data);
           console.log(data);
-          console.log(data.id);
-          console.log(data.nickname);
           setUserInfo({ id: data.id, nickname: data.nickname });
         } catch (error) {
           console.error('Error parsing message:', error);
@@ -57,10 +55,7 @@ function SettingFightContent({ token }) {
           )}
         </div>
       </div>
-      <h2>:::Setting:::</h2>
-      <div className={styles.battleSetting}>
-        {/* 추가적인 전투 설정 컴포넌트나 정보를 여기에 추가할 수 있습니다 */}
-      </div>
+
     </div>
   );
 }
