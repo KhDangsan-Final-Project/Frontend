@@ -46,8 +46,14 @@ function SettingFightContent({ token }) {
           return styles.rankImage1;
         case 2:
           return styles.rankImage2;
-        default:
+        case 3:
           return styles.rankImage3;
+        case 4:
+          return styles.rankImage4;
+        case 5:
+          return styles.rankImage5;
+        case 6:
+          return styles.rankImage6;
       }
     }
     return styles.rankImageDefault; // 기본 클래스

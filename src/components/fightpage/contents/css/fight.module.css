@@ -344,7 +344,7 @@ height: 300px;
   height: 180px;
 }
 .rankImage1{
-background-image: url(/public/img/rank/rankIcon.png);
+background-image: url(/public/img/rank/pokeBall.png);
 background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
 background-repeat: no-repeat;
 background-position: center;
@@ -356,7 +356,7 @@ background-position: center;
 
 }
 .rankImage2{
-background-image: url(/public/img/rank/rankIcon2.png);
+background-image: url(/public/img/rank/greatBall.png);
 background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
 background-repeat: no-repeat;
 background-position: center;
@@ -368,7 +368,43 @@ background-position: center;
 
 }
 .rankImage3{
-background-image: url(/public/img/rank/rankIcon3.png);
+background-image: url(/public/img/rank/ultraBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage4{
+background-image: url(/public/img/rank/duskBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage5{
+background-image: url(/public/img/rank/timerBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage6{
+background-image: url(/public/img/rank/masterBall.png);
 background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
 background-repeat: no-repeat;
 background-position: center;
