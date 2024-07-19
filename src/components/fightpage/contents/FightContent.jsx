@@ -5,6 +5,7 @@ import styles from './css/fight.module.css';
 import useFightContent from './hooks/useFightContent';
 import FightNavBar from './navFightContent';
 import SettingContainer from './SettingFightContent';
+import UserInfoFightContent from './UserInfoFightContent';
 
 function FightContent({ token }) {
   const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // API 키 확인
@@ -150,7 +151,11 @@ function FightContent({ token }) {
             ))}
           </div>
         </div>
-        <SettingContainer token={token} /> {/* SettingContainer에 token prop 전달 */}
+        <div className={styles.conponents}>
+
+        <SettingContainer token={token} />
+          <UserInfoFightContent/>
+        </div>
       </div>
       <div className={styles.card2}></div>
       <style className={styles.hover}></style>
