@@ -9,7 +9,7 @@ const Friends = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [userId, setUserId] = useState('');
+    const [userNickname, setUserNickname] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -18,8 +18,8 @@ const Friends = () => {
             setLoading(false);
             return;
         }
-        const id = extractUserIdFromToken(token);
-        setUserId(id);
+        const nickname = extractUserNicknameFromToken(token);
+        setUserNickname(nickname);
         fetchFriends(token);
         fetchFriendRequests(token);
     }, []);
@@ -28,6 +28,8 @@ const Friends = () => {
         try {
             const response = await axios.get('http://localhost:8090/ms3/friend', { params: { token } });
             setFriends(response.data);
+        } catch (error) {
+            console.error('친구 목록을 가져오는 중 오류가 발생했습니다:', error);
         } finally {
             setLoading(false);
         }
@@ -46,13 +48,13 @@ const Friends = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get('http://localhost:8090/ms3/friend/search', {
-                params: { query: searchQuery, token: token },
+                params: { query: searchQuery, token, userNickname },
             });
             const filteredResults = response.data.filter(result => {
-                return result.id !== userId && // 자신을 제외
-                       !friends.some(friend => friend.friendId === result.id || friend.userId === result.id) && // 이미 친구 상태를 제외
-                       !pendingRequests.some(request => request.friendId === result.id) && // 이미 요청 보낸 친구 제외
-                       !receivedRequests.some(request => request.userId === result.id); // 받은 요청 제외
+                return result.nickname !== userNickname && // 자신을 제외
+                       !friends.some(friend => friend.friendNickname === result.nickname || friend.userNickname === result.nickname) && // 이미 친구 상태를 제외
+                       !pendingRequests.some(request => request.friendNickname === result.nickname) && // 이미 요청 보낸 친구 제외
+                       !receivedRequests.some(request => request.userNickname === result.nickname); // 받은 요청 제외
             });
             setSearchResults(filteredResults);
         } catch (error) {
@@ -60,24 +62,23 @@ const Friends = () => {
         }
     };
 
-    const handleAddFriend = async (friendId) => {
+    const handleAddFriend = async (friendNickname) => {
         const token = localStorage.getItem('token');
-        const userId = extractUserIdFromToken(token);
-        if (pendingRequests.some(request => request.friendId === friendId) || 
-            receivedRequests.some(request => request.userId === userId && request.friendId === friendId)) {
+        if (pendingRequests.some(request => request.friendNickname === friendNickname) || 
+            receivedRequests.some(request => request.userNickname === userNickname && request.friendNickname === friendNickname)) {
             alert('이미 친구 요청을 보냈거나 받은 요청이 있습니다.');
             return;
         }
         if (friends.some(friend => 
-            (friend.friendId === friendId && friend.userId === userId) || 
-            (friend.friendId === userId && friend.userId === friendId))) {
+            (friend.friendNickname === friendNickname && friend.userNickname === userNickname) || 
+            (friend.friendNickname === userNickname && friend.userNickname === friendNickname))) {
             alert('이미 친구 상태입니다.');
             return;
         }
         try {
             const response = await axios.post('http://localhost:8090/ms3/friend/add', {
-                userId,
-                friendId,
+                userNickname,
+                friendNickname,
                 status: 'pending'
             }, {
                 headers: {
@@ -88,7 +89,7 @@ const Friends = () => {
             });
             if (response.data.status === 'success') {
                 alert('친구 요청이 성공적으로 전송되었습니다');
-                setPendingRequests([...pendingRequests, { userId, friendId }]);
+                setPendingRequests([...pendingRequests, { userNickname, friendNickname }]);
             } else if (response.data.status === 'duplicate') {
                 alert('이미 친구 요청을 보냈습니다');
             } else if (response.data.status === 'already_friends') {
@@ -101,12 +102,12 @@ const Friends = () => {
         }
     };
 
-    const handleAcceptRequest = async (friendId) => {
+    const handleAcceptRequest = async (friendNickname) => {
         const token = localStorage.getItem('token');
         try {
             const response = await axios.put('http://localhost:8090/ms3/friend/accept', {
-                userId: friendId,
-                friendId: extractUserIdFromToken(token),
+                userNickname: friendNickname,
+                friendNickname: extractUserNicknameFromToken(token),
                 status: 'accepted'
             }, {
                 headers: {
@@ -127,7 +128,7 @@ const Friends = () => {
         }
     };
 
-    const handleRejectRequest = async (friendId) => {
+    const handleRejectRequest = async (friendNickname) => {
         const token = localStorage.getItem('token');
         try {
             const response = await axios.delete('http://localhost:8090/ms3/friend/reject', {
@@ -136,8 +137,8 @@ const Friends = () => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    userId: friendId,
-                    friendId: extractUserIdFromToken(token),
+                    userNickname: friendNickname,
+                    friendNickname: extractUserNicknameFromToken(token),
                 },
                 params: { token }
             });
@@ -152,7 +153,7 @@ const Friends = () => {
         }
     };
 
-    const handleDeleteFriend = async (friendId) => {
+    const handleDeleteFriend = async (friendNickname) => {
         const token = localStorage.getItem('token');
         try {
             const response = await axios.delete('http://localhost:8090/ms3/friend/delete', {
@@ -161,7 +162,7 @@ const Friends = () => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    friendId,
+                    friendNickname,
                     token
                 },
                 params: { token }
@@ -177,7 +178,7 @@ const Friends = () => {
         }
     };
 
-    const extractUserIdFromToken = (token) => {
+    const extractUserNicknameFromToken = (token) => {
         try {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -185,7 +186,7 @@ const Friends = () => {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
             const decodedToken = JSON.parse(jsonPayload);
-            return decodedToken.sub;
+            return decodedToken.nickname; // 닉네임 반환
         } catch (error) {
             console.error('토큰을 디코딩하는 중 오류가 발생했습니다:', error);
             return null;
@@ -204,9 +205,9 @@ const Friends = () => {
                     <h2 className={styles.heading}>친구 목록</h2>
                     <ul className={styles.list}>
                         {friends.map(friend => (
-                            <li key={friend.userId === userId ? friend.friendId : friend.userId} className={styles.listItem}>
-                                {friend.userId === userId ? friend.friendId : friend.userId}
-                                <button onClick={() => handleDeleteFriend(friend.userId === userId ? friend.friendId : friend.userId)} className={styles.button}>삭제</button>
+                            <li key={friend.friendNickname} className={styles.listItem}>
+                                {friend.userNickname === userNickname ? friend.friendNickname : friend.userNickname}
+                                <button onClick={() => handleDeleteFriend(friend.userNickname === userNickname ? friend.friendNickname : friend.userNickname)} className={styles.button}>삭제</button>
                             </li>
                         ))}
                     </ul>
@@ -225,11 +226,11 @@ const Friends = () => {
                     <ul className={styles.results}>
                         {searchResults.length > 0 ? (
                             searchResults.map(result => (
-                                <li key={result.id} className={styles.resultItem}>
+                                <li key={result.nickname} className={styles.resultItem}>
                                     <div className={styles.resultInfo}>
-                                        {result.Id}({result.nickname})
+                                        {result.nickname}
                                     </div>
-                                    <button onClick={() => handleAddFriend(result.id)} className={styles.button}>친구 추가</button>
+                                    <button onClick={() => handleAddFriend(result.nickname)} className={styles.button}>친구 추가</button>
                                 </li>
                             ))
                         ) : (
@@ -241,10 +242,10 @@ const Friends = () => {
                     <h2 className={styles.heading}>받은 친구 요청</h2>
                     <ul className={styles.list}>
                         {receivedRequests.map(request => (
-                            <li key={request.userId} className={styles.listItem}>
-                                {request.userId}
-                                <button onClick={() => handleAcceptRequest(request.userId)} className={styles.button}>수락</button>
-                                <button onClick={() => handleRejectRequest(request.userId)} className={styles.button}>거절</button>
+                            <li key={request.userNickname} className={styles.listItem}>
+                                {request.userNickname}
+                                <button onClick={() => handleAcceptRequest(request.userNickname)} className={styles.button}>수락</button>
+                                <button onClick={() => handleRejectRequest(request.userNickname)} className={styles.button}>거절</button>
                             </li>
                         ))}
                     </ul>
