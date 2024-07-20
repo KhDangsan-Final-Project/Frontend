@@ -315,7 +315,7 @@ align-items: center;
   box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
     5px 12px 15px -10px rgba(0, 0, 0, 0.5);
  
-
+height: 300px;
   width: 400px;
 }
 .settingContainer > h2{
@@ -343,8 +343,68 @@ align-items: center;
   width: 180px;
   height: 180px;
 }
-.rankImage{
-background-image: url(/public/img/rankIcon.png);
+.rankImage1{
+background-image: url(/public/img/rank/pokeBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage2{
+background-image: url(/public/img/rank/greatBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage3{
+background-image: url(/public/img/rank/ultraBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage4{
+background-image: url(/public/img/rank/duskBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage5{
+background-image: url(/public/img/rank/timerBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+
+}
+.rankImage6{
+background-image: url(/public/img/rank/masterBall.png);
 background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
 background-repeat: no-repeat;
 background-position: center;
@@ -383,4 +443,9 @@ margin: 0;
     font-family: "Source Code Pro";
     /* text-transform: uppercase; */
     letter-spacing: 3px; 
+}
+
+.conponents{
+  display: flex;
+  flex-flow: column nowrap;
 }

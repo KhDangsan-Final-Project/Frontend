@@ -13,7 +13,6 @@ export default function LoginPage({ setToken }) {
     const showLoginComponent = () => {
         setShowLogin(true);
     };
-
     return (
         <div className={styles.container}>
             {showLogin ? (

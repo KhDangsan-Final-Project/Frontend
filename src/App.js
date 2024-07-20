@@ -1,14 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Battle from './components/BattlePage/contents/Battle';
-import FightContent from './components/BattlePage/contents/FightContent';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
 import Sidebar from './components/Menu/Sidebar/Sidebar';
+import BoardPage from './components/BoardPage/BoardPage';
+import AIPage from './components/AIPage/AIPage';
 import MyPage from './components/MyPage/MyPage';
+import FightContent from './components/BattlePage/contents/FightContent';
+import Battle from './components/BattlePage/contents/Battle';
+import Scroll from './components/Menu/Scroll/Scroll';
+// import Chat from './components/BattlePage/contents/Chat';
+// import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -33,13 +38,18 @@ function App() {
       {!hideMenuAndSidebar && <Menu token={token} logout={logout} />}
       {!hideMenuAndSidebar && <Sidebar token={token} logout={logout} />}
       <Routes>
-        <Route path="/" element={<MainPage token={token} setToken={setToken} />} />
+        <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/fight" element={<FightContent />} />
-        <Route path="/battle" element={<Battle />} />
+        <Route path="/boardmain" element={<BoardPage setToken={setToken} />} />
+        <Route path="/ai" element={<AIPage setToken={setToken} />} />
+        <Route path="/mypage" element={<MyPage setToken={setToken} />} />
+        <Route path="/fight" element={<FightContent setToken={setToken} />} />
+        <Route path="/battle" element={<Battle setToken={setToken} />} />
+        {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
+        {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
       </Routes>
+      <Scroll />
     </>
   );
 }

@@ -50,6 +50,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {
@@ -61,6 +62,11 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor-click.png) 14 0, auto !important;
+}
+
+a, button, input[type="button"], input[type="submit"], input[type="file"], Link {
+  cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
 }
 
 input:-webkit-autofill,

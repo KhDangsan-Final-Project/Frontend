@@ -1,0 +1,78 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.fileUpload {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
+.fupload {
+  display: flex;
+  width: 600px;
+  height: 600px;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px black;
+  border-radius: 40px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Ramche';
+  border: 10px dashed black;
+  background-color: white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
+}
+
+.upload {
+  display: none;
+}
+
+.subBtn {
+  font-family: 'Ramche';
+  background-color: white;
+  border: 0px;
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 20px;
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+.subBtn:hover {
+  background-color: blueviolet;
+  color: white;
+}
+
+.subBtn:focus {
+  border: none;
+}
+
+.result {
+  text-align: center;
+  margin-top: 30px;
+  font-family: 'Ramche';
+}
+
+.resultTxt:hover {
+  transform: scale(1.5);
+  font-weight: bold;
+}
+
+.successTitle {
+  font-family: 'Ramche';
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loadingMessage {
+  font-family: 'Ramche';
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+}
