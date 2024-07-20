@@ -11,6 +11,7 @@ import AIPage from './components/AIPage/AIPage';
 import MyPage from './components/MyPage/MyPage';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
+import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -43,6 +44,7 @@ function App() {
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
         <Route path="/fight" element={<FightContent setToken={setToken} />} />
         <Route path="/battle" element={<Battle setToken={setToken} />} />
+        <Route path="/password-reset-request" element={<PasswordResetRequestPage />} />
       </Routes>
     </>
   );

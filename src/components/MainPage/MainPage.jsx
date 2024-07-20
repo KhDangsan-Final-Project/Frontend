@@ -17,7 +17,7 @@ import useRankData from './contents/hook/useRankData';
 import PlayLibrary from './contents/PlayLibrary';
 import PlayAI from './contents/PlayAI';
 
-export default function MainPage({ setToken }) {
+export default function MainPage({ setToken}) {
   const { pokemonData, loading: pokemonLoading } = usePokemonData(20);
   const ranks = useRankData();
   const [loading, setLoading] = useState(true);
@@ -47,6 +47,23 @@ export default function MainPage({ setToken }) {
     return <Loading />;
   }
 
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      const tokenData = JSON.parse(atob(storedToken.split('.')[1]));
+      const grantNo = tokenData.grantNo;
+      if (grantNo === 0) {
+        setShowPopup(true);
+      }
+    }
+  }, [setToken]);
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+  
   return (
     <div className={styles.background}>
       <SliderText pokemonData={pokemonData} />
@@ -55,6 +72,12 @@ export default function MainPage({ setToken }) {
           <ViewText visitorCount={visitorCount} displayedCount={displayedCount} />
           <View />
         </section>
+          {showPopup && (
+            <div className={styles.popup}>
+              <button onClick={closePopup} className={styles.closeButton}>닫기</button>
+              <a href='http://localhost:9996/ms4/user/list' target='_blank' rel='noopener noreferrer'>유저 목록 바로보기</a>
+            </div>
+          )}
       </div>
       <div className={styles.jump} />
       <section ref={ContentInfoRef} className={`${styles.section3} ${ContentInfoView ? styles['slide-in'] : ''}`}>

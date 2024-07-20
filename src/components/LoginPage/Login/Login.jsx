@@ -95,7 +95,7 @@ export default function Login({ setToken, showRegister }) {
                 <input type="checkbox" id="check1" className={styles.checkbox} onChange={handleOnChange} checked={isRemember} />
                 </label>
             </div>
-            <a href="#" className={styles.searchPS}>비밀번호 찾기</a>
+            <a href="/password-reset-request" className={styles.searchPS}>비밀번호 찾기</a>
           </div>
           <div className={`${styles.error} ${error ? styles.visible : styles.hidden}`}>{error}</div>
           <button type="submit" className={styles.btn_login}>Login</button>
