@@ -1,0 +1,23 @@
+.scrollImg{
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 30px;
+}
+.scrollBtn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 1000;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+.scrollImg:active{
+    background-color: blueviolet;
+    transition: background-color 0.01s ease-in-out;
+}
+
+.show{
+    opacity: 1;
+}

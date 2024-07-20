@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './css/Register.module.css';
+import axios from 'axios';
 
 export default function Register( {showLoginComponent} ) {
     const [id, setId] = useState('');
@@ -12,7 +13,7 @@ export default function Register( {showLoginComponent} ) {
     const [idValid, setIdValid] = useState(true);
     const [passwordValid, setPasswordValid] = useState(true);
     const [passwordMatch, setPasswordMatch] = useState(true);
-
+    const [idCheckStatus, setIdCheckStatus] = useState(true);
     function checkId(id) {
         let reg = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/;
         return reg.test(id);
@@ -58,9 +59,32 @@ export default function Register( {showLoginComponent} ) {
         showLoginComponent();
     }
 
+    
+    const handleIdCheck = async(e) => {
+        e.preventDefault();
+        try{
+            const response = await axios.post("http://teeput.synology.me:30112/ms3/user/idcheck", JSON.stringify({ id }),{
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                }
+            });
+            if (response.data.count > 0) {
+                alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
+                setIdCheckStatus(false);
+            } else {
+                alert("사용가능한 아이디입니다.");
+                setIdCheckStatus(true);
+            }
+        } catch (error) {
+            
+            alert("Error: " + error);
+        }
+    };
+    
+        
     function handleSubmit(e) {
         e.preventDefault();
-        if (!idValid || !passwordValid || !passwordMatch) {
+        if (!idValid || !passwordValid || !passwordMatch || idCheckStatus === false) {
             return;
         }
         const formData = JSON.stringify({
@@ -75,6 +99,7 @@ export default function Register( {showLoginComponent} ) {
             method: 'POST',
             body: formData,
             headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
             },
             credentials: 'include'
         }).then(response => {
@@ -83,7 +108,11 @@ export default function Register( {showLoginComponent} ) {
             console.log(result);
         })
             .catch(error => console.error('Error:', error));
+
     }
+
+
+    
 
         
     return (
@@ -93,23 +122,20 @@ export default function Register( {showLoginComponent} ) {
                     <div className={styles.container}>
                         <h1 className={styles.title}>Sign-in</h1>
                         <form onSubmit={handleSubmit}>
-                            <div className={styles.name}>
-                                <input type="text" value={name} onChange={handleNameChange} placeholder="성함을 입력해주세요" />
-                            </div>
-                            <div className={styles.name}>
+                            <div className={styles.id}>
                                 <input type="text" value={id} onChange={handleIdChange} placeholder="아이디를 입력해주세요" />
-                                <button type='button'>중복확인</button>
+                                <button type='button' onClick={handleIdCheck}>중복확인</button>
                             </div>
                             <span className={`${styles.error} ${idValid ? styles.hidden : styles.visible}`}>
                                 *아이디는 8글자 이상 20자 이하로 알파벳 숫자 조합으로 입력하세요
                             </span>
-                            <div className={styles.txt_box}>
+                            <div className={styles.password}>
                                 <input type="password" value={password} onChange={handlePasswordChange} placeholder="패스워드를 입력해주세요" />
                             </div>
                             <span className={`${styles.error} ${passwordValid ? styles.hidden : styles.visible}`}>
                                 *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요
                             </span>
-                            <div className={styles.txt_box}>
+                            <div className={styles.password}>
                                 <input type="password" value={passwordCheck} onChange={handlePasswordCheckChange} placeholder="패스워드 확인" />
                             </div>
                             <span className={`${styles.error} ${passwordMatch ? styles.hidden : styles.visible}`}>
@@ -127,6 +153,9 @@ export default function Register( {showLoginComponent} ) {
                                         <option value="kakao.com">kakao.com</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div className={styles.name}>
+                                <input type="text" value={name} onChange={handleNameChange} placeholder="성함을 입력해주세요" />
                             </div>
                             <div className={styles.nick}>
                                 <input type="text" value={nickname} onChange={handleNicknameChange} placeholder="닉네임을 입력해주세요" />

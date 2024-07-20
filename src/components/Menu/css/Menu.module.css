@@ -3,7 +3,6 @@
     position: absolute;
     width: 100%;
     z-index: 10;
-    transition: background-color 0.2s ease;
 }
 
 .container ul{
@@ -30,11 +29,10 @@
     text-shadow: 0 0 4px black;
 }
 
-
-
 .menuimg{
     width: 172px;
     height: auto;
+    cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
 }
 
 @media (max-width: 904px) {

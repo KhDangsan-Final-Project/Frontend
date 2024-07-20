@@ -64,12 +64,6 @@
     height: auto;
     border-radius: 8px;
   }
-  
-  button {
-    margin: 8px;
-    padding: 8px 16px;
-    font-size: 16px;
-  }
 
   .pagination {
     display: flex;
@@ -82,102 +76,114 @@
   /* 포켓몬 타입 CSS */
 
   .typeGrass {
-    background-image: url(https://i.namu.wiki/i/s0PFhrU-trAOKaUa7UXcCGAHLpNRXpltk9FP8hCYQylHHku1Z7enn3XS4dYT2liz9iBsy8ppWCb5kdUIx784Dg.svg);
+    background-image: url('/public/img/types/grass.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeFire {
-    background-image: url(https://i.namu.wiki/i/zM3COKAsxhPE_i5vqxi0GPEupCgmwpbXmZLiuy62oDI1qkKWxt6wUpGvru5Bg6eRGEXAxd5JFLhLAPyA3zLZOA.svg);
+    background-image: url('/public/img/types/fire.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeLightning {
-    background-image: url(https://i.namu.wiki/i/ZLRGKKNuzEtCB4svHLRvNG55_63F2mHoWhs0dTQ-wHjQoXsiDYNCiCeKa0pkdRHhuR2b46cbynTWtWofr4mWB0w1q_XZWH4FhKmk-cDVVrtOlOp4iGuhpx2XqO2HMZAorUiJQWyVd6IGqOaYhAnAjA.svg);
+    background-image: url('/public/img/types/lightning.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typePsychic {
-    background-image: url(https://i.namu.wiki/i/UicauArSmwoDTbAgvr24xscxzYbMMwtOqjbZ1v3k_zzz944lah_lWv94NtILndA8I7flvzuQLRXG-mu_U3dt-Q.svg);
+    background-image: url('/public/img/types/psychic.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeFighting {
-    background-image: url(https:////i.namu.wiki/i/8wM4ccAgp7lxizuXqb482Vp2uRmL7vUEQVg1Mmp-uB93zNSSaizkxGwq6G_5dAYITwKviF47O2FrmirZTdyVHw.svg);
+    background-image: url('/public/img/types/fighting.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeDarkness {
-    background-image: url(https:////i.namu.wiki/i/wmfAZhMbSGph5aLTsEFun97LbjoRa9xwxetyKn2FkFXk1WqlAaL4X0R4OgaVNaaDrRLEQCC7Qyvs9mogXQdlaw.svg);
+    background-image: url('/public/img/types/darkness.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeMetal {
-    background-image: url(https://i.namu.wiki/i/aSdr8heTjixjN53tDt6dIO2lxTK5WC22Phohf8aCuiBG3z7YAGCFxoOpIXPCT2XlViXM3AMAYK8Rnnny3qHv3g.svg);
+    background-image: url('/public/img/types/metal.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeDragon {
-    background-image: url(https://i.namu.wiki/i/y7WErbeBZmSLq7FZEVs6JRDcEqo8uVnnMgnY610BBBvBf8Q0hdezuuJMuYx4bwtdPgCxCobllGpd54Kgy8ZNlQ.svg);
+    background-image: url('/public/img/types/dragon.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeColorless {
-    background-image: url(https://i.namu.wiki/i/lSs8_O8HUePGYXBEKw_LFcBfmOj9m_SSKMkkBs9SvhU1GWFmb6NhMeOwN55y8gZNZg-mBtjUB_jfpXWSLZTC7A.svg);
+    background-image: url('/public/img/types/colorless.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeButton {
-    background-image: url(/public/img/pngegg.png);
+    background-image: url('/public/img/pngegg.png');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeWater {
-    background-image: url(https://i.namu.wiki/i/TZdV630WExJOCvdUB0iIPMZLL6mlnBcMjH8rejlGJq0bCjm6QUXl4dL6UXEAQmMOMpQSyqj5tu9ioh8gR86YPw.svg);
+    background-image: url('/public/img/types/water.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
   .typeFairy {
-    background-image: url(https:////i.namu.wiki/i/siju7hzz9njQc-vN0QFsS59-Lfz9ZR9ZksTcoV0yFpxtQJ5UIjWFqq-_kK1dsXHOfdt1gPxbwDBP3WFNW7xxGg.svg);
+    background-image: url('/public/img/types/colorless.svg');
     background-size: cover;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     border: 0px;
+    margin: 20px;
   }
-
+  
   .searchContainer {
     display: flex;
     flex-flow: row wrap;
@@ -203,4 +209,17 @@
     background-color: transparent;
     cursor: pointer;
     font-size: 30px;
+    margin-left: 20px;
+  }
+  .search_i {
+    cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
+  }
+
+  .btn {
+    margin: 20px;
+    border: none;
+    background-color: white;
+    padding: 10px 30px;
+    box-shadow: 0px 0px 3px black;
+    border-radius: 20px;
   }

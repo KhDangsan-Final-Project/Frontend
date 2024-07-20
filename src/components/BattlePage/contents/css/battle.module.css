@@ -268,7 +268,10 @@ flex-direction: column;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-width: 402px;
+width: 402.67px;
+border: 1px solid #6890f0;
+box-sizing: border-box;
+
 }
 .chatInput{
   width: 100%;
