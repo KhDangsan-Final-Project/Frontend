@@ -1,14 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import LoginPage from './components/LoginPage/LoginPage';
-=======
-import Battle from './components/fightpage/contents/Battle';
-import FightContent from './components/fightpage/contents/FightContent';
-import Encyclopedia from './components/encyclopediapage/contents/EncyclopediaContent';
-import Chat from './components/fightpage/contents/Chat';import LoginPage from './components/LoginPage/LoginPage';
->>>>>>> 9160dc5e13d89cec562a5c39ed4df3b94b2ace97
 import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
@@ -18,7 +11,8 @@ import AIPage from './components/AIPage/AIPage';
 import MyPage from './components/MyPage/MyPage';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
-import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
+// import Chat from './components/BattlePage/contents/Chat';
+// import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -51,8 +45,8 @@ function App() {
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
         <Route path="/fight" element={<FightContent setToken={setToken} />} />
         <Route path="/battle" element={<Battle setToken={setToken} />} />
-        <Route path="/password-reset-request" element={<PasswordResetRequestPage />} />
-        <Route path="/chat" element={<Chat token={token}/>}/>
+        {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
+        {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
       </Routes>
     </>
   );
