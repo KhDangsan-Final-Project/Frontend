@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/AIUpload.module.css';
 
@@ -8,6 +9,7 @@ export default function AIUpload() {
   const [responseData, setResponseData] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const navigate = useNavigate(); // useNavigate 훅 추가
 
   const token = localStorage.getItem('token');
   
@@ -56,6 +58,10 @@ export default function AIUpload() {
       setLoading(false); // 로딩 종료
     }
   };
+
+  const handleResultClick = (name) => {
+    navigate(`/library?search=${name}`); // 해당 이름으로 검색 페이지로 이동
+  };
   
   return (
     <div className={styles.container}>
@@ -81,7 +87,7 @@ export default function AIUpload() {
           <div className={styles.result}>
             {responseData.detectedResult ? (
               responseData.detectedResult.map((result, index) => (
-                <p key={index}>{result}</p>
+                <p key={index} onClick={() => handleResultClick(result)} className={styles.resultTxt}>{result}</p>
               ))
             ) : (
               <p>{responseData.msg}</p>

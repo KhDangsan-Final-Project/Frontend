@@ -58,6 +58,11 @@
   font-family: 'Ramche';
 }
 
+.resultTxt:hover {
+  transform: scale(1.5);
+  font-weight: bold;
+}
+
 .successTitle {
   font-family: 'Ramche';
   margin-top: 30px;

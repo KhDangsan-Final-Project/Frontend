@@ -38,7 +38,7 @@ function App() {
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
-        <Route path="/board" element={<BoardPage setToken={setToken} />} />
+        <Route path="/boardmain" element={<BoardPage setToken={setToken} />} />
         <Route path="/ai" element={<AIPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
         <Route path="/fight" element={<FightContent setToken={setToken} />} />

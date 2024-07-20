@@ -214,3 +214,12 @@
   .search_i {
     cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
   }
+
+  .btn {
+    margin: 20px;
+    border: none;
+    background-color: white;
+    padding: 10px 30px;
+    box-shadow: 0px 0px 3px black;
+    border-radius: 20px;
+  }
