@@ -37,7 +37,7 @@ export default function AIUpload() {
     setLoading(true); // 로딩 시작
 
     try {
-      const response = await axios.post('http://localhost:8090/ms1/detect', formData, {
+      const response = await axios.post('http://teeput.synology.me:30112/ms1/detect', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
