@@ -22,7 +22,7 @@ const MailBox = () => {
 
     const fetchMails = async (token) => {
         try {
-            const response = await axios.get('http://localhost:8090/ms3/mailbox', { params: { token } });
+            const response = await axios.get('http://teeput.synology.me:30112/ms3/mailbox', { params: { token } });
             console.log(response.data); // 데이터를 잘 가져오는지 확인
             setMails(response.data);
         } catch (error) {

@@ -26,7 +26,7 @@ const Friends = () => {
 
     const fetchFriends = async (token) => {
         try {
-            const response = await axios.get('http://localhost:8090/ms3/friend', { params: { token } });
+            const response = await axios.get('http://teeput.synology.me:30112/ms3/friend', { params: { token } });
             setFriends(response.data);
         } catch (error) {
             console.error('친구 목록을 가져오는 중 오류가 발생했습니다:', error);
@@ -37,7 +37,7 @@ const Friends = () => {
 
     const fetchFriendRequests = async (token) => {
         try {
-            const response = await axios.get('http://localhost:8090/ms3/friend/request', { params: { token } });
+            const response = await axios.get('http://teeput.synology.me:30112/ms3/friend/request', { params: { token } });
             setReceivedRequests(response.data);
         } catch (error) {
             console.error('친구 요청을 가져오는 중 오류가 발생했습니다:', error);
@@ -47,7 +47,7 @@ const Friends = () => {
     const handleSearch = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:8090/ms3/friend/search', {
+            const response = await axios.get('http://teeput.synology.me:30112/ms3/friend/search', {
                 params: { query: searchQuery, token, userNickname },
             });
             const filteredResults = response.data.filter(result => {
@@ -76,7 +76,7 @@ const Friends = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:8090/ms3/friend/add', {
+            const response = await axios.post('http://teeput.synology.me:30112/ms3/friend/add', {
                 userNickname,
                 friendNickname,
                 status: 'pending'
@@ -105,7 +105,7 @@ const Friends = () => {
     const handleAcceptRequest = async (friendNickname) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.put('http://localhost:8090/ms3/friend/accept', {
+            const response = await axios.put('http://teeput.synology.me:30112/ms3/friend/accept', {
                 userNickname: friendNickname,
                 friendNickname: extractUserNicknameFromToken(token),
                 status: 'accepted'
@@ -131,7 +131,7 @@ const Friends = () => {
     const handleRejectRequest = async (friendNickname) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.delete('http://localhost:8090/ms3/friend/reject', {
+            const response = await axios.delete('http://teeput.synology.me:30112/ms3/friend/reject', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -156,7 +156,7 @@ const Friends = () => {
     const handleDeleteFriend = async (friendNickname) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.delete('http://localhost:8090/ms3/friend/delete', {
+            const response = await axios.delete('http://teeput.synology.me:30112/ms3/friend/delete', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
