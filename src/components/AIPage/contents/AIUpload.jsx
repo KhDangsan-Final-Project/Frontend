@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './css/AIUpload.module.css';
 
-export default function AIUpload({ token }) {
+export default function AIUpload() {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [responseData, setResponseData] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
+  const token = localStorage.getItem('token');
+  
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
@@ -29,12 +32,13 @@ export default function AIUpload({ token }) {
 
     const formData = new FormData();
     formData.append('image', file);
+    setLoading(true); // 로딩 시작
 
     try {
       const response = await axios.post('http://localhost:8090/ms1/detect', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}` // JWT 토큰을 헤더에 추가
+          'Authorization': `Bearer ${token}`
         }
       });
       if (response.status === 200) {
@@ -48,10 +52,11 @@ export default function AIUpload({ token }) {
       console.error('이미지 업로드 중 오류 발생:', error);
       setSuccess(false);
       setResponseData('이미지 업로드 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
   
-  console.log(token);
   return (
     <div className={styles.container}>
       <div>
@@ -68,9 +73,10 @@ export default function AIUpload({ token }) {
             이미지를 업로드 하세요!
           </label>
           <input type="file" id="file" className={styles.upload} onChange={handleFileChange} />
-          <button type="submit" className={styles.subBtn}>AI 카드 찾기</button>
+          {!loading && <button type="submit" className={styles.subBtn}>AI 카드 찾기</button>}
         </form>
-        {success && <h1>AI 인식에 성공했습니다!</h1>}
+        {loading && <p className={styles.loadingMessage}>기다려주세요...</p>} {/* 로딩 상태 메시지 추가 */}
+        {success && <h1 className={styles.successTitle}>AI 인식에 성공했습니다!</h1>}
         {responseData && (
           <div className={styles.result}>
             {responseData.detectedResult ? (

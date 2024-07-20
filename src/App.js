@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Battle from './components/BattlePage/contents/Battle';
-import FightContent from './components/BattlePage/contents/FightContent';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
 import Sidebar from './components/Menu/Sidebar/Sidebar';
-import MyPage from './components/MyPage/MyPage';
+import BoardPage from './components/BoardPage/BoardPage';
 import AIPage from './components/AIPage/AIPage';
+import MyPage from './components/MyPage/MyPage';
+import FightContent from './components/BattlePage/contents/FightContent';
+import Battle from './components/BattlePage/contents/Battle';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -34,13 +35,14 @@ function App() {
       {!hideMenuAndSidebar && <Menu token={token} logout={logout} />}
       {!hideMenuAndSidebar && <Sidebar token={token} logout={logout} />}
       <Routes>
-        <Route path="/" element={<MainPage token={token}/>} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/library" element={<LibraryPage token={token}/>} />
-        <Route path="/mypage" element={<MyPage token={token}/>} />
-        <Route path="/fight" element={<FightContent token={token}/>} />
-        <Route path="/battle" element={<Battle token={token}/>} />
-        <Route path="/ai" element={<AIPage token={token}/>} />
+        <Route path="/" element={<MainPage setToken={setToken} />} />
+        <Route path="/login" element={<LoginPage setToken={setToken} />} />
+        <Route path="/library" element={<LibraryPage setToken={setToken} />} />
+        <Route path="/board" element={<BoardPage setToken={setToken} />} />
+        <Route path="/ai" element={<AIPage setToken={setToken} />} />
+        <Route path="/mypage" element={<MyPage setToken={setToken} />} />
+        <Route path="/fight" element={<FightContent setToken={setToken} />} />
+        <Route path="/battle" element={<Battle setToken={setToken} />} />
       </Routes>
     </>
   );

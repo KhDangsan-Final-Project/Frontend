@@ -57,3 +57,17 @@
   margin-top: 30px;
   font-family: 'Ramche';
 }
+
+.successTitle {
+  font-family: 'Ramche';
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loadingMessage {
+  font-family: 'Ramche';
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+}

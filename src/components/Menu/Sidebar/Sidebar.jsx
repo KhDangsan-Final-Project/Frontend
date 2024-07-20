@@ -35,6 +35,7 @@ export default function Sidebar( {token, logout} ) {
             <li>
             <Link to="#" onClick={() => { handLinkClick(); logout(); }}>
                 로그아웃
+                로그아웃
             </Link>
         </li>
           ) : (
@@ -57,7 +58,7 @@ export default function Sidebar( {token, logout} ) {
             </Link>
           </li>
           <li>
-            <Link to={"/community"} className="nav-menu-list" onClick={handLinkClick}>
+            <Link to={"/boardmain"} className="nav-menu-list" onClick={handLinkClick}>
               커뮤니티
             </Link>
           </li>
