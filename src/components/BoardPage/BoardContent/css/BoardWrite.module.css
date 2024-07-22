@@ -12,18 +12,9 @@
 	width: 800px;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-.button{
-    color: #000000;
-    border: 1px solid #bababa;
-    border-radius: 20px;
-}
-.button:hover{
-    background-color: white;
-}
-.button:focus{
-    outline: none;
+	background-color: #f3f3f3;
+	padding: 20px;
+	border-radius: 20px;
 }
 
 .ck-content {
@@ -162,6 +153,55 @@
 	background: #dddfe0;
 	color: #000;
 	box-shadow: 5px 5px 0 #b3b3b3;
+}
+
+.header{
+	display: flex;
+	flex-flow: row nowrap;
+	padding: 10px;
+}
+.category select{
+	padding-left: 10px;
+	height: 30px;
+	border: none;
+	background: transparent;
+}
+
+.category select:focus{
+	outline: none;
+}
+
+.title{
+	width: 100%;
+	height: 30px;
+	border: 1px solid #dddfe0;
+	padding: 20px 10px;
+}
+
+.title:focus{
+	outline: none;
+}
+
+.button{
+	color: #000000;
+	border: 1px solid #bababa;
+	border-radius: 20px;
+	transition: background-color 0.3s, color 0.3s;
+}
+.button:hover{
+	background-color: white;
+}
+.button:focus{
+	outline: none;
+}
+
+.button-disabled {
+color: #a9a9a9;
+border: 1px solid #d3d3d3;
+cursor: not-allowed;
+}
+.button-disabled:hover {
+background-color: #f5f5f5;
 }
 
 @media (max-width: 799px){

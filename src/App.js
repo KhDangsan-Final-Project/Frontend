@@ -1,9 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Battle from './components/fightpage/contents/Battle';
-import FightContent from './components/fightpage/contents/FightContent';
-import Encyclopedia from './components/encyclopediapage/contents/EncyclopediaContent';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
@@ -41,9 +38,6 @@ function App() {
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/fight" element={<FightContent />} />
-        <Route path="/battle" element={<Battle />} />
-        <Route path="/encyclopedia" element={<Encyclopedia />} />
         <Route path="/boardMain" element={<BoardPage/>}/>
         <Route path="/boardList" element={<BoardList/>}/>
       </Routes>

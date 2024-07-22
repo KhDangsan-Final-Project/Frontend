@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 
 import {
@@ -56,19 +56,16 @@ import {
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
-
-import styles from './css/BoardWrite.module.css'
 import './css/Ckeditor.css'
+import styles from './css/BoardWrite.module.css'
 
-export default function BoardWrite({ showBoard }) {
+export default function BoardWrite({showBoard}) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
 
     useEffect(() => {
         setIsLayoutReady(true);
-
-        return () => setIsLayoutReady(false);
     }, []);
 
     const editorConfig = {
@@ -300,71 +297,89 @@ export default function BoardWrite({ showBoard }) {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         }
     };
-    const [editorData, setEditorData] = useState('');
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        
-        const formData = JSON.stringify({
-            boardTitle: "제목",  // 제목 필드를 추가하세요
-            content: editorData
-        });
+    const [category,setCategory] =useState("게시판을 선택하세요");
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     
-        fetch("http://localhost:8090/ms3/board/write", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8',
-            },
-            credentials: 'include'
-        }).then(response => {
-            if (!response.ok) {
-                if (response.status === 401) {
-                    throw new Error('로그인이 필요합니다.');
-                } else {
-                    throw new Error('Network response was not ok');
-                }
-            }
-            return response.json();
-        }).then(result => {
-            console.log(result);
-            // 성공 시 처리 로직
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // 오류 시 처리 로직 (예: 로그인 페이지로 리디렉션)
-            alert(error.message);
-            if (error.message === '로그인이 필요합니다.') {
-                window.location.href = "/login";
-            }
-        });
-    }
-    
+    useEffect(() => {
+        setIsSubmitDisabled(!title || !content);
+    }, [title, content]);
 
-    function cancel() {
+    
+    function cancel(){
         showBoard();
     }
+
+    function handleCategoryChange(e) {
+        setCategory(e.target.value);
+    }
+
+    function handleTitleChange(e) {
+        setTitle(e.target.value);
+    }
+
+    const handleContentChange = (event, editor) => {
+        const data = editor.getData();
+        setContent(data);
+      };
+
+
+    function handleSubmitContent(e){
+        e.preventDefault();
+        const formData = JSON.stringify({
+            category,
+            title,
+            content
+        });
+
+        fetch("http/teeput.synology.me:30112/ms1/board/upload", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+        },
+        credentials: 'include'
+    }).then(response =>{
+        return response.json();
+    }).then(result =>{
+        console.log(result);
+    })
+    .catch(error => console.error('Error:', error));
+}
     return (
         <div>
             <div className={styles.main_container}>
-                <form onSubmit={handleSubmit}>
-                    <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
-                        <div className={styles.editor_container__editor}>
-                            <div ref={editorRef}>{isLayoutReady && ( <CKEditor
-                                    editor={ClassicEditor}
-                                    config={editorConfig}
-                                    data={editorData}
-                                    onChange={(event, editor) => {
-                                        const data = editor.getData();
-                                        setEditorData(data);
-                                    }} />
-                            )}</div>
+                <form onSubmit={handleSubmitContent}>
+                <div className={styles.header}>
+                    <h5>글쓰기</h5>
+                    <span className={styles.category}>
+                        <select name="category" value={category} onChange={handleCategoryChange}>
+                            <option value="자유게시판">자유게시판</option>
+                            <option value="공지사항">공지사항</option>
+                            <option value="이벤트">이벤트</option>
+                        </select>
+                    </span>
+                </div>
+                    <input type='text' className={styles.title} value={title} onChange={handleTitleChange} placeholder='제목을 입력해주세요' />
+                <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
+                    <div className={styles.editor_container__editor}>
+                        <div ref={editorRef} value={content} onChange={handleContentChange}>
+                            {isLayoutReady &&
+                             <CKEditor 
+                                editor={ClassicEditor}
+                                data={content} 
+                                config={editorConfig} 
+                                onChange={handleContentChange}/>
+                            }
                         </div>
                     </div>
-                    <div className='asd'>
-                        <button type="submit" id="submit" className={styles.button}>글쓰기</button>
-                        <button type="reset" className={styles.button} onClick={cancel}>취소</button>
-                    </div>
+                </div>
+                <div>
+                <button type="submit" id="submit" disabled={isSubmitDisabled}
+                    className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
+                    <button type="reset" className={styles.button} onClick={cancel}>취소</button>
+                </div>
                 </form>
             </div>
         </div>
