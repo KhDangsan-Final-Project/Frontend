@@ -22,11 +22,11 @@ export default function Menu({ token, logout }) {
 
         <div className={styles.container}>
             <ul>
-                <li className={styles.navi}><Link to="/library">라이브러리</Link></li>
-                <li className={styles.navi}><Link to="/fight" target="_blank" rel="noopener noreferrer">게임</Link></li>
-                <li className={styles.navi}><a href="#">AI카드</a></li>
+                <li><Link to="/library">라이브러리</Link></li>
+                <li><Link to="/fight" target="_blank" rel="noopener noreferrer">게임</Link></li>
+                <li><Link to="/ai">AI카드</Link></li>
                 <Link to="/"><img src="/img/poke.png" className={styles.menuimg} /></Link>
-                <li className={styles.navi}><Link to="search">커뮤니티</Link></li>
+                <li><Link to="/boardmain">커뮤니티</Link></li>
                 {isLoggedIn ? (
                     <li><Link to="/mypage" className={styles.navi}>마이페이지</Link></li>
                 ) : (

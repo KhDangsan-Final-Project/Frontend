@@ -1,14 +1,11 @@
 import React from 'react';
 import usePokemonCards from './hook/usePokemonCards';
 import styles from './css/PokemonCardSlider.module.css';
-import Loading from '../../Loading/Loading';
 
+//------------------------------------------------폐기--------------------------------------------------
 const PokemonCardSlider = () => {
-  const { cards, loading } = usePokemonCards();
+  const { cards, card } = usePokemonCards();
 
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <div className={styles.container}>

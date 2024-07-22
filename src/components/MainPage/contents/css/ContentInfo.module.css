@@ -1,0 +1,84 @@
+.container {
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    padding: 150px 50px;
+}
+
+.container::before, .container::after {
+    content: '';
+    position: absolute;
+    background: url(https://capsule-render.vercel.app/api?type=waving&color=auto&height=220&section=header&!&descAlignY=51&descAlign=62);
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.container::before {
+    background-size: cover;
+    transform: scaleY(-1);
+    top: -133px;
+}
+
+.container::after {
+    bottom: -133px;
+    background-size: cover;
+}
+
+.title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.features {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.featureItem {
+    display: flex;
+    flex-flow: row wrap;
+    width: 38%;
+    text-align: center;
+    border-radius: 10px;
+    margin: 0 3%;
+    align-items: center;
+}
+
+.featureItemIndex {
+    display: flex;
+    flex-flow: row wrap;
+    width: 75%;
+}
+
+.featureImg {
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    object-fit: cover;
+    box-shadow: 0px 0px 5px black;
+}
+
+.featureTitle, .featureDescription {
+    text-shadow: 0px 0px 3px black;
+    font-family: 'Bazzi';
+}
+
+.featureTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.featureDescription {
+    font-size: 1rem;
+}

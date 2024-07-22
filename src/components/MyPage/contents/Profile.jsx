@@ -27,7 +27,7 @@ export default function Profile() {
       return;
     }
 
-    axios.get('http://localhost:8090/ms3/mypage', { params: { token } })
+    axios.get('http://teeput.synology.me:30112/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
           setUserData(response.data);
@@ -82,7 +82,7 @@ export default function Profile() {
     }
 
     try {
-      const response = await axios.put('http://localhost:8090/ms3/mypage/update', userData, {
+      const response = await axios.put('http://teeput.synology.me:30112/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
