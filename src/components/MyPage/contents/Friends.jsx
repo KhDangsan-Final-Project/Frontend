@@ -46,7 +46,7 @@ const Friends = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get('http://teeput.synology.me:30112/ms3/friend/search', {
-                params: { query: searchQuery, token, userNickname },
+                params: { query: searchQuery, token: token },
             });
             console.log('검색 결과:', response.data); // 응답 데이터 구조 확인
             const filteredResults = response.data.filter(result => {
@@ -76,9 +76,9 @@ const Friends = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:8090/ms3/friend/add', {
-                userNickname,
-                friendNickname,
+            const response = await axios.post('http://teeput.synology.me:30112/ms3/friend/add', {
+                userId,
+                friendId,
                 status: 'pending'
             }, {
                 headers: {
@@ -105,9 +105,9 @@ const Friends = () => {
     const handleAcceptRequest = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.put('http://localhost:8090/ms3/friend/accept', {
-                userNickname: friendNickname,
-                friendNickname: extractUserNicknameFromToken(token),
+            const response = await axios.put('http://teeput.synology.me:30112/ms3/friend/accept', {
+                userId: friendId,
+                friendId: extractUserIdFromToken(token),
                 status: 'accepted'
             }, {
                 headers: {
@@ -177,6 +177,7 @@ const Friends = () => {
             console.error('친구를 삭제하는 중 오류가 발생했습니다:', error);
         }
     };
+    
 
     const extractUserIdFromToken = (token) => {
         try {
@@ -221,7 +222,7 @@ const Friends = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className={styles.searchInput}
                         />
-                        <button onClick={handleSearch} className={styles.searchButton}>검색</button>
+                        <button onClick={handleSearch} className={styles.button}>검색</button>
                     </div>
                     <ul className={styles.results}>
                         {searchResults.length > 0 ? (
