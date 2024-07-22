@@ -48,6 +48,7 @@ const Friends = () => {
             const response = await axios.get('http://localhost:8090/ms3/friend/search', {
                 params: { query: searchQuery, token: token },
             });
+            console.log('검색 결과:', response.data); // 응답 데이터 구조 확인
             const filteredResults = response.data.filter(result => {
                 return result.id !== userId && // 자신을 제외
                        !friends.some(friend => friend.friendId === result.id || friend.userId === result.id) && // 이미 친구 상태를 제외
@@ -227,7 +228,7 @@ const Friends = () => {
                             searchResults.map(result => (
                                 <li key={result.id} className={styles.resultItem}>
                                     <div className={styles.resultInfo}>
-                                        {result.Id}({result.nickname})
+                                        {result.id} ({result.nickname})
                                     </div>
                                     <button onClick={() => handleAddFriend(result.id)} className={styles.button}>친구 추가</button>
                                 </li>
