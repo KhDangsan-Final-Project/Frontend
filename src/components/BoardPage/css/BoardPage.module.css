@@ -1,17 +1,23 @@
 .container {
-    background-image: url('/public/img/backgroundImg.jpg');
+    width: 100%;
+    background: radial-gradient(circle at 20% 40%, rgba(255, 182, 193, 0.6), transparent),
+                radial-gradient(circle at 80% 60%, rgba(173, 216, 230, 0.6), transparent),
+                radial-gradient(circle at 50% 70%, rgba(154, 223, 239, 0.6), transparent);
+    background-repeat: repeat;
     background-size: cover;
     background-position: center;
-    min-height: 105vh;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-
 }
 
 @media (min-width: 320px) {
     .container{
         min-height: 120vh;
     }
+}
+
+.jump {
+    height: 500px;
+}
+
+.jumpUp {
+    height: 120vh;
 }

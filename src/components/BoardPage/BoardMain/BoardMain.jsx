@@ -1,13 +1,26 @@
 import styles from './css/BoardMain.module.css'
 import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
 
-export default function BoardMain({ showWrite }) {
+export default function BoardMain({ showWrite, token }) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const write = () => {
         showWrite();
     };
 
-   
+    useEffect(() => {
+        if (token) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      }, [token]);
+
+
+    const alertMsg = () =>{
+        alert("로그인 후 이용해주시기 바랍니다.");
+      };
 
     return (
         <div className={styles.container}>
@@ -18,8 +31,11 @@ export default function BoardMain({ showWrite }) {
             <div className={styles.option}>
                 <Link to={'/boardList'} className={styles.moreView}>더보기</Link>
                 <div className={styles.write}>
-                    <button className={styles.writeBtn} onClick={write}>글쓰기</button>
-                </div>
+                {isLoggedIn ? (
+                        <button className={styles.writeBtn} onClick={write}>글쓰기</button>
+                    ) : (
+                        <button className={styles.writeBtn}><Link to="/login" onClick={alertMsg}>글쓰기</Link></button>
+                    )}</div>
             </div>
             <hr />
             <section>

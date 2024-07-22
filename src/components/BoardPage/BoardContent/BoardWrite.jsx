@@ -348,7 +348,6 @@ export default function BoardWrite({showBoard}) {
     .catch(error => console.error('Error:', error));
 }
     return (
-        <div>
             <div className={styles.main_container}>
                 <form onSubmit={handleSubmitContent}>
                 <div className={styles.header}>
@@ -382,6 +381,5 @@ export default function BoardWrite({showBoard}) {
                 </div>
                 </form>
             </div>
-        </div>
     );
 }

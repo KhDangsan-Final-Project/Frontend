@@ -11,15 +11,13 @@ export default function Login({ setToken, showRegister }) {
     password: ''
   });
   const [isRemember, setIsRemember] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserId"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserAccount"]);
   const [error, setError] = useState('');
 
   useEffect(() =>{
-    if (cookies.rememberUserId !== undefined){
-      setFormData({ ...formData, 
-        id: cookies.rememberUserId, 
-        password: cookies.rememberUserPassword
-      });
+    if (cookies.rememberUserAccount !== undefined){
+      setFormData({ ...formData, id: cookies.rememberUserAccount});
+   //   setFormData({ ...formData, password: cookies.rememberUserAccount});
       setIsRemember(true);
     }
   }, []);
@@ -27,11 +25,10 @@ export default function Login({ setToken, showRegister }) {
   const handleOnChange = (e) => {
     setIsRemember(e.target.checked);
     if(e.target.checked){
-      setCookie("rememberUserId", formData.id, {maxAge: 2000});
-      setCookie("rememberUserPassword", formData.password, {maxAge: 2000});
+      setCookie("rememberUserAccount", formData.id, {maxAge: 2000});
+    //  setCookie("rememberUserAccount", formData.password, {maxAge: 2000});
     } else {
-      removeCookie("rememberUserId");
-      removeCookie("rememberUserPassword");
+      removeCookie("rememberUserAccount");
     }
   };
 
@@ -54,7 +51,8 @@ export default function Login({ setToken, showRegister }) {
     try {
       const response = await axios.post('http://teeput.synology.me:30112/ms3/user/select', formData);
       if (response.data.result) {
-        alert('로그인 성공');
+        alert(response.data.msg);
+        
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
         navigate('/');
@@ -98,7 +96,7 @@ export default function Login({ setToken, showRegister }) {
                 <input type="checkbox" id="check1" className={styles.checkbox} onChange={handleOnChange} checked={isRemember} />
                 </label>
             </div>
-            <a href="#" className={styles.searchPS}>비밀번호 찾기</a>
+            <a href="/password-reset-request" className={styles.searchPS}>비밀번호 찾기</a>
           </div>
           <div className={`${styles.error} ${error ? styles.visible : styles.hidden}`}>{error}</div>
           <button type="submit" className={styles.btn_login}>Login</button>

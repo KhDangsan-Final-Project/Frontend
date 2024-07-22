@@ -35,35 +35,36 @@ export default function Sidebar( {token, logout} ) {
             <li>
             <Link to="#" onClick={() => { handLinkClick(); logout(); }}>
                 로그아웃
+                로그아웃
             </Link>
         </li>
           ) : (
             <li><Link to="/login" onClick={handLinkClick}>로그인</Link></li>
           )}
           {isLoggedIn ? (
-            <li><Link to="/mypage" onClick={handLinkClick}>내 정보</Link></li>
+            <li><Link to="/mypage" onClick={handLinkClick}>마이페이지</Link></li>
           ) : (
-            <li><Link to="/login" onClick={handLinkClick}>내 정보</Link></li>
+            <li><Link to="/login" onClick={handLinkClick}>마이페이지</Link></li>
           )}
 
           <li>
-            <Link to={"/Library"} className="nav-menu-list" onClick={handLinkClick}>
+            <Link to={"/library"} className="nav-menu-list" onClick={handLinkClick}>
               라이브러리
             </Link>
           </li>
           <li>
-            <Link to={"/Card"} className="nav-menu-list" onClick={handLinkClick}>
-              카드
+            <Link to={"/ai"} className="nav-menu-list" onClick={handLinkClick}>
+              AI카드
             </Link>
           </li>
           <li>
-            <Link to={"/Search"} className="nav-menu-list" onClick={handLinkClick}>
-              검색
+            <Link to={"/boardmain"} className="nav-menu-list" onClick={handLinkClick}>
+              커뮤니티
             </Link>
           </li>
           <li>
-            <Link to={"/boardMain"} className="nav-menu-list" onClick={handLinkClick}>
-              게시판
+            <Link to={"/game"} className="nav-menu-list" onClick={handLinkClick}>
+              게임
             </Link>
           </li>
         </ul>

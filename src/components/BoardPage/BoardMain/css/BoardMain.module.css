@@ -16,7 +16,7 @@
     padding: 30px 40px;
     backdrop-filter: blur(15px);
     box-shadow: 0 0 10px black;
-
+    background-color: white;
 }
 
 .container section article {
@@ -119,6 +119,10 @@
 
 .writeBtn:hover {
     background-color: #ffffff;
+}
+
+.writeBtn a {
+    padding: 0;
 }
 
 @media (max-width: 799px) {

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import usePokemonCards from './hook/usePokemonCards';
 import usePokemonDetails from './hook/usePokemonDetails';
 import styles from './css/Encyclopedia.module.css';
@@ -10,7 +11,7 @@ import Card from './Card';
 
 const fetchPokemonIdByName = async (name) => {
     try {
-        const response = await axios.get(`http://localhost:8090/ms2/pokemon/search?koreanName=${name}`);
+        const response = await axios.get(`http://teeput.synology.me:30112/ms2/pokemon/search?koreanName=${name}`);
         if (response.data.length > 0) {
             console.log(response.data[0].id);
             return response.data[0].id;
@@ -25,6 +26,10 @@ const fetchPokemonIdByName = async (name) => {
 };
 
 export default function Encyclopedia() {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const searchQuery = queryParams.get('search');
+
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedType, setSelectedType] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +37,13 @@ export default function Encyclopedia() {
     const [pokemonId, setPokemonId] = useState(null);
     const { pokemonCards, loading: cardsLoading, totalPages } = usePokemonCards(currentPage, selectedType, pokemonId);
     const { pokemonDetails, loading: detailsLoading } = usePokemonDetails(pokemonCards);
+
+    useEffect(() => {
+        if (searchQuery) {
+            setSearchTerm(searchQuery);
+            fetchPokemonIdByName(searchQuery).then(setPokemonId).catch(console.error);
+        }
+    }, [searchQuery]);
 
     const handleNextPage = () => setCurrentPage((prevPage) => prevPage + 1);
     const handlePreviousPage = () => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -73,7 +85,7 @@ export default function Encyclopedia() {
                     className={styles.searchInput}
                 />
                 <button type="submit" className={styles.searchButton}>
-                    <FontAwesomeIcon icon={faSearch} />
+                    <FontAwesomeIcon icon={faSearch} className={styles.search_i}/>
                 </button>
             </form>
             <div className={styles.typeContainer}>
@@ -109,8 +121,12 @@ export default function Encyclopedia() {
                 </div>
             )}
             <div className={styles.pagination}>
-                <button onClick={handlePreviousPage} disabled={currentPage === 1}>이전</button>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages}>다음</button>
+                {!pokemonId && (
+                    <>
+                        <button onClick={handlePreviousPage} disabled={currentPage === 1} className={styles.btn}>이전</button>
+                        <button onClick={handleNextPage} disabled={currentPage === totalPages} className={styles.btn}>다음</button>
+                    </>
+                )}
             </div>
         </div>
     );

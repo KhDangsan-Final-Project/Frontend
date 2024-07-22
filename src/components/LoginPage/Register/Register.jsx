@@ -63,7 +63,7 @@ export default function Register( {showLoginComponent} ) {
     const handleIdCheck = async(e) => {
         e.preventDefault();
         try{
-            const response = await axios.post("http://localhost:8090/ms3/user/idcheck", JSON.stringify({ id }),{
+            const response = await axios.post("http://teeput.synology.me:30112/ms3/user/idcheck", JSON.stringify({ id }),{
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8',
                 }

@@ -6,9 +6,12 @@ import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
 import Menu from './components/Menu/Menu';
 import Sidebar from './components/Menu/Sidebar/Sidebar';
-import MyPage from './components/MyPage/MyPage';
 import BoardPage from './components/BoardPage/BoardPage';
+import AIPage from './components/AIPage/AIPage';
+import MyPage from './components/MyPage/MyPage';
 import Scroll from './components/Menu/Scroll/Scroll';
+// import Chat from './components/BattlePage/contents/Chat';
+// import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 import BoardList from './components/BoardPage/BoardContent/BoardList';
 
 function App() {
@@ -37,11 +40,15 @@ function App() {
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/boardmain" element={<BoardPage setToken={setToken} />} />
+        <Route path="/ai" element={<AIPage setToken={setToken} />} />
+        <Route path="/mypage" element={<MyPage setToken={setToken} />} />
+        {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
+        {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
         <Route path="/boardMain" element={<BoardPage/>}/>
         <Route path="/boardList" element={<BoardList/>}/>
       </Routes>
-        <Scroll/>
+      <Scroll />
     </>
   );
 }
