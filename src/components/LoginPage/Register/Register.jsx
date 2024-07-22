@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './css/Register.module.css';
 import axios from 'axios';
 
-export default function Register( {showLoginComponent} ) {
+export default function Register( {showLogin} ) {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -55,9 +55,7 @@ export default function Register( {showLoginComponent} ) {
         setNickname(e.target.value);
     }
 
-    function handleCancelClick(){
-        showLoginComponent();
-    }
+    
 
     
     const handleIdCheck = async(e) => {
@@ -161,7 +159,7 @@ export default function Register( {showLoginComponent} ) {
                                 <input type="text" value={nickname} onChange={handleNicknameChange} placeholder="닉네임을 입력해주세요" />
                             </div>
                             <button type="submit" id="submit" className={styles.btn_submit}>Submit</button>
-                            <button type="reset" className={styles.btn_cancel} onClick={handleCancelClick}>Cancel</button>
+                            <button type="reset" className={styles.btn_cancel} onClick={showLogin}>Cancel</button>
                         </form>
                     </div>
                 </div>
