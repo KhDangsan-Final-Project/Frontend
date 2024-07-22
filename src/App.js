@@ -44,8 +44,8 @@ function App() {
         <Route path="/boardmain" element={<BoardPage setToken={setToken} />} />
         <Route path="/ai" element={<AIPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
-        <Route path="/fight" element={<FightContent setToken={setToken} />} />
-        <Route path="/battle" element={<Battle setToken={setToken} />} />
+        <Route path="/fight" element={<FightContent token={token} />} />
+        <Route path="/battle" element={<Battle token={token} />} />
         {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
         {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
       </Routes>

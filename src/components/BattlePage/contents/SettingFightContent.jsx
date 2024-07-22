@@ -22,7 +22,8 @@ function SettingFightContent({ token }) {
           setUserInfo({
             id: data.id,
             nickname: data.nickname,
-            grantNo: data.grantNo  // grantNo 값을 포함하도록 수정
+            grantNo: data.grantNo, // grantNo 값을 포함하도록 수정
+            matchWin : data.matchWin
           });
         } catch (error) {
           console.error('Error parsing message:', error);
@@ -72,7 +73,7 @@ function SettingFightContent({ token }) {
             <>
               <p className={styles.nick}>Nickname:<br/> {userInfo.nickname}</p>
               <p className={styles.ptag}>"</p>
-              <p className={styles.victory}>ID:<br/> {userInfo.id}</p>
+              <p className={styles.victory}>Victory:<br/> {userInfo.matchWin}</p>
             </>
           ) : (
             <p>Loading...</p>
