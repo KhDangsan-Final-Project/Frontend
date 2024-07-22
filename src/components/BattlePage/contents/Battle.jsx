@@ -1,10 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
 import SettingContainer from './SettingFightContent';
 import usePokemonBattle from './hooks/useBattle';
 import Chat from './Chat';
-
 
 function Battle({ token }) {
     const {
@@ -20,7 +18,18 @@ function Battle({ token }) {
         runBtn
     } = usePokemonBattle();
 
+    const [showPokemon, setShowPokemon] = useState({
+        enemy: [],
+        selected: []
+    });
 
+    useEffect(() => {
+        // 필터링하여 제거된 포켓몬 제외
+        setShowPokemon({
+            enemy: enemyPokemon.filter(pokemon => !pokemon.isRemoved),
+            selected: selectedPokemon.filter(pokemon => !pokemon.isRemoved)
+        });
+    }, [enemyPokemon, selectedPokemon]);
 
     const getTypeLogo = (type) => `/img/types/${type}.png`;
 
@@ -45,8 +54,8 @@ function Battle({ token }) {
         <div className={styles.App}>
             <div className={styles.stage}>
                 <div className={styles.enemyContainer}>
-                    {enemyPokemon.length > 0 ? (
-                        enemyPokemon.map((pokemon, index) => (
+                    {showPokemon.enemy.length > 0 ? (
+                        showPokemon.enemy.map((pokemon) => (
                             <div
                                 key={pokemon.id}
                                 className={`${styles.pokemonCard} ${selectedEnemy && selectedEnemy.id === pokemon.id ? styles.selected : ''}`}
@@ -91,9 +100,9 @@ function Battle({ token }) {
                     <div className={styles.vs}></div>
                 </div>
                 <div className={styles.selectedPokemonContainer}>
-                    {selectedPokemon.length > 0 ? (
-                        selectedPokemon.map((pokemon, index) => (
-                            <div key={pokemon.id} className={styles.pokemonCard}>
+                    {showPokemon.selected.length > 0 ? (
+                        showPokemon.selected.map((pokemon) => (
+                            <div key={pokemon.id} className={`${styles.pokemonCard}`}>
                                 <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} className={styles.myCard} />
                                 <div className={styles.pokemonCardInfo}>
                                     <div className={styles.types}>
@@ -133,9 +142,8 @@ function Battle({ token }) {
             <div className={styles.footer}>
                 <SettingContainer token={token}/>
                 <div className={styles.margin}>
-                 
-                          <Chat/>
-                            </div>
+                    <Chat token={token}/> {/* 토큰을 Chat 컴포넌트로 전달 */}
+                </div>
                 <SettingContainer token={token}/>
                 <div className={styles.menu}>
                     <button onClick={handleFightClick}>Fight</button>
@@ -145,6 +153,6 @@ function Battle({ token }) {
             </div>
         </div>
     );
-};
+}
 
 export default Battle;
