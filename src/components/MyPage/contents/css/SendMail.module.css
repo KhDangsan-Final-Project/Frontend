@@ -1,0 +1,27 @@
+.container {
+  padding: 20px;
+  height: 1000px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.input  {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  height: 500px;
+}
+
+.sendButton, .cancelButton {
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}

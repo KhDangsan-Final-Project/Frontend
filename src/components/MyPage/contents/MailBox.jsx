@@ -1,91 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from './css/MailBox.module.css'; // CSS 파일을 미리 준비해 주세요
+import styles from './css/MailBox.module.css';
+import Loading from '../../Loading/Loading';
+import SendMail from './SendMail';
 
-const MailBox = () => {
-    const [mails, setMails] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [userId, setUserId] = useState('');
+export default function MailBox() {
+  const [loading, setLoading] = useState(true);
+  const [mails, setMails] = useState([]);
+  const [showCompose, setShowCompose] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error("토큰이 없습니다.");
-            setLoading(false);
-            return;
-        }
-        const id = extractUserIdFromToken(token);
-        setUserId(id);
-        fetchMails(token);
-    }, []);
-
-    const fetchMails = async (token) => {
-        try {
-            const response = await axios.get('http://teeput.synology.me:30112/ms3/mailbox', { params: { token } });
-            console.log(response.data); // 데이터를 잘 가져오는지 확인
-            setMails(response.data);
-        } catch (error) {
-            console.error('메일을 가져오는 중 오류가 발생했습니다:', error);
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const extractUserIdFromToken = (token) => {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            const decodedToken = JSON.parse(jsonPayload);
-            return decodedToken.sub;
-        } catch (error) {
-            console.error('토큰을 디코딩하는 중 오류가 발생했습니다:', error);
-            return null;
-        }
-    };
-
-    if (loading) {
-        return <div className={styles.loading}>로딩 중...</div>;
+  const fetchMails = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("토큰이 없습니다.");
+      setLoading(false);
+      return;
     }
 
-    if (error) {
-        return (
-            <div>
-                <h1>Error</h1>
-                <p>{error.message}</p>
-                {error.response && <pre>{JSON.stringify(error.response.data, null, 2)}</pre>}
-            </div>
-        );
+    try {
+      const response = await axios.get('http://localhost:8090/ms3/mail', { params: { token } });
+      if (response.data && response.data.result) {
+        setMails(response.data.result);
+      } else {
+        console.error("서버에서 데이터를 가져오지 못했습니다.");
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("메일 데이터를 가져오는 중 오류가 발생했습니다!", error);
+      setLoading(false);
     }
+  };
 
-    return (
-        <div className={styles.container}>
-            <h2 className={styles.title}>메일함</h2>
-            <div className={styles.mailContainer}>
-                {mails.length > 0 ? (
-                    mails.map((mail) => (
-                        <div key={mail.id} className={styles.mailCard}>
-                            <div className={styles.mailHeader}>
-                                <h3 className={styles.mailSubject}>{mail.subject}</h3>
-                                <p className={styles.mailTimestamp}>{new Date(mail.timestamp).toLocaleString()}</p>
-                            </div>
-                            <div className={styles.mailBody}>
-                                <p><strong>From:</strong> {mail.sender}</p>
-                                <p><strong>To:</strong> {mail.receiver}</p>
-                                <p>{mail.content}</p>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p>받은 메일이 없습니다</p>
-                )}
-            </div>
-        </div>
-    );
-};
+  useEffect(() => {
+    fetchMails();
+  }, []);
 
-export default MailBox;
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (showCompose) {
+    return <SendMail onMailSent={() => {
+      setShowCompose(false);
+      fetchMails();
+    }} />;
+  }
+
+  return (
+    <div className={styles.container}>
+      <h2 className={styles.title}>받은 메일함</h2>
+      <button onClick={() => setShowCompose(true)} className={styles.sendMail}>메일 쓰기</button>
+      {mails.length > 0 ? (
+        <ul className={styles.mailList}>
+          {mails.map((mail, index) => (
+            <li key={index} className={styles.mailItem}>
+              <div className={styles.mailDetail}>
+                <div>보낸 사람: {mail.sender}</div>
+                <div>제목: {mail.subject}</div>
+                <div>내용: {mail.content}</div>
+                <div>받은 시간: {mail.timestamp ? new Date(mail.timestamp).toLocaleString() : '알 수 없음'}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>메일이 없습니다.</p>
+      )}
+    </div>
+  );
+}
