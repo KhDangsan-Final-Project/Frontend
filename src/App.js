@@ -12,6 +12,7 @@ import MyPage from './components/MyPage/MyPage';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
 import Scroll from './components/Menu/Scroll/Scroll';
+import Chat from './components/BattlePage/contents/Chat';
 // import Chat from './components/BattlePage/contents/Chat';
 // import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 
@@ -46,7 +47,7 @@ function App() {
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
         <Route path="/fight" element={<FightContent token={token} />} />
         <Route path="/battle" element={<Battle token={token} />} />
-        {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
+         <Route path="/chat" element={<Chat token={token}/>}/>
         {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
       </Routes>
       <Scroll />
