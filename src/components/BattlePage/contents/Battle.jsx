@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
-import SettingContainer from './SettingFightContent';
-import usePokemonBattle from './hooks/useBattle';
+import SettingContainer from './UserInfoFightContent';
+import useBattle from './hooks/useBattle';
 import Chat from './Chat';
 
 function Battle({ token }) {
+    // 예시로 방 ID를 하드코딩했지만, 실제로는 방 ID를 사용자로부터 입력받거나 생성된 방 ID를 받아야 합니다.
+    const roomId = 'room1'; 
     const {
         selectedPokemon,
         enemyPokemon,
@@ -16,7 +18,7 @@ function Battle({ token }) {
         toggleSmallImages,
         selectEnemyPokemon,
         runBtn
-    } = usePokemonBattle();
+    } = useBattle(roomId);
 
     const [showPokemon, setShowPokemon] = useState({
         enemy: [],
@@ -24,7 +26,6 @@ function Battle({ token }) {
     });
 
     useEffect(() => {
-        // 필터링하여 제거된 포켓몬 제외
         setShowPokemon({
             enemy: enemyPokemon.filter(pokemon => !pokemon.isRemoved),
             selected: selectedPokemon.filter(pokemon => !pokemon.isRemoved)
@@ -139,17 +140,10 @@ function Battle({ token }) {
                     )}
                 </div>
             </div>
-            <div className={styles.footer}>
-                <SettingContainer token={token}/>
-                <div className={styles.margin}>
-                    <Chat token={token}/> {/* 토큰을 Chat 컴포넌트로 전달 */}
-                </div>
-                <SettingContainer token={token}/>
-                <div className={styles.menu}>
-                    <button onClick={handleFightClick}>Fight</button>
-                    <button onClick={runBtn}>Run</button>
-                    <button onClick={toggleSmallImages}>Toggle Small Images</button>
-                </div>
+            <div className={styles.buttons}>
+                <button onClick={handleFightClick}>전투 시작</button>
+                <button onClick={toggleSmallImages}>Toggle Image Size</button>
+                <button onClick={runBtn}>도망가기</button>
             </div>
         </div>
     );

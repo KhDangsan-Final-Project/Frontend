@@ -1,58 +1,88 @@
 import { useState, useEffect } from 'react';
 
-const useBattle = () => {
+const useBattle = (roomId) => {
   const [selectedPokemon, setSelectedPokemon] = useState([]);
   const [enemyPokemon, setEnemyPokemon] = useState([]);
   const [showAttacks, setShowAttacks] = useState(false);
   const [useSmallImages, setUseSmallImages] = useState(false);
   const [selectedEnemy, setSelectedEnemy] = useState(null);
   const [enemyHP, setEnemyHP] = useState(0);
+  const [webSocket, setWebSocket] = useState(null);
 
   useEffect(() => {
-    const storedPokemon = JSON.parse(localStorage.getItem('selectedPokemon')) || [];
-    const storedEnemyPokemon = JSON.parse(localStorage.getItem('enemyPokemon')) || [];
-    const removedPokemons = JSON.parse(localStorage.getItem('removedPokemons')) || [];
+    const ws = new WebSocket('ws://192.168.20.54:8090/ms2/battle');
+    setWebSocket(ws);
 
-    const updatePokemons = (pokemons) => {
-      return pokemons.map(pokemon => ({
-        ...pokemon,
-        isRemoved: removedPokemons.includes(pokemon.id)
-      }));
+    ws.onopen = () => {
+      console.log('useBattle Connected to WebSocket');
+      ws.send(JSON.stringify({ type: 'JOIN_ROOM', roomId }));
     };
 
-    setSelectedPokemon(updatePokemons(storedPokemon));
-    setEnemyPokemon(updatePokemons(storedEnemyPokemon));
-  }, []);
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log('Received data:', data);
+        if (data.type === 'UPDATE_BATTLE') {
+          updateBattleState(data);
+        }
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+      }
+    };
 
-  const handleFightClick = () => {
-    setShowAttacks(true);
+    ws.onclose = (event) => {
+      console.log('useBattle Disconnected from WebSocket:', event);
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
+  }, [roomId]);
+
+  const updateBattleState = (data) => {
+    setSelectedPokemon(data.selectedPokemon);
+    setEnemyPokemon(data.enemyPokemon);
   };
 
   const handleAttack = (attackDamage) => {
-    if (selectedEnemy) {
-      const updatedHP = enemyHP - attackDamage;
-      setEnemyHP(updatedHP >= 0 ? updatedHP : 0);
+    if (selectedEnemy && webSocket) {
+      const updatedHP = selectedEnemy.hp - attackDamage;
+      const updatedEnemy = { ...selectedEnemy, hp: Math.max(updatedHP, 0) };
 
-      const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
-        if (pokemon.id === selectedEnemy.id) {
-          return { ...pokemon, hp: updatedHP >= 0 ? updatedHP : 0, isRemoved: updatedHP <= 0 };
-        }
-        return pokemon;
-      });
+      const updatedEnemyPokemon = enemyPokemon.map(pokemon =>
+        pokemon.id === selectedEnemy.id ? updatedEnemy : pokemon
+      );
 
-      setEnemyPokemon(updatedEnemyPokemon);
+      webSocket.send(JSON.stringify({
+        type: 'ATTACK',
+        roomId,
+        enemyPokemon: updatedEnemyPokemon,
+        selectedPokemon
+      }));
 
-      const removedPokemons = updatedEnemyPokemon.filter(pokemon => pokemon.hp <= 0).map(pokemon => pokemon.id);
-      if (removedPokemons.length > 0) {
-        localStorage.setItem('removedPokemons', JSON.stringify([...removedPokemons, ...JSON.parse(localStorage.getItem('removedPokemons') || '[]')]));
-      }
+      setSelectedPokemon(prevState => ({
+        ...prevState,
+        enemy: updatedEnemyPokemon.filter(pokemon => !pokemon.isRemoved),
+      }));
 
       if (updatedHP <= 0) {
         setSelectedEnemy(null);
         setEnemyHP(0);
         setShowAttacks(false);
       }
+    } else {
+      console.error('WebSocket is not connected or no enemy selected');
     }
+  };
+
+  const handleFightClick = () => {
+    setShowAttacks(true);
   };
 
   const toggleSmallImages = () => {
@@ -66,7 +96,7 @@ const useBattle = () => {
 
   const runBtn = () => {
     alert("도망칠 수 없었다!");
-  }
+  };
 
   return {
     selectedPokemon,

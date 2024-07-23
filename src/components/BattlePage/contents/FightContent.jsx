@@ -4,14 +4,20 @@ import axios from 'axios';
 import styles from './css/fight.module.css';
 import useFightContent from './hooks/useFightContent';
 import FightNavBar from './navFightContent';
-import SettingContainer from './SettingFightContent';
+import SettingContainer from './UserInfoFightContent';
 import UserInfoFightContent from './UserInfoFightContent';
+import SettingFightContent from './SettingFightContent';
 
 function FightContent({ token }) {
   const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // API 키 확인
   const PAGE_SIZE = 20;
   const navigate = useNavigate();
+  const [receivedData, setReceivedData] = useState(null); // 상태를 추가하여 받은 데이터를 저장합니다
 
+  const handleReceivedData = (data) => {
+    setReceivedData(data); // 전달받은 데이터를 상태에 저장합니다
+    console.log('받은 데이터:', data); // 콘솔에 출력하여 확인합니다
+  };
   useEffect(() => {
     if (token) {
       // WebSocket 연결
@@ -153,8 +159,9 @@ function FightContent({ token }) {
         </div>
         <div className={styles.conponents}>
 
-        <SettingContainer token={token} />
-          <UserInfoFightContent/>
+        <UserInfoFightContent token={token} />
+          <SettingFightContent onReceiveData={handleReceivedData}/>
+          <p>받은 데이터: {receivedData}</p>
         </div>
       </div>
       <div className={styles.card2}></div>

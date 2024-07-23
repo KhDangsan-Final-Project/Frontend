@@ -1,87 +1,71 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './css/fight.module.css';
 
-function SettingFightContent({ token }) {
-  const [userInfo, setUserInfo] = useState(null);
+export default function SettingFightContent({ onReceiveData }) {
+  const [roomNumber, setRoomNumber] = useState(''); // 방 번호 상태
+  const [ws, setWs] = useState(null); // WebSocket 상태
 
   useEffect(() => {
-    if (token) {
-      const ws = new WebSocket('ws://192.168.20.54:8090/ms2/token');
+    const websocket = new WebSocket('ws://192.168.20.54:8090/ms2/roomid'); 
 
-      ws.onopen = () => {
-        console.log('Connected to WebSocket /SettingFightContent');
-        ws.send(JSON.stringify({ token }));  // JSON 형식으로 토큰 전송
-      };
+    websocket.onopen = () => {
+      console.log('WebSocket 연결 완료');
+      setWs(websocket); // WebSocket 객체를 상태에 저장
+    };
 
-      ws.onmessage = function(event) {
-        console.log('Message from server:', event.data);
-
-        try {
-          const data = JSON.parse(event.data);
-          console.log(data);
-          setUserInfo({
-            id: data.id,
-            nickname: data.nickname,
-            grantNo: data.grantNo, // grantNo 값을 포함하도록 수정
-            matchWin : data.matchWin
-          });
-        } catch (error) {
-          console.error('Error parsing message:', error);
-        }
-      };
-
-      ws.onclose = () => {
-        console.log('Disconnected from WebSocket /SettingFightContent');
-      };
-
-      return () => {
-        ws.close();
-      };
-    }
-  }, [token]);
-
-  const getRankImageClass = () => {
-    if (userInfo) {
-      switch (userInfo.grantNo) {
-        case 1:
-          return styles.rankImage1;
-        case 2:
-          return styles.rankImage2;
-        case 3:
-          return styles.rankImage3;
-        case 4:
-          return styles.rankImage4;
-        case 5:
-          return styles.rankImage5;
-        case 6:
-          return styles.rankImage6;
+    websocket.onmessage = (event) => {
+      console.log('서버로부터의 메시지:', event.data);
+      // 서버에서 메시지를 받으면 onReceiveData를 호출
+      if (event.data) { 
+        console.log("방 입장 가능");
+        onReceiveData(event.data); // 데이터 전달
+      } else {
+        console.log("방 사용중");
       }
+    };
+
+    websocket.onerror = (error) => {
+      console.error('WebSocket 오류:', error);
+    };
+
+    websocket.onclose = () => {
+      console.log('WebSocket 연결 종료');
+      // 연결 종료 시 ws 상태를 null로 설정
+      setWs(null);
+    };
+
+    // 컴포넌트 언마운트 시 WebSocket 연결 종료
+    return () => {
+      if (websocket) {
+        websocket.close();
+      }
+    };
+  }, [onReceiveData]); // 의존성 배열에서 ws를 제거
+
+  const handleRoomNumberChange = (e) => {
+    setRoomNumber(e.target.value); // 방 번호 상태 업데이트
+  };
+
+  const handleButtonClick = () => {
+    if (roomNumber && ws) {
+      ws.send(JSON.stringify({ roomNumber })); // 방 번호를 서버로 전송
+      console.log('방 번호 전송:', roomNumber);
     }
-    return styles.rankImageDefault; // 기본 클래스
   };
 
   return (
     <div className={styles.settingContainer}>
-      <h2>:::info:::</h2>
-      <div className={styles.userInfoContainer}>
-        <div className={styles.userImg}>
-          <div className={getRankImageClass()}></div> {/* 랭크 이미지를 배경으로 설정 */}
-        </div>
-        <div className={styles.userNick}>
-          <p className={styles.ptag}>"</p>
-          {userInfo ? (
-            <>
-              <p className={styles.nick}>Nickname:<br/> {userInfo.nickname}</p>
-              <p className={styles.ptag}>"</p>
-              <p className={styles.victory}>Victory:<br/> {userInfo.matchWin}</p>
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
+      <h2>:::Setting:::</h2>
+      <div className={styles.battleSetting}>
+        <input
+          type="text"
+          placeholder="방 번호를 입력해주세요"
+          value={roomNumber}
+          onChange={handleRoomNumberChange} // 입력값 변경 시 상태 업데이트
+        />
+        <button onClick={handleButtonClick}>결정</button> {/* 방 번호 전송 버튼 */}
+        <p>친구목록 출력</p>
       </div>
     </div>
   );
 }
-
-export default SettingFightContent;
