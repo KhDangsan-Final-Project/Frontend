@@ -1,40 +1,42 @@
 .container {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   height: 1500px;
   background-color: rgb(248, 248, 248);
   border-radius: 30px;
   box-shadow: 0px 0px 5px black;
+  margin-top: 30px;
 }
 
 .title{
   text-align: center;
   font-size: 2em;
-  margin-bottom: 40px;
+  margin: 40px 0px;
+  margin-bottom: 70px;
 }
 
 
 .sectionsContainer {
   display: flex;
   justify-content: space-around;
+  flex-flow: row wrap;
   width: 100%;
   margin: 10px;
 }
 
 .section {
-  flex: 1;
-  margin: 10px;
-  max-width: 300px;
   width: 300px;
+  margin: 10px;
   text-align: center;
 }
 
 .heading {
-  font-size: 24px;
-  margin-bottom: 30px;
-  text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  font-size: 28px;
+  margin-bottom: 40px;
+  padding-bottom: 10px;
 }
 
 .list {
@@ -44,6 +46,7 @@
 }
 
 .listItem {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -55,7 +58,6 @@
   color: white;
   border: none;
   padding: 5px 10px;
-  cursor: pointer;
   border-radius: 3px;
 }
 
@@ -71,8 +73,8 @@
 }
 
 .searchInput {
-  width: 60%;
-  padding: 10px;
+  width: 65%;
+  padding: 7px;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -97,6 +99,7 @@
 }
 
 .resultItem {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -105,4 +108,8 @@
 
 .resultInfo {
   margin-right: 10px;
+}
+
+.nothing {
+  margin: 20px;
 }

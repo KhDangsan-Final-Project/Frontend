@@ -18,12 +18,18 @@ const Friends = () => {
             setLoading(false);
             return;
         }
-        const id = extractUserIdFromToken(token);
-        setUserId(id);
+        fetchUserId(token);
         fetchFriends(token);
         fetchFriendRequests(token);
     }, []);
-
+    const fetchUserId = async (token) => {
+        try {
+            const response = await axios.get('http://localhost:8090/ms3/mypage', { params: { token } });
+            setUserId(response.data.userId);
+        } catch (error) {
+            console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
+        }
+    };
     const fetchFriends = async (token) => {
         try {
             const response = await axios.get('http://localhost:8090/ms3/friend', { params: { token } });
@@ -32,7 +38,6 @@ const Friends = () => {
             setLoading(false);
         }
     };
-
     const fetchFriendRequests = async (token) => {
         try {
             const response = await axios.get('http://localhost:8090/ms3/friend/request', { params: { token } });
@@ -41,7 +46,6 @@ const Friends = () => {
             console.error('친구 요청을 가져오는 중 오류가 발생했습니다:', error);
         }
     };
-
     const handleSearch = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -60,60 +64,28 @@ const Friends = () => {
             console.error('검색 중 오류가 발생했습니다:', error);
         }
     };
-
     const handleAddFriend = async (friendId) => {
         const token = localStorage.getItem('token');
-        const userId = extractUserIdFromToken(token);
-        if (pendingRequests.some(request => request.friendId === friendId) || 
-            receivedRequests.some(request => request.userId === userId && request.friendId === friendId)) {
-            alert('이미 친구 요청을 보냈거나 받은 요청이 있습니다.');
-            return;
-        }
-        if (friends.some(friend => 
-            (friend.friendId === friendId && friend.userId === userId) || 
-            (friend.friendId === userId && friend.userId === friendId))) {
-            alert('이미 친구 상태입니다.');
-            return;
-        }
         try {
-            const response = await axios.post('http://localhost:8090/ms3/friend/add', {
-                userId,
-                friendId,
-                status: 'pending'
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
+            const response = await axios.post('http://localhost:8090/ms3/friend/add', { userId, friendId, status: 'pending' }, {
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { token }
             });
             if (response.data.status === 'success') {
                 alert('친구 요청이 성공적으로 전송되었습니다');
                 setPendingRequests([...pendingRequests, { userId, friendId }]);
-            } else if (response.data.status === 'duplicate') {
-                alert('이미 친구 요청을 보냈습니다');
-            } else if (response.data.status === 'already_friends') {
-                alert('이미 친구 상태입니다.');
             } else {
-                alert('친구 요청 전송에 실패했습니다');
+                alert('이미 친구이거나 친구 요청을 보냈습니다.');
             }
         } catch (error) {
-            console.error('친구 요청을 보내는 중 오류가 발생했습니다:', error);
+            console.error('친구 추가 중 오류가 발생했습니다:', error);
         }
     };
-
     const handleAcceptRequest = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.put('http://localhost:8090/ms3/friend/accept', {
-                userId: friendId,
-                friendId: extractUserIdFromToken(token),
-                status: 'accepted'
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
+            const response = await axios.put('http://localhost:8090/ms3/friend/accept', { userId: friendId, status: 'accepted' }, {
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { token }
             });
             if (response.data.status === 'success') {
@@ -127,19 +99,12 @@ const Friends = () => {
             console.error('친구 요청을 수락하는 중 오류가 발생했습니다:', error);
         }
     };
-
     const handleRejectRequest = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
             const response = await axios.delete('http://localhost:8090/ms3/friend/reject', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    userId: friendId,
-                    friendId: extractUserIdFromToken(token),
-                },
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+                data: { userId: friendId, },
                 params: { token }
             });
             if (response.data.status === 'success') {
@@ -152,52 +117,28 @@ const Friends = () => {
             console.error('친구 요청을 거절하는 중 오류가 발생했습니다:', error);
         }
     };
-
     const handleDeleteFriend = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
             const response = await axios.delete('http://localhost:8090/ms3/friend/delete', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    friendId,
-                    token
-                },
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+                data: { friendId },
                 params: { token }
             });
-            if (response.data.status === 'success') {
+            console.log('서버 응답:', response.data); // 서버 응답 로그
+            if (response.data.status === '삭제 성공') {
                 fetchFriends(token);
                 alert('친구가 성공적으로 삭제되었습니다');
             } else {
                 alert('친구 삭제에 실패했습니다');
-            }        
+            }
         } catch (error) {
             console.error('친구를 삭제하는 중 오류가 발생했습니다:', error);
         }
     };
-    
-
-    const extractUserIdFromToken = (token) => {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            const decodedToken = JSON.parse(jsonPayload);
-            return decodedToken.sub;
-        } catch (error) {
-            console.error('토큰을 디코딩하는 중 오류가 발생했습니다:', error);
-            return null;
-        }
-    };
-
     if (loading) {
         return <div className={styles.loading}>로딩 중...</div>;
     }
-
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>내 친구</h2>
@@ -216,12 +157,7 @@ const Friends = () => {
                 <div className={styles.section}>
                     <h2 className={styles.heading}>친구 검색</h2>
                     <div className={styles.searchContainer}>
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className={styles.searchInput}
-                        />
+                        <input type="text" onChange={(e) => setSearchQuery(e.target.value)} className={styles.searchInput} />
                         <button onClick={handleSearch} className={styles.button}>검색</button>
                     </div>
                     <ul className={styles.results}>
@@ -233,10 +169,7 @@ const Friends = () => {
                                     </div>
                                     <button onClick={() => handleAddFriend(result.id)} className={styles.button}>친구 추가</button>
                                 </li>
-                            ))
-                        ) : (
-                            <li>검색 결과가 없습니다</li>
-                        )}
+                            ))) : ( <li>검색 결과가 없습니다</li> )}
                     </ul>
                 </div>
                 <div className={styles.section}>
@@ -255,5 +188,4 @@ const Friends = () => {
         </div>
     );
 };
-
 export default Friends;

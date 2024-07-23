@@ -21,13 +21,26 @@ export default function SendMail() {
 
   const handleSendMail = async () => {
     const token = localStorage.getItem('token');
+    
+    if (!token) {
+      alert('토큰이 없습니다. 다시 로그인해 주세요.');
+      return;
+    }
+
+    try {
       const response = await axios.post('http://localhost:8090/ms3/mail/send', newMail, { params: { token } });
+      
       if (response.data.status === 'success') {
         alert('메일이 성공적으로 전송되었습니다.');
         navigate(-1);  
       } else {
-        alert('아이디를 다시 확인하세요.');
+        console.log(response.data.status);
+        alert('메일 전송에 실패했습니다. 아이디를 다시 확인하세요.');
       }
+    } catch (error) {
+      console.error('메일 전송 중 오류 발생:', error);
+      alert('메일 전송 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   return (

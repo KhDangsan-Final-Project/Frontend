@@ -80,20 +80,13 @@ export default function Profile() {
     if (!passwordValid || !passwordMatch) {
       return;
     }
-
-    try {
       const response = await axios.put('http://localhost:8090/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
         alert('정보가 성공적으로 업데이트되었습니다.');
         navigate('/');
-      } else {
-        alert('정보 업데이트에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error("정보 업데이트 중 오류가 발생했습니다!", error);
-    }
+      } 
   };
 
   return (
@@ -117,19 +110,10 @@ export default function Profile() {
         <div className={styles.emailSection}>
           <label>
             <span>이메일</span>
-            <input 
-              type="text" 
-              placeholder="이메일을 입력해주세요" 
-              className={styles.email} 
-              value={userData.email.split('@')[0]} 
-              name="email"
-              onChange={handleInputChange}
-            />
+            <input type="text" placeholder="이메일을 입력해주세요" className={styles.email}  value={userData.email.split('@')[0]} onChange={handleInputChange}/>
             @
-            <select 
-              value={userData.email.split('@')[1]} 
-              onChange={(e) => handleInputChange({ target: { name: 'email', value: `${userData.email.split('@')[0]}@${e.target.value}` } })}
-            >
+            <select value={userData.email.split('@')[1]} 
+              onChange={(e) => handleInputChange({target: {value: `${userData.email.split('@')[0]}@${e.target.value}`}})}>
               <option value="naver.com">naver.com</option>
               <option value="gmail.com">gmail.com</option>
               <option value="daum.net">daum.net</option>
@@ -139,7 +123,7 @@ export default function Profile() {
 
         <label>
           <span>비밀번호</span>
-          <input type="password" placeholder="비밀번호" className={styles.info} name="password" onChange={handlePasswordChange} />
+          <input type="password" placeholder="비밀번호" className={styles.info} onChange={handlePasswordChange} />
         </label>
         <span className={`${styles.error} ${passwordValid ? styles.hidden : styles.visible}`}>
           *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요
@@ -155,7 +139,7 @@ export default function Profile() {
 
         <label>
           <span>닉네임</span>
-          <input type="text" placeholder="닉네임" className={styles.info} value={userData.nickname} name="nickname" onChange={handleInputChange} />
+          <input type="text" placeholder="닉네임" className={styles.info} value={userData.nickname} onChange={handleInputChange} />
         </label>
 
         <div className={styles.btn}>

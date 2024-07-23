@@ -10,7 +10,8 @@
 .nav {
   display: flex;
   justify-content: center; 
-  margin-bottom: 20px;
+  margin-top: 30px;
+  gap: 100px;
 }
 
 .nav button {
