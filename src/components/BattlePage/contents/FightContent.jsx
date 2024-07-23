@@ -33,6 +33,12 @@ function FightContent({ token }) {
 
       ws.onmessage = function(event) {
         console.log('Message from server:', event.data);
+        try {
+          const data = JSON.parse(event.data);
+          handleReceivedData(data.roomNumber); // 방 번호를 처리합니다
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
       };
 
       ws.onerror = function(event) {
@@ -180,9 +186,8 @@ function FightContent({ token }) {
         </div>
         <div className={styles.conponents}>
           <UserInfoFightContent token={token} />
-          <SettingFightContent onReceiveData={handleReceivedData} />
+          <SettingFightContent onReceiveData={handleReceivedData}  token={token}/>
           <p>받은 데이터: {JSON.stringify(receivedData)}</p>
-
         </div>
       </div>
       <div className={styles.card2}></div>

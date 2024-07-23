@@ -22,8 +22,8 @@ function UserInfoFightContent({ token }) {
           setUserInfo({
             id: data.id,
             nickname: data.nickname,
-            grantNo: data.grantNo, // grantNo 값을 포함하도록 수정
-            matchWin : data.matchWin
+            grantNo: data.grantNo,
+            matchWin: data.matchWin
           });
         } catch (error) {
           console.error('Error parsing message:', error);
@@ -55,6 +55,8 @@ function UserInfoFightContent({ token }) {
           return styles.rankImage5;
         case 6:
           return styles.rankImage6;
+        default:
+          return styles.rankImageDefault; // 기본 클래스
       }
     }
     return styles.rankImageDefault; // 기본 클래스
