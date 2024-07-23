@@ -49,8 +49,10 @@ export default function SendMail() {
       <input type="text" name="receiver" placeholder="받는 사람" onChange={handleInputChange} className={styles.input}/>
       <input type="text" name="subject" placeholder="제목" onChange={handleInputChange} className={styles.input}/>
       <textarea name="content" placeholder="내용" onChange={handleInputChange} className={styles.textarea}></textarea>
-      <button onClick={handleSendMail} className={styles.sendButton}>보내기</button>
-      <button onClick={() => navigate(-1)} className={styles.cancelButton}>취소</button>
+      <div className={styles.btn}>
+        <button onClick={handleSendMail} className={styles.sendButton}>보내기</button>
+        <button onClick={() => navigate(-1)} className={styles.cancelButton}>취소</button>
+      </div>
     </div>
   );
 }
