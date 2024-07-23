@@ -8,6 +8,11 @@
     background-position: center;
 }
 
+.outletWrapper{
+        background: inherit;
+}
+
+
 @media (min-width: 320px) {
     .container{
         min-height: 120vh;
@@ -20,4 +25,8 @@
 
 .jumpUp {
     height: 120vh;
+}
+
+.outletWrapper{
+    min-height: inherit;
 }

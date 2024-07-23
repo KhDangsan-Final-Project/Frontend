@@ -59,7 +59,7 @@ import 'ckeditor5/ckeditor5.css';
 import './css/Ckeditor.css'
 import styles from './css/BoardWrite.module.css'
 
-export default function BoardWrite({ showBoard, token }) {
+export default function BoardWrite({ showBoard }) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -297,9 +297,10 @@ export default function BoardWrite({ showBoard, token }) {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         }
     };
-    const [category, setCategory] = useState("게시판을 선택하세요");
+    const [category, setCategory] = useState("자유게시판");
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [files, setFiles] = useState([]);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
     useEffect(() => {
@@ -324,76 +325,73 @@ export default function BoardWrite({ showBoard, token }) {
         setContent(data);
     };
 
+    function handleFileChange(e) {
+        setFiles(e.target.files);
+    }
 
-    function handleSubmitContent(e) {
+    const token = localStorage.getItem('token');
+    async function handleSubmitContent(e) {
         e.preventDefault();
-        const token = localStorage.getItem('jwtToken');
-        
-        fetch("http://localhost:8090/ms1/board/get-user-id", {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            credentials: 'include'
-        })
-        
-        .then(response => response.json())
-            .then(data => {
-                const userId = data.id;
-                const formData = {
-                    category,
-                    title,
-                    content,
-                    id: userId
-                };
-                fetch("http://localhost:8090/ms1/board/write", {
-                    method: 'POST',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json;charset=UTF-8',
-                    },
-                    credentials: 'include'
-                })
-                    .then(response => response.json())
-                    .then(result => {
-                        console.log(result);
-                    })
-                    .catch(error => console.error('Error:', error));
+
+        const formData = new FormData();
+        formData.append('category', category);
+        formData.append('title', title);
+        formData.append('content', content);
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file', files[i]);
+        }
+        try {
+            const response = await fetch("http://localhost:8090/ms1/board/insert", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                credentials: 'include'
             });
+            const result = await response.json();
+            console.log(result);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
     return (
-            <div className={styles.main_container}>
-                <form onSubmit={handleSubmitContent}>
-                    <div className={styles.header}>
-                        <h5>글쓰기</h5>
-                        <span className={styles.category}>
-                            <select name="category" value={category} onChange={handleCategoryChange}>
-                                <option value="자유게시판">자유게시판</option>
-                                <option value="공지사항">공지사항</option>
-                                <option value="이벤트">이벤트</option>
-                            </select>
-                        </span>
-                    </div>
-                    <input type='text' className={styles.title} value={title} onChange={handleTitleChange} placeholder='제목을 입력해주세요' />
-                    <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
-                        <div className={styles.editor_container__editor}>
-                            <div ref={editorRef} value={content} onChange={handleContentChange}>
-                                {isLayoutReady &&
-                                    <CKEditor
-                                        editor={ClassicEditor}
-                                        data={content}
-                                        config={editorConfig}
-                                        onChange={handleContentChange} />
-                                }
-                            </div>
+        <div className={styles.main_container}>
+            <form onSubmit={handleSubmitContent}>
+                <div className={styles.header}>
+                    <h5>글쓰기</h5>
+                    <span className={styles.category}>
+                        <select name="category" value={category} onChange={handleCategoryChange}>
+                            <option value="자유게시판">자유게시판</option>
+                            <option value="공지사항">공지사항</option>
+                            <option value="이벤트">이벤트</option>
+                        </select>
+                    </span>
+                </div>
+                <input type='text' className={styles.title} value={title} onChange={handleTitleChange} placeholder='제목을 입력해주세요' />
+                <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
+                    <div className={styles.editor_container__editor}>
+                        <div ref={editorRef} value={content} onChange={handleContentChange}>
+                            {isLayoutReady &&
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={content}
+                                    config={editorConfig}
+                                    onChange={handleContentChange} />
+                            }
                         </div>
                     </div>
-                    <div>
-                        <button type="submit" id="submit" disabled={isSubmitDisabled}
-                            className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
-                        <button type="reset" className={styles.button} onClick={cancel}>취소</button>
-                    </div>
-                </form>
-            </div>
-        );
-    }
+                </div>
+                <div>
+                    <input type="file" multiple onChange={handleFileChange} className={styles.file} />
+                </div>
+                <div>
+                    <button type="submit" id="submit" disabled={isSubmitDisabled}
+                        className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
+                    <button type="reset" className={styles.button} onClick={cancel}>취소</button>
+                </div>
+            </form>
+        </div>
+    );
+}

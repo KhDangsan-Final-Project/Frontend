@@ -19,6 +19,12 @@
     background-color: white;
 }
 
+.container h2{
+    text-align: center;
+    padding-bottom: 20px;
+    font-family: "Aclonica", sans-serif;
+}
+
 .container section article {
     display: flex;
     flex-flow: row nowrap;

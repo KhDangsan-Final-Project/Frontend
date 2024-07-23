@@ -6,11 +6,12 @@
     height: 600px;
 }
 
-@media (max-width:510px) {
-    .ck-editor__editable_inline {
-        min-height: 400px;
+@media (max-width: 1080px) {
+	.ck-editor__editable_inline {
+        min-height: 500px;
     }
     .ck-content {
-        height: 400px;
+        height: 500px;
     }
+    
 }

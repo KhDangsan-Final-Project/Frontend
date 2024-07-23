@@ -71,12 +71,13 @@ export default function BoardMain({ showWrite, token }) {
 
     return (
         <div className={styles.container}>
+            <h2>Board</h2>
             <div className={styles.button}>
                 <Link to={'/boardNotice'} className={styles.notice}>공지사항</Link>
                 <Link to={'/boardEvent'} className={styles.event}>이벤트</Link>
             </div>
             <div className={styles.option}>
-                <Link to={'/boardList'} className={styles.moreView}>더보기</Link>
+                <Link to={'/boardList'} className={styles.moreView}>최신글 더보기</Link>
                 <div className={styles.write}>
                     {isLoggedIn ? (
                         <button className={styles.writeBtn} onClick={write}>글쓰기</button>
