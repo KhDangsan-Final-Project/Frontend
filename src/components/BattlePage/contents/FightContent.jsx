@@ -84,7 +84,7 @@ function FightContent({ token }) {
     const randomEnemyPokemon = getRandomEnemyPokemons();
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
 
-    navigate('/battle');
+    navigate(`/battle?roomId=${roomNumber}`); // URL에 roomId 쿼리 매개변수 추가
   };
 
   const handleDecisionClick = () => {

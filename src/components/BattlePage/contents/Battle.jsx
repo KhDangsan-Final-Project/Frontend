@@ -24,7 +24,25 @@ function Battle({ token }) {
     });
 
     const [webSocket, setWebSocket] = useState(null);
-    const [roomId, setRoomId] = useState('room1'); // Example room ID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// room id 수정 
+
+
+
+    const [roomId, setRoomId] = useState('room1'); 
 
     useEffect(() => {
         // Load Pokémon data from localStorage
@@ -36,7 +54,7 @@ function Battle({ token }) {
             enemy: storedEnemyPokemon
         });
 
-        const ws = new WebSocket('ws://localhost:8080/battle/ws');
+        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/battle');
         setWebSocket(ws);
 
         ws.onopen = () => {
