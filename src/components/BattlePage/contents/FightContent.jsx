@@ -181,7 +181,8 @@ function FightContent({ token }) {
         <div className={styles.conponents}>
           <UserInfoFightContent token={token} />
           <SettingFightContent onReceiveData={handleReceivedData} />
-          <p>받은 데이터: {receivedData}</p>
+          <p>받은 데이터: {JSON.stringify(receivedData)}</p>
+
         </div>
       </div>
       <div className={styles.card2}></div>

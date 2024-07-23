@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
-import usePokemonBattle from './hooks/useBattle'; // Custom hook for battle logic
-import Chat from './Chat'; // Chat component
+import usePokemonBattle from './hooks/useBattle';
+import Chat from './Chat';
 import UserInfoFightContent from './UserInfoFightContent';
 
 function Battle({ token }) {
@@ -27,7 +27,16 @@ function Battle({ token }) {
     const [roomId, setRoomId] = useState('room1'); // Example room ID
 
     useEffect(() => {
-        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/battle');
+        // Load Pokémon data from localStorage
+        const storedSelectedPokemon = JSON.parse(localStorage.getItem('selectedPokemon')) || [];
+        const storedEnemyPokemon = JSON.parse(localStorage.getItem('enemyPokemon')) || [];
+
+        setShowPokemon({
+            selected: storedSelectedPokemon,
+            enemy: storedEnemyPokemon
+        });
+
+        const ws = new WebSocket('ws://localhost:8080/battle/ws');
         setWebSocket(ws);
 
         ws.onopen = () => {
@@ -69,8 +78,6 @@ function Battle({ token }) {
         });
     };
 
-  
-
     const getTypeLogo = (type) => `/img/types/${type}.png`;
 
     const getTypeLogoContainerClass = (type) => {
@@ -93,7 +100,6 @@ function Battle({ token }) {
     return (
         <div className={styles.App}>
             <div className={styles.stage}>
-                {/* 적 포켓몬 */}
                 <div className={styles.enemyContainer}>
                     {showPokemon.enemy.length > 0 ? (
                         showPokemon.enemy.map((pokemon) => (
@@ -137,12 +143,9 @@ function Battle({ token }) {
                         <p>적 포켓몬이 없습니다.</p>
                     )}
                 </div>
-
                 <div className={styles.body}>
-                    <div className={styles.vs}>VS</div>
+                    <div className={styles.vs}></div>
                 </div>
-
-                {/* 선택된 포켓몬 */}
                 <div className={styles.selectedPokemonContainer}>
                     {showPokemon.selected.length > 0 ? (
                         showPokemon.selected.map((pokemon) => (
@@ -183,13 +186,12 @@ function Battle({ token }) {
                     )}
                 </div>
             </div>
-
-            {/* 전투 및 기타 버튼들 */}
             <div className={styles.footer}>
-                <UserInfoFightContent token={token} />
-                <div className={styles.margin}>
+            <UserInfoFightContent token={token} />
+            <div className={styles.margin}>
                     <Chat token={token} />
                 </div>
+                <UserInfoFightContent token={token} />
                 <div className={styles.menu}>
                     <button onClick={handleFightClick}>Fight</button>
                     <button onClick={runBtn}>Run</button>

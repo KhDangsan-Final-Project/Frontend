@@ -16,8 +16,20 @@ export default function SettingFightContent({ onReceiveData }) {
 
     websocket.onmessage = (event) => {
       console.log('서버로부터의 메시지:', event.data);
-      if (event.data) {
-        onReceiveData(event.data); // 부모 컴포넌트로 데이터 전송
+      try {
+        // 메시지를 JSON으로 파싱
+        const data = JSON.parse(event.data);
+
+        // 메시지 타입에 따라 처리
+        if (data.type === 'ROOM_CREATED' || data.type === 'ROOM_JOINED') {
+          onReceiveData(data.roomId); // 방 번호를 부모 컴포넌트로 전송
+        } else if (data.type === 'ROOM_NOT_FOUND') {
+          alert('방 번호가 잘못되었거나 방이 존재하지 않습니다.');
+        } else if (data.error) {
+          alert(`서버 오류: ${data.error}`);
+        }
+      } catch (error) {
+        console.error('메시지 파싱 오류:', error);
       }
     };
 
@@ -43,8 +55,11 @@ export default function SettingFightContent({ onReceiveData }) {
 
   const handleButtonClick = () => {
     if (roomNumber && ws) {
-      ws.send(JSON.stringify({ roomNumber })); // 방 번호를 서버로 전송
+      // 방 번호를 서버로 전송
+      ws.send(JSON.stringify({ type: 'CREATE_OR_JOIN_ROOM', roomId: roomNumber }));
       console.log('방 번호 전송:', roomNumber);
+    } else {
+      alert('방 번호를 입력해주세요.');
     }
   };
 
