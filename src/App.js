@@ -13,6 +13,8 @@ import Scroll from './components/Menu/Scroll/Scroll';
 // import Chat from './components/BattlePage/contents/Chat';
 // import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 import BoardList from './components/BoardPage/BoardContent/BoardList';
+import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
+import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -47,6 +49,8 @@ function App() {
         {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
         
         <Route path="/boardList" element={<BoardList/>}/>
+        <Route path="/boardNotice" element={<BoardNotice/>}/>
+        <Route path="/boardEvent" element={<BoardEvent/>}/>
       </Routes>
       <Scroll />
     </>

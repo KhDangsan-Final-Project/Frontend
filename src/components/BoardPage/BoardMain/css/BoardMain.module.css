@@ -27,7 +27,9 @@
 
 .container section article ul {
     width: 100%;
+    margin: 0;
 }
+
 
 .container section article ul li {
     list-style-type: none;
@@ -56,7 +58,7 @@
     margin-bottom: 30px;
 }
 
-.button button {
+.button a {
     width: 250px;
     height: 250px;
     border-radius: 50px;
@@ -70,8 +72,11 @@
     color: white;
 }
 
-.button button:focus {
+.button a:focus {
     outline: none;
+}
+.button a:hover {
+    transform: scale(1.1);
 }
 
 .event {
@@ -94,9 +99,6 @@
     text-shadow: 5px 5px 1px rgba(0, 0, 0, 1);
 }
 
-.button button:hover {
-    transform: scale(1.1);
-}
 
 .writeBtn {
     padding: 0;
