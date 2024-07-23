@@ -59,7 +59,7 @@ import 'ckeditor5/ckeditor5.css';
 import './css/Ckeditor.css'
 import styles from './css/BoardWrite.module.css'
 
-export default function BoardWrite({showBoard}) {
+export default function BoardWrite({ showBoard, token }) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -297,17 +297,17 @@ export default function BoardWrite({showBoard}) {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         }
     };
-    const [category,setCategory] =useState("게시판을 선택하세요");
+    const [category, setCategory] = useState("게시판을 선택하세요");
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-    
+
     useEffect(() => {
         setIsSubmitDisabled(!title || !content);
     }, [title, content]);
 
-    
-    function cancel(){
+
+    function cancel() {
         showBoard();
     }
 
@@ -322,64 +322,78 @@ export default function BoardWrite({showBoard}) {
     const handleContentChange = (event, editor) => {
         const data = editor.getData();
         setContent(data);
-      };
+    };
 
 
-    function handleSubmitContent(e){
+    function handleSubmitContent(e) {
         e.preventDefault();
-        const formData = JSON.stringify({
-            category,
-            title,
-            content
-        });
-
-        fetch("http/teeput.synology.me:30112/ms1/board/upload", {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-        },
-        credentials: 'include'
-    }).then(response =>{
-        return response.json();
-    }).then(result =>{
-        console.log(result);
-    })
-    .catch(error => console.error('Error:', error));
-}
+        const token = localStorage.getItem('jwtToken');
+        
+        fetch("http://localhost:8090/ms1/board/get-user-id", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            credentials: 'include'
+        })
+        
+        .then(response => response.json())
+            .then(data => {
+                const userId = data.id;
+                const formData = {
+                    category,
+                    title,
+                    content,
+                    id: userId
+                };
+                fetch("http://localhost:8090/ms1/board/write", {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8',
+                    },
+                    credentials: 'include'
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+    }
     return (
             <div className={styles.main_container}>
                 <form onSubmit={handleSubmitContent}>
-                <div className={styles.header}>
-                    <h5>글쓰기</h5>
-                    <span className={styles.category}>
-                        <select name="category" value={category} onChange={handleCategoryChange}>
-                            <option value="자유게시판">자유게시판</option>
-                            <option value="공지사항">공지사항</option>
-                            <option value="이벤트">이벤트</option>
-                        </select>
-                    </span>
-                </div>
+                    <div className={styles.header}>
+                        <h5>글쓰기</h5>
+                        <span className={styles.category}>
+                            <select name="category" value={category} onChange={handleCategoryChange}>
+                                <option value="자유게시판">자유게시판</option>
+                                <option value="공지사항">공지사항</option>
+                                <option value="이벤트">이벤트</option>
+                            </select>
+                        </span>
+                    </div>
                     <input type='text' className={styles.title} value={title} onChange={handleTitleChange} placeholder='제목을 입력해주세요' />
-                <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
-                    <div className={styles.editor_container__editor}>
-                        <div ref={editorRef} value={content} onChange={handleContentChange}>
-                            {isLayoutReady &&
-                             <CKEditor 
-                                editor={ClassicEditor}
-                                data={content} 
-                                config={editorConfig} 
-                                onChange={handleContentChange}/>
-                            }
+                    <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
+                        <div className={styles.editor_container__editor}>
+                            <div ref={editorRef} value={content} onChange={handleContentChange}>
+                                {isLayoutReady &&
+                                    <CKEditor
+                                        editor={ClassicEditor}
+                                        data={content}
+                                        config={editorConfig}
+                                        onChange={handleContentChange} />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                <button type="submit" id="submit" disabled={isSubmitDisabled}
-                    className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
-                    <button type="reset" className={styles.button} onClick={cancel}>취소</button>
-                </div>
+                    <div>
+                        <button type="submit" id="submit" disabled={isSubmitDisabled}
+                            className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
+                        <button type="reset" className={styles.button} onClick={cancel}>취소</button>
+                    </div>
                 </form>
             </div>
-    );
-}
+        );
+    }

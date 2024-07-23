@@ -10,7 +10,7 @@ export default function BoardList() {
     useEffect(() => {
         async function fetchBoardList() {
             try {
-                const response = await axios.get("http://localhost:8090/ms3/board/list" );
+                const response = await axios.get("http://localhost:8090/ms1/board/list" );
                 
                 setBoardList(response.data);
             } catch (err) {

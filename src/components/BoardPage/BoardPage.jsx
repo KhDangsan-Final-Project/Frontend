@@ -4,7 +4,7 @@ import styles from './css/BoardPage.module.css';
 import BoardWrite from './BoardContent/BoardWrite';
 import FooterImg from '../Menu/Footer/FooterImg';
 import Footer from '../Menu/Footer/Footer';
-export default function BoardPage() {
+export default function BoardPage( { setToken, token } ) {
     const [active, setActive] = useState('main');
     
 
@@ -19,7 +19,7 @@ export default function BoardPage() {
    
     return (
         <div className={styles.container}>
-            {active === 'main' && <BoardMain showWrite={showWrite}/>}
+            {active === 'main' && <BoardMain showWrite={showWrite} token={token} setToken={setToken} />}
             {active === 'write' && <BoardWrite showBoard={showBoard} />}
         <div className={styles.jumpUp}></div>
         <FooterImg/>

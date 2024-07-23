@@ -40,12 +40,12 @@ function App() {
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
-        <Route path="/boardmain" element={<BoardPage setToken={setToken} />} />
+        <Route path="/boardmain" element={<BoardPage setToken={setToken} token={token}/>} />
         <Route path="/ai" element={<AIPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
         {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
         {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
-        <Route path="/boardMain" element={<BoardPage/>}/>
+        
         <Route path="/boardList" element={<BoardList/>}/>
       </Routes>
       <Scroll />

@@ -10,6 +10,7 @@ export default function BoardMain({ showWrite, token }) {
     };
 
     useEffect(() => {
+        console.log('BoardMain token:', token);
         if (token) {
           setIsLoggedIn(true);
         } else {
@@ -34,7 +35,7 @@ export default function BoardMain({ showWrite, token }) {
                 {isLoggedIn ? (
                         <button className={styles.writeBtn} onClick={write}>글쓰기</button>
                     ) : (
-                        <button className={styles.writeBtn}><Link to="/login" onClick={alertMsg}>글쓰기</Link></button>
+                        <button className={styles.writeBtn}  onClick={alertMsg}><Link to="/login">글쓰기</Link></button>
                     )}</div>
             </div>
             <hr />
