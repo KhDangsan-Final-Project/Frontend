@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import styles from './css/fight.module.css';
 import useFightContent from './hooks/useFightContent';
 import FightNavBar from './navFightContent';
-import SettingContainer from './UserInfoFightContent';
 import UserInfoFightContent from './UserInfoFightContent';
 import SettingFightContent from './SettingFightContent';
 
@@ -13,11 +11,15 @@ function FightContent({ token }) {
   const PAGE_SIZE = 20;
   const navigate = useNavigate();
   const [receivedData, setReceivedData] = useState(null); // 상태를 추가하여 받은 데이터를 저장합니다
+  const [roomNumber, setRoomNumber] = useState(''); // 방 번호 상태
+  const [ws, setWs] = useState(null); // WebSocket 상태
 
   const handleReceivedData = (data) => {
     setReceivedData(data); // 전달받은 데이터를 상태에 저장합니다
+    setRoomNumber(data); // 방 번호 업데이트
     console.log('받은 데이터:', data); // 콘솔에 출력하여 확인합니다
   };
+
   useEffect(() => {
     if (token) {
       // WebSocket 연결
@@ -41,6 +43,8 @@ function FightContent({ token }) {
       ws.onclose = () => {
         console.log('Disconnected from WebSocket');
       };
+
+      setWs(ws);
 
       return () => {
         // 컴포넌트가 언마운트 되었을 때 WebSocket 연결 닫기
@@ -81,6 +85,23 @@ function FightContent({ token }) {
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
 
     navigate('/battle');
+  };
+
+  const handleDecisionClick = () => {
+    if (roomNumber) {
+      // 방 번호를 경고창으로 띄우기
+      alert(`방 번호: ${roomNumber}`);
+
+      // 확인 메시지 띄우기
+      const confirmMove = window.confirm('이동하시겠습니까?');
+      if (confirmMove) {
+        sendBattlePokemon(); // 선택한 포켓몬 카드를 저장하고 페이지로 이동
+      } else {
+        console.log('이동 취소');
+      }
+    } else {
+      alert('방 번호를 입력해주세요.');
+    }
   };
 
   return (
@@ -132,7 +153,7 @@ function FightContent({ token }) {
         <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
           <h4>선택된 포켓몬 카드</h4>
           {selectedCards.length > 0 && (
-            <button onClick={sendBattlePokemon}>결정</button>
+            <button onClick={handleDecisionClick}>결정</button>
           )}
           <div className={styles.selectedCardContainer}>
             {selectedCards.map(card => (
@@ -158,9 +179,8 @@ function FightContent({ token }) {
           </div>
         </div>
         <div className={styles.conponents}>
-
-        <UserInfoFightContent token={token} />
-          <SettingFightContent onReceiveData={handleReceivedData}/>
+          <UserInfoFightContent token={token} />
+          <SettingFightContent onReceiveData={handleReceivedData} />
           <p>받은 데이터: {receivedData}</p>
         </div>
       </div>

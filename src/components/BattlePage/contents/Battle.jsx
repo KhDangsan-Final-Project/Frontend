@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
-import SettingContainer from './UserInfoFightContent';
-import useBattle from './hooks/useBattle';
-import Chat from './Chat';
+import usePokemonBattle from './hooks/useBattle'; // Custom hook for battle logic
+import Chat from './Chat'; // Chat component
+import UserInfoFightContent from './UserInfoFightContent';
 
 function Battle({ token }) {
-    // 예시로 방 ID를 하드코딩했지만, 실제로는 방 ID를 사용자로부터 입력받거나 생성된 방 ID를 받아야 합니다.
-    const roomId = 'room1'; 
     const {
         selectedPokemon,
         enemyPokemon,
@@ -18,19 +16,60 @@ function Battle({ token }) {
         toggleSmallImages,
         selectEnemyPokemon,
         runBtn
-    } = useBattle(roomId);
+    } = usePokemonBattle();
 
     const [showPokemon, setShowPokemon] = useState({
         enemy: [],
         selected: []
     });
 
+    const [webSocket, setWebSocket] = useState(null);
+    const [roomId, setRoomId] = useState('room1'); // Example room ID
+
     useEffect(() => {
+        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/battle');
+        setWebSocket(ws);
+
+        ws.onopen = () => {
+            console.log('Connected to WebSocket');
+            ws.send(JSON.stringify({ type: 'JOIN_ROOM', roomId, token }));
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                console.log('Received data:', data);
+                if (data.type === 'UPDATE_BATTLE') {
+                    updateBattleState(data);
+                }
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        };
+
+        ws.onclose = (event) => {
+            console.log('Disconnected from WebSocket:', event);
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        return () => {
+            if (ws) {
+                ws.close();
+            }
+        };
+    }, [token, roomId]);
+
+    const updateBattleState = (data) => {
         setShowPokemon({
-            enemy: enemyPokemon.filter(pokemon => !pokemon.isRemoved),
-            selected: selectedPokemon.filter(pokemon => !pokemon.isRemoved)
+            enemy: data.enemyPokemon.filter(pokemon => !pokemon.isRemoved),
+            selected: data.selectedPokemon.filter(pokemon => !pokemon.isRemoved)
         });
-    }, [enemyPokemon, selectedPokemon]);
+    };
+
+  
 
     const getTypeLogo = (type) => `/img/types/${type}.png`;
 
@@ -54,6 +93,7 @@ function Battle({ token }) {
     return (
         <div className={styles.App}>
             <div className={styles.stage}>
+                {/* 적 포켓몬 */}
                 <div className={styles.enemyContainer}>
                     {showPokemon.enemy.length > 0 ? (
                         showPokemon.enemy.map((pokemon) => (
@@ -97,9 +137,12 @@ function Battle({ token }) {
                         <p>적 포켓몬이 없습니다.</p>
                     )}
                 </div>
+
                 <div className={styles.body}>
-                    <div className={styles.vs}></div>
+                    <div className={styles.vs}>VS</div>
                 </div>
+
+                {/* 선택된 포켓몬 */}
                 <div className={styles.selectedPokemonContainer}>
                     {showPokemon.selected.length > 0 ? (
                         showPokemon.selected.map((pokemon) => (
@@ -140,10 +183,18 @@ function Battle({ token }) {
                     )}
                 </div>
             </div>
-            <div className={styles.buttons}>
-                <button onClick={handleFightClick}>전투 시작</button>
-                <button onClick={toggleSmallImages}>Toggle Image Size</button>
-                <button onClick={runBtn}>도망가기</button>
+
+            {/* 전투 및 기타 버튼들 */}
+            <div className={styles.footer}>
+                <UserInfoFightContent token={token} />
+                <div className={styles.margin}>
+                    <Chat token={token} />
+                </div>
+                <div className={styles.menu}>
+                    <button onClick={handleFightClick}>Fight</button>
+                    <button onClick={runBtn}>Run</button>
+                    <button onClick={toggleSmallImages}>Toggle Small Images</button>
+                </div>
             </div>
         </div>
     );
