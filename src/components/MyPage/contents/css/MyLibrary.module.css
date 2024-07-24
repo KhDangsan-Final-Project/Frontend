@@ -28,6 +28,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+.card:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
 .cardInfo {
   width: 300px;
   height: auto;
@@ -41,6 +46,7 @@
   height: auto;
   object-fit: cover;
   border-bottom: 1px solid #ddd;
+  cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
 }
 
 .cardtext {
