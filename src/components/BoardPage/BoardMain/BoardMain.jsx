@@ -55,7 +55,7 @@ export default function BoardMain({ showWrite, token }) {
             try {
                 const response = await axios.get("http://localhost:8090/ms1/board/list");
 
-                setBoardList(response.data);
+                setBoardList(response.data.boards);
             } catch (err) {
                 setError(err);
 

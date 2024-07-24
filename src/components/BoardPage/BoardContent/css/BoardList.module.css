@@ -23,3 +23,7 @@
   .container table tbody tr td {
       padding: 10px 10px;
   }
+
+  .page{
+    height: 100px;
+  }
