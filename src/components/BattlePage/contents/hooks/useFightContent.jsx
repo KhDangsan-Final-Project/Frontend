@@ -115,9 +115,8 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
 
   const getRandomEnemyPokemons = () => {
     const averageHp = getAverageHp();
-    const fireTypeCards = cards.filter(card => card.types && card.types.includes('Fire'));
     const randomPokemon = [];
-    const shuffledCards = fireTypeCards.sort(() => 0.5 - Math.random());
+    const shuffledCards = cards.sort(() => 0.5 - Math.random());
     let count = 0;
     let index = 0;
 

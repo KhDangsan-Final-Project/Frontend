@@ -4,6 +4,7 @@ background-image: url(/public/img/backgroundImg.jpg);
 }
 .container{
   display: flex;
+  justify-content: center;
   flex-flow: row nowrap;
 
   max-height: 740px; /* Limit the height */

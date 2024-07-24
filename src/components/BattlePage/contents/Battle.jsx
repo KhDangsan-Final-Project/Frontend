@@ -6,10 +6,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import UserInfoFightContent from './UserInfoFightContent';
 import BattleTrainer from './BattleTrainer';
 
+// 포켓몬 타입 로고 경로를 가져오는 함수
 const getTypeLogo = (type) => {
   return `/img/types/${type}.png`;
 };
 
+// 포켓몬 타입에 따른 스타일 클래스명을 반환하는 함수
 const getTypeLogoContainerClass = (type) => {
   switch (type) {
     case 'Dragon':
@@ -45,6 +47,7 @@ function Battle({ token }) {
   const queryParams = new URLSearchParams(location.search);
   const roomId = queryParams.get('roomId');
 
+  // 상태 변수 정의
   const [selectedPokemon, setSelectedPokemon] = useState([]);
   const [enemyPokemon, setEnemyPokemon] = useState([]);
   const [showAttacks, setShowAttacks] = useState(false);
@@ -53,6 +56,7 @@ function Battle({ token }) {
   const [selectedPlayerPokemon, setSelectedPlayerPokemon] = useState(null);
   const [isBattleFinished, setIsBattleFinished] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false); // 데이터 로딩 완료 상태
+  const [playerTurn, setPlayerTurn] = useState(true); // 현재 턴이 플레이어인지 여부
 
   const {
     handleFightClick,
@@ -61,6 +65,7 @@ function Battle({ token }) {
     selectEnemyPokemon
   } = usePokemonBattle(roomId);
 
+  // 포켓몬 데이터 로드 및 초기화
   useEffect(() => {
     const loadPokemonData = () => {
       const selectedPokemonData = localStorage.getItem('selectedPokemon');
@@ -84,6 +89,7 @@ function Battle({ token }) {
     loadPokemonData();
   }, []);
 
+  // 포켓몬 데이터 저장
   useEffect(() => {
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemon));
   }, [selectedPokemon]);
@@ -92,9 +98,13 @@ function Battle({ token }) {
     localStorage.setItem('enemyPokemon', JSON.stringify(enemyPokemon));
   }, [enemyPokemon]);
 
+  // 전투 종료 및 승리 처리
   useEffect(() => {
     if (isBattleFinished && enemyPokemon.length === 0) {
       alert('챔피언 ALDER 와의 \n승부에서 이겼다!');
+      alert('싸움이 끝나고 나의 마음에\n상쾌한 바람이 지나갔다 . . .');
+      alert('우리의 싸움을\n다음 스텝으로의 발판 삼아 나아가라! !')
+      alert('PLAYER 는 상금으로 0원을 손에 넣었다!');
       const battlePage = window.confirm('메인 화면으로 이동하시겠습니까?');
       if (battlePage) {
         navigate('/fight'); // fightContent 페이지로 이동
@@ -102,8 +112,8 @@ function Battle({ token }) {
     }
   }, [isBattleFinished, enemyPokemon, navigate]);
 
+  // 포켓몬 데이터 로딩 완료 상태 체크 및 알림
   useEffect(() => {
-    // 포켓몬이 모두 로딩된 후 알림 띄우기
     if (selectedPokemon.length > 0 && enemyPokemon.length > 0) {
       setIsDataLoaded(true);
     }
@@ -115,16 +125,19 @@ function Battle({ token }) {
     }
   }, [isDataLoaded]);
 
+  // 플레이어 포켓몬 클릭 핸들러
   const handlePlayerPokemonClick = (pokemon) => {
     setSelectedPlayerPokemon(pokemon);
     setShowAttacks(true);
   };
 
+  // 적 포켓몬 클릭 핸들러
   const handleEnemyPokemonClick = (pokemon) => {
     setSelectedEnemy(pokemon);
     selectEnemyPokemon(pokemon);
   };
 
+  // 공격 클릭 핸들러
   const handleAttackClick = (damage) => {
     if (selectedEnemy) {
       const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
@@ -141,9 +154,48 @@ function Battle({ token }) {
         return pokemon;
       });
       setEnemyPokemon(updatedEnemyPokemon);
+      setPlayerTurn(false); // 플레이어의 턴이 끝났으므로 적 AI의 턴으로 전환
     }
   };
 
+  // 적 AI의 턴 처리
+  useEffect(() => {
+    if (!playerTurn && enemyPokemon.length > 0) {
+      alert('ALDER의 턴입니다!');
+      // 랜덤으로 적 포켓몬을 선택
+      const randomEnemyPokemon = enemyPokemon[Math.floor(Math.random() * enemyPokemon.length)];
+      console.log('AI가 선택한 적 포켓몬:', randomEnemyPokemon);
+
+      // 플레이어 포켓몬을 공격하지 않도록 방지
+      if (randomEnemyPokemon.attacks.length > 0) {
+        const randomAttack = randomEnemyPokemon.attacks[Math.floor(Math.random() * randomEnemyPokemon.attacks.length)];
+        const targetPlayerPokemon = selectedPokemon[Math.floor(Math.random() * selectedPokemon.length)];
+        console.log('AI가 공격할 플레이어 포켓몬:', targetPlayerPokemon);
+
+        setTimeout(() => {
+          if (targetPlayerPokemon) {
+            const updatedPlayerPokemon = selectedPokemon.map(pokemon => {
+              if (pokemon.id === targetPlayerPokemon.id) {
+                const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - randomAttack.damage, 0) };
+                if (newPokemon.hp === 0) {
+                  newPokemon.isFading = true;
+                  setTimeout(() => {
+                    setSelectedPokemon(prev => prev.filter(p => p.id !== newPokemon.id));
+                  }, 1000);
+                }
+                return newPokemon;
+              }
+              return pokemon;
+            });
+            setSelectedPokemon(updatedPlayerPokemon);
+          }
+        }, 1000); // 1초 대기 후 공격 실행
+      }
+      setPlayerTurn(true); // AI 턴 후 다시 플레이어 턴으로 전환
+    }
+  }, [playerTurn, enemyPokemon]);
+
+  // 포켓몬 카드 렌더링
   const renderPokemonCards = (pokemons, isEnemy) => {
     return pokemons.length > 0 ? (
       pokemons.map((pokemon) => (
@@ -193,18 +245,29 @@ function Battle({ token }) {
     );
   };
 
+  // 전투 시작 핸들러
   const handleFightClickWrapper = () => {
     setShowAttacks(true);
     setIsBattleFinished(false); // 전투 시작 시에는 전투가 완료되지 않은 상태로 설정
     handleFightClick();
   };
 
+  // 게임 진행 중 적 포켓몬이 모두 제거되면 전투 완료 상태로 설정
   useEffect(() => {
-    // 게임 진행 중일 때의 로직
     if (enemyPokemon.length === 0) {
       setIsBattleFinished(true); // 적 포켓몬이 모두 제거되면 전투가 완료된 상태로 설정
     }
   }, [enemyPokemon]);
+
+  // 패배 처리
+  useEffect(() => {
+    if (selectedPokemon.length === 0) {
+      alert('PLAYER 에게는 더 이상 \n싸울 수 있는 포켓몬이 없다!');
+      alert('. . .  . . .  . . .  \n. . .  . . .  . . .');
+      alert('눈앞이 캄캄해졌다!');
+      // navigate('/fight'); // 전투 페이지로 이동
+    }
+  }, [selectedPokemon, navigate]);
 
   return (
     <div className={styles.App}>
