@@ -5,7 +5,7 @@ const fetchTypeInKorean = async (typeUrl) => {
     try {
         const { data: typeData } = await axios.get(typeUrl);
         const koreanName = typeData.names.find(name => name.language.name === 'ko')?.name;
-        return koreanName || typeData.name;  // Default to English name if Korean name is not found
+        return koreanName || typeData.name; 
     } catch (error) {
         console.error('Error fetching type data:', error);
         return 'Unknown';
@@ -16,7 +16,7 @@ const fetchAbilityInKorean = async (abilityUrl) => {
     try {
         const { data: abilityData } = await axios.get(abilityUrl);
         const koreanName = abilityData.names.find(name => name.language.name === 'ko')?.name;
-        return koreanName || abilityData.name;  // Default to English name if Korean name is not found
+        return koreanName || abilityData.name;  
     } catch (error) {
         console.error('Error fetching ability data:', error);
         return 'Unknown';

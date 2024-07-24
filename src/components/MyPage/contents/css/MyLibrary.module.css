@@ -1,49 +1,59 @@
 .container {
   padding: 20px;
   margin: 0 auto;
-  height: 1500px; 
-  align-items: center;
+  height: auto;
 }
 
 .title {
   font-size: 32px;
-  margin : 50px 0;
+  margin: 50px 0;
   text-align: center;
+  color: #333;
 }
 
 .subcontainer {
   display: flex;
-  flex-flow: row wrap; 
+  flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 20px;
   border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 .card {
-  border-radius: 10px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   margin: 10px;
   padding: 15px;
-  text-align: center;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
 .cardInfo {
-  width: 250px;
+  width: 300px;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .pokemonImage {
   width: 100%;
   height: auto;
-  border-radius: 10px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
 }
 
-.cardTypes,
-.cardAbilities {
-  margin: 20px;
+.cardtext {
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
 
 .cardName {
   font-weight: bold;
-  margin: 20px;
-  font-size: 20px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.cardTypes, .cardAbilities {
+  margin: 5px 0;
 }

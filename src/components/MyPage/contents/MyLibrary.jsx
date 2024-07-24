@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './css/MyLibrary.module.css';
-import usePokemonDetails from './hook/usePokemonDetails';
+import usePokemonDetails from './hook/usePokemonDetails'; 
 
 export default function MyLibrary() {
   const [pokemonLibrary, setPokemonLibrary] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [pokemonData, setPokemonData] = useState({}); // 추가된 상태
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,7 +25,6 @@ export default function MyLibrary() {
       });
       if (response.data.status === 'success') {
         setPokemonLibrary(response.data.lib);
-        response.data.lib.forEach(pokemon => fetchPokemonData(pokemon.pokemonNum));
       } else {
         setError(response.data.message);
       }
@@ -34,26 +32,6 @@ export default function MyLibrary() {
       setError('포켓몬 데이터를 가져오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchPokemonData = async (pokemonNum) => {
-    try {
-      const apiUrl = `https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:${pokemonNum}`;
-      const response = await axios.get(apiUrl);
-      if (response.data && response.data.data && response.data.data.length > 0) {
-        const cardData = response.data.data[0];
-        setPokemonData(prevData => ({
-          ...prevData,
-          [pokemonNum]: {
-            name: cardData.name,
-            imageUrl: cardData.images.large,
-            set: cardData.set.name,
-          }
-        }));
-      }
-    } catch (error) {
-      console.error("포켓몬 데이터를 가져오는 중 오류가 발생했습니다:", error);
     }
   };
 
@@ -73,23 +51,19 @@ export default function MyLibrary() {
       <div className={styles.subcontainer}>
         {pokemonLibrary.map((pokemon, index) => (
           <div key={index} className={styles.card}>
-            {pokemonData[pokemon.pokemonNum] ? (
+            {pokemonDetails[pokemon.pokemonNum] ? (
               <div className={styles.cardInfo}>
-                <div >
-                  <img src={pokemonData[pokemon.pokemonNum].imageUrl} alt={`포켓몬 ${pokemonData[pokemon.pokemonNum].name}`} className={styles.pokemonImage}
-                  />
-                </div>
-                <div className={styles.cardName}>
-                  {pokemonDetails[pokemon.pokemonNum]?.name || pokemonData[pokemon.pokemonNum]?.name || '알 수 없음'}
-                </div>
-                <div className={styles.cardDetails}>
-                  타입: {pokemonDetails[pokemon.pokemonNum]?.types || '알 수 없음'}
-                </div>
-                <div className={styles.cardDetails}>
-                  기술: {pokemonDetails[pokemon.pokemonNum]?.abilities || '알 수 없음'}
+                <img 
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.pokemonNum}.png`} 
+                  alt={pokemonDetails[pokemon.pokemonNum].name}
+                  className={styles.pokemonImage}  />
+                <div className={styles.cardtext}>
+                  <div className={styles.cardName}>이름: {pokemonDetails[pokemon.pokemonNum].name}</div>
+                  <div className={styles.cardDetails}>타입: {pokemonDetails[pokemon.pokemonNum].types}</div>
+                  <div className={styles.cardDetails}>기술: {pokemonDetails[pokemon.pokemonNum].abilities}</div>
                 </div>
               </div>
-            ) : ( <div>이미지를 가져오는 중...</div> )}
+            ) : ( <div>데이터를 가져오는 중...</div> )}
           </div>
         ))}
       </div>
