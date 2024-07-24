@@ -252,16 +252,7 @@ flex-direction: column;
   overflow-y: auto;
 
 }
-/* battle.module.css */
 
-.pokemonCard {
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.pokemonCard.selected {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-}
 /* ---------------------------------------------------------------- */
 
 .textContainer{
@@ -487,4 +478,10 @@ flex-flow: row;
 .attack {
   display: flex;
   justify-content: space-between;
+}
+
+/* battle.module.css */
+.selectedEnemy {
+  border: 2px solid red; /* 적 포켓몬이 선택되었음을 강조 */
+  background-color: rgba(255, 0, 0, 0.2); /* 배경색을 약간 빨갛게 */
 }

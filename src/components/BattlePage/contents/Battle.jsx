@@ -6,10 +6,12 @@ import UserInfoFightContent from './UserInfoFightContent';
 import { useLocation } from 'react-router-dom';
 
 const getTypeLogo = (type) => {
+  // 포켓몬 타입 로고 이미지 경로를 반환하는 함수
   return null;
 };
 
 const getTypeLogoContainerClass = (type) => {
+  // 포켓몬 타입에 따라 로고 컨테이너 클래스 반환
   return null;
 };
 
@@ -23,7 +25,7 @@ function Battle({ token }) {
   const [showAttacks, setShowAttacks] = useState(false);
   const [useSmallImages, setUseSmallImages] = useState(true);
   const [selectedEnemy, setSelectedEnemy] = useState(null);
-  const [opponentInfo, setOpponentInfo] = useState(null);
+  const [selectedPlayerPokemon, setSelectedPlayerPokemon] = useState(null);
 
   const {
     handleFightClick,
@@ -41,11 +43,9 @@ function Battle({ token }) {
         const parsedSelectedPokemon = JSON.parse(selectedPokemonData);
         setSelectedPokemon(parsedSelectedPokemon);
 
-        // 평균 HP 계산
         const totalHP = parsedSelectedPokemon.reduce((sum, pokemon) => sum + pokemon.hp, 0);
         const averageHP = totalHP / parsedSelectedPokemon.length;
 
-        // 적 포켓몬 필터링
         if (enemyPokemonData) {
           const parsedEnemyPokemon = JSON.parse(enemyPokemonData);
           const filteredEnemyPokemon = parsedEnemyPokemon.filter(pokemon => pokemon.hp <= averageHP);
@@ -65,14 +65,34 @@ function Battle({ token }) {
     localStorage.setItem('enemyPokemon', JSON.stringify(enemyPokemon));
   }, [enemyPokemon]);
 
+  const handlePlayerPokemonClick = (pokemon) => {
+    setSelectedPlayerPokemon(pokemon);
+  };
+
+  const handleEnemyPokemonClick = (pokemon) => {
+    setSelectedEnemy(pokemon);
+  };
+
+  const handleAttackClick = (damage) => {
+    if (selectedEnemy) {
+      const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
+        if (pokemon.id === selectedEnemy.id) {
+          return { ...pokemon, hp: Math.max(pokemon.hp - damage, 0) };
+        }
+        return pokemon;
+      });
+      setEnemyPokemon(updatedEnemyPokemon);
+    }
+  };
+
   const renderPokemonCards = (pokemons, isEnemy) => {
     return pokemons.length > 0 ? (
       pokemons.map((pokemon) => (
         !pokemon.isRemoved && (
           <div
             key={pokemon.id}
-            className={`${styles.pokemonCard} ${isEnemy && selectedEnemy && selectedEnemy.id === pokemon.id ? styles.selected : ''}`}
-            onClick={() => isEnemy ? selectEnemyPokemon(pokemon) : null}
+            className={`${styles.pokemonCard} ${isEnemy && selectedEnemy && selectedEnemy.id === pokemon.id ? styles.selectedEnemy : ''}`}
+            onClick={() => isEnemy ? handleEnemyPokemonClick(pokemon) : handlePlayerPokemonClick(pokemon)}
           >
             <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} className={styles.myCard} />
             <div className={styles.pokemonCardInfo}>
@@ -89,10 +109,10 @@ function Battle({ token }) {
                   HP: {pokemon.hp}
                 </div>
               </div>
-              {showAttacks && pokemon.attacks && (
+              {showAttacks && pokemon.attacks && selectedPlayerPokemon && selectedPlayerPokemon.id === pokemon.id && (
                 <div className={styles.pokemonAttacks}>
                   {pokemon.attacks.map((attack, index) => (
-                    <button key={index} className={styles.attackButton} onClick={() => handleAttack(attack.damage, isEnemy ? selectedEnemy : pokemon)}>
+                    <button key={index} className={styles.attackButton} onClick={() => handleAttackClick(attack.damage)}>
                       <div className={styles.attack}>
                         <p><strong>{attack.name}</strong></p>
                         <p>피해: {attack.damage}</p>
@@ -132,7 +152,7 @@ function Battle({ token }) {
         </div>
       </div>
       <div className={styles.footer}>
-        <UserInfoFightContent token={token} opponentInfo={opponentInfo} />
+        <UserInfoFightContent token={token} />
         <div className={styles.margin}>
           <Chat roomId={roomId} token={token} />
         </div>
