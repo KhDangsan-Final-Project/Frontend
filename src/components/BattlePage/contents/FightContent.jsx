@@ -190,7 +190,6 @@ function FightContent({ token }) {
       <div className={styles.card2}></div>
       <style className={styles.hover}></style>
       <div className={styles.tokenDisplay}>
-        <p>Token: {JSON.stringify(token)}</p>
       </div>
     </div>
   );

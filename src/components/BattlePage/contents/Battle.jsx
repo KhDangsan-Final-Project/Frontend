@@ -41,6 +41,13 @@ const getTypeLogoContainerClass = (type) => {
   }
 }
 
+// 데미지 값에서 숫자만 추출하는 함수
+const getCleanDamageValue = (damage) => {
+  // 모든 비숫자 문자를 제거하고 숫자만 추출
+  const cleanDamage = damage.replace(/[^0-9]/g, '');
+  return cleanDamage ? parseInt(cleanDamage, 10) : 0;
+}
+
 function Battle({ token }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -120,7 +127,7 @@ function Battle({ token }) {
   }, [selectedPokemon, enemyPokemon]);
 
   useEffect(() => {
-    if (isDataLoaded) {
+    if (isDataLoaded && enemyPokemon.length > 0) {
       alert('챔피언 ALDER가 \n승부를 걸어왔다!');
     }
   }, [isDataLoaded]);
@@ -158,20 +165,20 @@ function Battle({ token }) {
     }
   };
 
-  // 적 AI의 턴 처리
   useEffect(() => {
     if (!playerTurn && enemyPokemon.length > 0) {
       alert('ALDER의 턴입니다!');
+      
       // 랜덤으로 적 포켓몬을 선택
       const randomEnemyPokemon = enemyPokemon[Math.floor(Math.random() * enemyPokemon.length)];
       console.log('AI가 선택한 적 포켓몬:', randomEnemyPokemon);
-
-      // 플레이어 포켓몬을 공격하지 않도록 방지
-      if (randomEnemyPokemon.attacks.length > 0) {
+  
+      // 플레이어 포켓몬이 존재하는지 확인
+      if (selectedPokemon.length > 0 && randomEnemyPokemon.attacks.length > 0) {
         const randomAttack = randomEnemyPokemon.attacks[Math.floor(Math.random() * randomEnemyPokemon.attacks.length)];
         const targetPlayerPokemon = selectedPokemon[Math.floor(Math.random() * selectedPokemon.length)];
         console.log('AI가 공격할 플레이어 포켓몬:', targetPlayerPokemon);
-
+  
         setTimeout(() => {
           if (targetPlayerPokemon) {
             const updatedPlayerPokemon = selectedPokemon.map(pokemon => {
@@ -190,10 +197,13 @@ function Battle({ token }) {
             setSelectedPokemon(updatedPlayerPokemon);
           }
         }, 1000); // 1초 대기 후 공격 실행
+      } else {
+        console.log('플레이어 포켓몬이 없거나 적 포켓몬이 공격을 할 수 없습니다.');
       }
+   
       setPlayerTurn(true); // AI 턴 후 다시 플레이어 턴으로 전환
     }
-  }, [playerTurn, enemyPokemon]);
+  }, [playerTurn, enemyPokemon, selectedPokemon]);
 
   // 포켓몬 카드 렌더링
   const renderPokemonCards = (pokemons, isEnemy) => {
@@ -227,10 +237,10 @@ function Battle({ token }) {
               {showAttacks && pokemon.attacks && selectedPlayerPokemon && selectedPlayerPokemon.id === pokemon.id && (
                 <div className={styles.pokemonAttacks}>
                   {pokemon.attacks.map((attack, index) => (
-                    <button key={index} className={styles.attackButton} onClick={() => handleAttackClick(attack.damage)}>
+                    <button key={index} className={styles.attackButton} onClick={() => handleAttackClick(getCleanDamageValue(attack.damage))}>
                       <div className={styles.attack}>
                         <p><strong>{attack.name}</strong></p>
-                        <p>피해: {attack.damage}</p>
+                        <p>피해: {getCleanDamageValue(attack.damage)}</p>
                       </div>
                     </button>
                   ))}
@@ -245,12 +255,6 @@ function Battle({ token }) {
     );
   };
 
-  // 전투 시작 핸들러
-  const handleFightClickWrapper = () => {
-    setShowAttacks(true);
-    setIsBattleFinished(false); // 전투 시작 시에는 전투가 완료되지 않은 상태로 설정
-    handleFightClick();
-  };
 
   // 게임 진행 중 적 포켓몬이 모두 제거되면 전투 완료 상태로 설정
   useEffect(() => {
@@ -261,11 +265,11 @@ function Battle({ token }) {
 
   // 패배 처리
   useEffect(() => {
-    if (selectedPokemon.length === 0) {
+    if (enemyPokemon.length > 0 && selectedPokemon.length === 0) {
       alert('PLAYER 에게는 더 이상 \n싸울 수 있는 포켓몬이 없다!');
       alert('. . .  . . .  . . .  \n. . .  . . .  . . .');
-      alert('눈앞이 캄캄해졌다!');
-      // navigate('/fight'); // 전투 페이지로 이동
+      alert('PLAYER는 눈앞이 캄캄해졌다!');
+      navigate('/fight'); // 전투 페이지로 이동
     }
   }, [selectedPokemon, navigate]);
 
@@ -278,7 +282,7 @@ function Battle({ token }) {
           {renderPokemonCards(enemyPokemon, true)}
         </div>
         <div className={styles.body}>
-          <div className={styles.vs}>VS</div>
+          <div className={styles.vs}></div>
         </div>
         <div className={styles.selectedPokemonContainer}>
           <div><h2>player pokemons</h2></div>
@@ -289,9 +293,7 @@ function Battle({ token }) {
         <BattleTrainer/>
         <Chat />
         <UserInfoFightContent token={token} />
-        {selectedPokemon.length > 0 && (
-          <button onClick={handleFightClickWrapper}>전투 시작</button>
-        )}
+    
       </div>
     </div>
   );
