@@ -188,9 +188,6 @@ function FightContent({ token }) {
         </div>
       </div>
       <div className={styles.card2}></div>
-      <style className={styles.hover}></style>
-      <div className={styles.tokenDisplay}>
-      </div>
     </div>
   );
 }

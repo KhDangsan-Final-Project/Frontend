@@ -64,10 +64,6 @@ const useBattle = () => {
     setEnemyHP(pokemon.hp);
   };
 
-  const runBtn = () => {
-    alert("도망칠 수 없었다!");
-  }
-
   return {
     selectedPokemon,
     enemyPokemon,
@@ -79,8 +75,6 @@ const useBattle = () => {
     handleAttack,
     toggleSmallImages,
     selectEnemyPokemon,
-    runBtn
   };
 };
-
 export default useBattle;

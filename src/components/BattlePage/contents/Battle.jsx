@@ -5,6 +5,7 @@ import Chat from './Chat';
 import { useLocation, useNavigate } from 'react-router-dom';
 import UserInfoFightContent from './UserInfoFightContent';
 import BattleTrainer from './BattleTrainer';
+import useAI from './hooks/useAI';
 
 // 포켓몬 타입 로고 경로를 가져오는 함수
 const getTypeLogo = (type) => {
@@ -43,7 +44,6 @@ const getTypeLogoContainerClass = (type) => {
 
 // 데미지 값에서 숫자만 추출하는 함수
 const getCleanDamageValue = (damage) => {
-  // 모든 비숫자 문자를 제거하고 숫자만 추출
   const cleanDamage = damage.replace(/[^0-9]/g, '');
   return cleanDamage ? parseInt(cleanDamage, 10) : 0;
 }
@@ -53,6 +53,7 @@ function Battle({ token }) {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const roomId = queryParams.get('roomId');
+  const [isHighlighted, setIsHighlighted] = useState(true);
 
   // 상태 변수 정의
   const [selectedPokemon, setSelectedPokemon] = useState([]);
@@ -71,6 +72,9 @@ function Battle({ token }) {
     toggleSmallImages,
     selectEnemyPokemon
   } = usePokemonBattle(roomId);
+
+  // AI 훅 사용
+  useAI(selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemon, playerTurn, setPlayerTurn);
 
   // 포켓몬 데이터 로드 및 초기화
   useEffect(() => {
@@ -134,76 +138,37 @@ function Battle({ token }) {
 
   // 플레이어 포켓몬 클릭 핸들러
   const handlePlayerPokemonClick = (pokemon) => {
+    if (!playerTurn) return; // 플레이어 턴이 아닐 때 클릭 무시
     setSelectedPlayerPokemon(pokemon);
     setShowAttacks(true);
   };
 
   // 적 포켓몬 클릭 핸들러
   const handleEnemyPokemonClick = (pokemon) => {
+    if (!playerTurn) return; // 플레이어 턴이 아닐 때 클릭 무시
     setSelectedEnemy(pokemon);
     selectEnemyPokemon(pokemon);
   };
 
   // 공격 클릭 핸들러
   const handleAttackClick = (damage) => {
-    if (selectedEnemy) {
-      const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
-        if (pokemon.id === selectedEnemy.id) {
-          const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - damage, 0) };
-          if (newPokemon.hp === 0) {
-            newPokemon.isFading = true;
-            setTimeout(() => {
-              setEnemyPokemon(prev => prev.filter(p => p.id !== newPokemon.id));
-            }, 1000);
-          }
-          return newPokemon;
+    if (!playerTurn || !selectedEnemy) return; // 플레이어 턴이 아닐 때 클릭 무시
+    const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
+      if (pokemon.id === selectedEnemy.id) {
+        const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - damage, 0) };
+        if (newPokemon.hp === 0) {
+          newPokemon.isFading = true;
+          setTimeout(() => {
+            setEnemyPokemon(prev => prev.filter(p => p.id !== newPokemon.id));
+          }, 1000);
         }
-        return pokemon;
-      });
-      setEnemyPokemon(updatedEnemyPokemon);
-      setPlayerTurn(false); // 플레이어의 턴이 끝났으므로 적 AI의 턴으로 전환
-    }
-  };
-
-  useEffect(() => {
-    if (!playerTurn && enemyPokemon.length > 0) {
-      alert('ALDER의 턴입니다!');
-      
-      // 랜덤으로 적 포켓몬을 선택
-      const randomEnemyPokemon = enemyPokemon[Math.floor(Math.random() * enemyPokemon.length)];
-      console.log('AI가 선택한 적 포켓몬:', randomEnemyPokemon);
-  
-      // 플레이어 포켓몬이 존재하는지 확인
-      if (selectedPokemon.length > 0 && randomEnemyPokemon.attacks.length > 0) {
-        const randomAttack = randomEnemyPokemon.attacks[Math.floor(Math.random() * randomEnemyPokemon.attacks.length)];
-        const targetPlayerPokemon = selectedPokemon[Math.floor(Math.random() * selectedPokemon.length)];
-        console.log('AI가 공격할 플레이어 포켓몬:', targetPlayerPokemon);
-  
-        setTimeout(() => {
-          if (targetPlayerPokemon) {
-            const updatedPlayerPokemon = selectedPokemon.map(pokemon => {
-              if (pokemon.id === targetPlayerPokemon.id) {
-                const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - randomAttack.damage, 0) };
-                if (newPokemon.hp === 0) {
-                  newPokemon.isFading = true;
-                  setTimeout(() => {
-                    setSelectedPokemon(prev => prev.filter(p => p.id !== newPokemon.id));
-                  }, 1000);
-                }
-                return newPokemon;
-              }
-              return pokemon;
-            });
-            setSelectedPokemon(updatedPlayerPokemon);
-          }
-        }, 1000); // 1초 대기 후 공격 실행
-      } else {
-        console.log('플레이어 포켓몬이 없거나 적 포켓몬이 공격을 할 수 없습니다.');
+        return newPokemon;
       }
-   
-      setPlayerTurn(true); // AI 턴 후 다시 플레이어 턴으로 전환
-    }
-  }, [playerTurn, enemyPokemon, selectedPokemon]);
+      return pokemon;
+    });
+    setEnemyPokemon(updatedEnemyPokemon);
+    setPlayerTurn(false); // 플레이어의 턴이 끝났으므로 적 AI의 턴으로 전환
+  };
 
   // 포켓몬 카드 렌더링
   const renderPokemonCards = (pokemons, isEnemy) => {
@@ -218,7 +183,7 @@ function Battle({ token }) {
             <img 
               src={useSmallImages ? pokemon.miniImage : pokemon.images.small} 
               alt={pokemon.name} 
-              className={`${styles.myCard} ${pokemon.isFading ? styles.hiddenImage : ''}`} 
+              className={`${styles.myCard} ${pokemon.isFading ? styles.hiddenImage : ''}${isHighlighted ? styles.highlighted : ''}` }
             />
             <div className={styles.pokemonCardInfo}>
               <div className={styles.types}>
@@ -230,7 +195,10 @@ function Battle({ token }) {
                 <h2 className={styles.pokemonName}>{pokemon.name}</h2>
               </div>
               <div className={styles.hpBarContainer}>
-                <div className={styles.hpBar} style={{ width: `${(pokemon.hp / pokemon.maxHp) * 100}%` }}>
+                <div
+                  className={`${styles.hpBar} ${pokemon.hp < pokemon.maxHp ? styles.hpBarAnimated : ''}`}
+                  style={{ width: `${(pokemon.hp / pokemon.maxHp) * 100}%` }}
+                >
                   HP: {pokemon.hp}
                 </div>
               </div>
@@ -255,7 +223,6 @@ function Battle({ token }) {
     );
   };
 
-
   // 게임 진행 중 적 포켓몬이 모두 제거되면 전투 완료 상태로 설정
   useEffect(() => {
     if (enemyPokemon.length === 0) {
@@ -275,7 +242,6 @@ function Battle({ token }) {
 
   return (
     <div className={styles.App}>
-      {/* <h1>Room ID: {roomId}</h1> */}
       <div className={styles.stage}>
         <div className={styles.enemyContainer}>
           <div><h2>ALDER's pokemons</h2></div>
@@ -290,10 +256,9 @@ function Battle({ token }) {
         </div>
       </div>
       <div>
-        <BattleTrainer/>
+        <BattleTrainer />
         <Chat />
         <UserInfoFightContent token={token} />
-    
       </div>
     </div>
   );

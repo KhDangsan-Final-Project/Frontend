@@ -499,3 +499,118 @@ flex-flow: row;
   background-color: rgba(255, 0, 0, 0.1);
 }
 
+/* battle.module.css */
+.hpBarAnimated {
+  animation: hpChange 0.5s ease-in-out;
+}
+
+/* 애니메이션을 정의합니다. */
+@keyframes hpChange {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #ff9999; /* HP가 줄어들 때 강조 색상 */
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* 애니메이션 정의 */
+@keyframes haloCard {
+  0% {
+    box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+                3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+                0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+                0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: -6px -6px 6px 0 rgba(38, 230, 247, 0.5),
+                6px 6px 6px 0 rgba(247, 89, 228, 0.5),
+                0px 0px 10px 2px rgba(255, 231, 89, 0.5),
+                0px 45px 30px -15px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+                3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+                0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+                0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes halaGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* .highlighted 클래스 정의 */
+.highlighted {
+  border-radius: 5px;
+  box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+              3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+              0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+              0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 20px 10px;
+  animation: haloCard 15s ease infinite;
+}
+
+.highlighted::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: url("https://assets.codepen.io/13471/sparkles.gif"), url("https://assets.codepen.io/13471/holo.png");
+  background-size: 180%;
+  mix-blend-mode: color-dodge;
+  opacity: 1;
+  z-index: 1;
+  animation: halaGradient 15s ease infinite;
+}
+
+.highlighted::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(0, 231, 255) 30%,
+    rgb(255, 0, 231) 70%
+  );
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  mix-blend-mode: color-dodge;
+  opacity: 0.2;
+  z-index: 0;
+  animation: halaGradient 15s ease infinite;
+}
+
+.highlighted.active::before {
+  opacity: 1;
+  animation: none;
+  transition: none;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+}
