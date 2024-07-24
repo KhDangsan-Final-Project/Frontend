@@ -111,11 +111,12 @@ flex-direction: column;
 }
 
 .hpBarContainer {
-  width: 100%;
+  width: 20px;
   height: 10px;
   background-color: #ddd;
   border-radius: 5px;
   margin-bottom: 5px;
+ 
 }
 
 .hpBar {
@@ -323,14 +324,7 @@ flex-flow: row;
   margin: 10px 0;
 }
 
-.hpBar {
-  height: 20px;
-  background-color: #4caf50;
-  color: #fff;
-  text-align: center;
-  line-height: 20px;
-  border-radius: 5px;
-}
+
 
 /* 공격 기술 스타일 */
 .pokemonAttacks {
@@ -465,11 +459,7 @@ flex-flow: row;
   margin-top: 0.5rem;
 }
 
-.hpBar {
-  height: 10px;
-  background-color: #76c7c0;
-}
-
+/* ------------------------------------------------------------------------------------------------------------ */
 .attackButton {
   width: 100%;
   margin-top: 0.5rem;
@@ -484,4 +474,35 @@ flex-flow: row;
 .selectedEnemy {
   border: 2px solid red; /* 적 포켓몬이 선택되었음을 강조 */
   background-color: rgba(255, 0, 0, 0.2); /* 배경색을 약간 빨갛게 */
+}
+.pokemonCard {
+  position: relative;
+  transition: opacity 1s ease-out;
+}
+
+/* 포켓몬 카드가 사라지는 애니메이션 */
+.fadeOut {
+  opacity: 0;
+  animation: fadeOutAnimation 1s forwards;
+}
+
+/* 애니메이션 정의 */
+@keyframes fadeOutAnimation {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 나머지 스타일은 유지 */
+.pokemonCardInfo {
+  /* 기존 스타일 */
+}
+
+/* 선택된 적 포켓몬에 대한 스타일 */
+.selectedEnemy {
+  border: 2px solid red;
+  background-color: rgba(255, 0, 0, 0.1);
 }

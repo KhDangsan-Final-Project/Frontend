@@ -77,7 +77,12 @@ function Battle({ token }) {
     if (selectedEnemy) {
       const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
         if (pokemon.id === selectedEnemy.id) {
-          return { ...pokemon, hp: Math.max(pokemon.hp - damage, 0) };
+          // HP가 0이면 카드에 애니메이션 클래스 추가
+          const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - damage, 0) };
+          if (newPokemon.hp === 0) {
+            newPokemon.isFading = true;
+          }
+          return newPokemon;
         }
         return pokemon;
       });
@@ -91,7 +96,7 @@ function Battle({ token }) {
         !pokemon.isRemoved && (
           <div
             key={pokemon.id}
-            className={`${styles.pokemonCard} ${isEnemy && selectedEnemy && selectedEnemy.id === pokemon.id ? styles.selectedEnemy : ''}`}
+            className={`${styles.pokemonCard} ${pokemon.isFading ? styles.fadeOut : ''} ${isEnemy && selectedEnemy && selectedEnemy.id === pokemon.id ? styles.selectedEnemy : ''}`}
             onClick={() => isEnemy ? handleEnemyPokemonClick(pokemon) : handlePlayerPokemonClick(pokemon)}
           >
             <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} className={styles.myCard} />
