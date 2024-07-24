@@ -72,6 +72,7 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
       const data = await response.json();
       setCards(prevCards => reset ? data.data : [...prevCards, ...data.data]);
       setHasMore(data.data.length === PAGE_SIZE);
+      console.log('Fetched Cards:', data.data); // API 응답 확인
     } catch (error) {
       console.error('카드 데이터를 불러오는 중 오류 발생:', error);
     } finally {
@@ -114,8 +115,9 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
 
   const getRandomEnemyPokemons = () => {
     const averageHp = getAverageHp();
+    const fireTypeCards = cards.filter(card => card.types && card.types.includes('Fire'));
     const randomPokemon = [];
-    const shuffledCards = cards.sort(() => 0.5 - Math.random());
+    const shuffledCards = fireTypeCards.sort(() => 0.5 - Math.random());
     let count = 0;
     let index = 0;
 
@@ -130,7 +132,7 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
       }
       index++;
     }
-
+    console.log(randomPokemon);
     return randomPokemon;
   };
 

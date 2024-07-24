@@ -2,23 +2,46 @@ import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
 import usePokemonBattle from './hooks/useBattle';
 import Chat from './Chat';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import UserInfoFightContent from './UserInfoFightContent';
+import BattleTrainer from './BattleTrainer';
 
 const getTypeLogo = (type) => {
-  // 포켓몬 타입 로고 이미지 경로를 반환하는 함수
-  // 실제 구현 필요
-  return null;
+  return `/img/types/${type}.png`;
 };
 
 const getTypeLogoContainerClass = (type) => {
-  // 포켓몬 타입에 따라 로고 컨테이너 클래스 반환
-  // 실제 구현 필요
-  return null;
-};
+  switch (type) {
+    case 'Dragon':
+      return styles.dragon;
+    case 'Fairy':
+      return styles.fairy;
+    case 'Fighting':
+      return styles.fighting;
+    case 'Fire':
+      return styles.fire;
+    case 'Grass':
+      return styles.grass;
+    case 'Lightning':
+      return styles.lightning;
+    case 'Metal':
+      return styles.metal;
+    case 'Psychic':
+      return styles.psychic;
+    case 'Water':
+      return styles.water;
+    case 'Colorless':
+      return styles.colorless;
+    case 'Darkness':
+      return styles.darkness;
+    default:
+      return ''; // 기본값은 빈 문자열
+  }
+}
 
 function Battle({ token }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const roomId = queryParams.get('roomId');
 
@@ -28,6 +51,8 @@ function Battle({ token }) {
   const [useSmallImages, setUseSmallImages] = useState(true);
   const [selectedEnemy, setSelectedEnemy] = useState(null);
   const [selectedPlayerPokemon, setSelectedPlayerPokemon] = useState(null);
+  const [isBattleFinished, setIsBattleFinished] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false); // 데이터 로딩 완료 상태
 
   const {
     handleFightClick,
@@ -55,7 +80,7 @@ function Battle({ token }) {
         }
       }
     };
-
+    
     loadPokemonData();
   }, []);
 
@@ -66,6 +91,29 @@ function Battle({ token }) {
   useEffect(() => {
     localStorage.setItem('enemyPokemon', JSON.stringify(enemyPokemon));
   }, [enemyPokemon]);
+
+  useEffect(() => {
+    if (isBattleFinished && enemyPokemon.length === 0) {
+      alert('챔피언 ALDER 와의 \n승부에서 이겼다!');
+      const battlePage = window.confirm('메인 화면으로 이동하시겠습니까?');
+      if (battlePage) {
+        navigate('/fight'); // fightContent 페이지로 이동
+      }
+    }
+  }, [isBattleFinished, enemyPokemon, navigate]);
+
+  useEffect(() => {
+    // 포켓몬이 모두 로딩된 후 알림 띄우기
+    if (selectedPokemon.length > 0 && enemyPokemon.length > 0) {
+      setIsDataLoaded(true);
+    }
+  }, [selectedPokemon, enemyPokemon]);
+
+  useEffect(() => {
+    if (isDataLoaded) {
+      alert('챔피언 ALDER가 \n승부를 걸어왔다!');
+    }
+  }, [isDataLoaded]);
 
   const handlePlayerPokemonClick = (pokemon) => {
     setSelectedPlayerPokemon(pokemon);
@@ -147,33 +195,41 @@ function Battle({ token }) {
 
   const handleFightClickWrapper = () => {
     setShowAttacks(true);
+    setIsBattleFinished(false); // 전투 시작 시에는 전투가 완료되지 않은 상태로 설정
     handleFightClick();
   };
 
+  useEffect(() => {
+    // 게임 진행 중일 때의 로직
+    if (enemyPokemon.length === 0) {
+      setIsBattleFinished(true); // 적 포켓몬이 모두 제거되면 전투가 완료된 상태로 설정
+    }
+  }, [enemyPokemon]);
+
   return (
     <div className={styles.App}>
-      <h1>Room ID: {roomId}</h1>
+      {/* <h1>Room ID: {roomId}</h1> */}
       <div className={styles.stage}>
         <div className={styles.enemyContainer}>
-          <h2>적 포켓몬</h2>
+          <div><h2>ALDER's pokemons</h2></div>
           {renderPokemonCards(enemyPokemon, true)}
         </div>
         <div className={styles.body}>
           <div className={styles.vs}>VS</div>
         </div>
         <div className={styles.selectedPokemonContainer}>
-          <h2>플레이어 포켓몬</h2>
+          <div><h2>player pokemons</h2></div>
           {renderPokemonCards(selectedPokemon, false)}
         </div>
       </div>
       <div>
-
-      <UserInfoFightContent />
-      <Chat />
-          {selectedPokemon.length > 0 && (
-            <button onClick={handleFightClickWrapper}>전투 시작</button>
-          )}
-          </div>
+        <BattleTrainer/>
+        <Chat />
+        <UserInfoFightContent token={token} />
+        {selectedPokemon.length > 0 && (
+          <button onClick={handleFightClickWrapper}>전투 시작</button>
+        )}
+      </div>
     </div>
   );
 }

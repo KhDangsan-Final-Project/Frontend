@@ -31,7 +31,7 @@ function FightContent({ token }) {
     handleCardClick,
     handleRemoveCard,
     loadMore,
-    getRandomEnemyPokemons
+    getRandomEnemyPokemons,
   } = useFightContent(API_KEY, PAGE_SIZE);
 
   const handleReceivedData = (data) => {
@@ -93,8 +93,12 @@ function FightContent({ token }) {
   const handleDecisionClick = () => {
     if (roomNumber) {
       alert(`방 번호: ${roomNumber}`);
+      
+
       const confirmMove = window.confirm('이동하시겠습니까?');
       if (confirmMove) {
+        const battlePokemons = getRandomEnemyPokemons();
+        localStorage.setItem('battlePokemons', JSON.stringify(battlePokemons)); // 배틀 포켓몬 저장
         sendBattlePokemon();
       } else {
         console.log('이동 취소');

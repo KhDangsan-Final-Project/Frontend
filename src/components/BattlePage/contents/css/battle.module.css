@@ -108,6 +108,8 @@ flex-direction: column;
 .typeLogo {
   width: 100%;
   height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .hpBarContainer {
@@ -375,10 +377,7 @@ flex-flow: row;
   margin: 5px;
 }
 
-.typeLogo {
-  width: 30px;
-  height: 30px;
-}
+
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
@@ -441,10 +440,7 @@ flex-flow: row;
   width: 150px;
 }
 
-.pokemonCard img {
-  width: 100px;
-  height: auto;
-}
+
 
 .pokemonCardInfo {
   margin-top: 0.5rem;
@@ -502,3 +498,4 @@ flex-flow: row;
   border: 2px solid red;
   background-color: rgba(255, 0, 0, 0.1);
 }
+
