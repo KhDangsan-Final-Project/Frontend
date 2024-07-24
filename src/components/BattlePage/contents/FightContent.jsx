@@ -14,6 +14,26 @@ function FightContent({ token }) {
   const [roomNumber, setRoomNumber] = useState(''); // 방 번호 상태
   const [ws, setWs] = useState(null); // WebSocket 상태
 
+  const {
+    cards,
+    searchTerm,
+    selectedType,
+    types,
+    page,
+    loading,
+    selectedCards,
+    selectedCount,
+    typeBackgroundImages,
+    hasMore,
+    setSearchTerm,
+    handleChange,
+    handleTypeClick,
+    handleCardClick,
+    handleRemoveCard,
+    loadMore,
+    getRandomEnemyPokemons
+  } = useFightContent(API_KEY, PAGE_SIZE);
+
   const handleReceivedData = (data) => {
     setReceivedData(data); // 전달받은 데이터를 상태에 저장합니다
     setRoomNumber(data); // 방 번호 업데이트
@@ -58,26 +78,6 @@ function FightContent({ token }) {
       };
     }
   }, [token]);
-
-  const {
-    cards,
-    searchTerm,
-    selectedType,
-    types,
-    page,
-    loading,
-    selectedCards,
-    selectedCount,
-    typeBackgroundImages,
-    hasMore,
-    setSearchTerm,
-    handleChange,
-    handleTypeClick,
-    handleCardClick,
-    handleRemoveCard,
-    loadMore,
-    getRandomEnemyPokemons,
-  } = useFightContent(API_KEY, PAGE_SIZE);
 
   const sendBattlePokemon = () => {
     const selectedPokemon = selectedCards.slice(0, 3);
@@ -186,7 +186,7 @@ function FightContent({ token }) {
         </div>
         <div className={styles.conponents}>
           <UserInfoFightContent token={token} />
-          <SettingFightContent onReceiveData={handleReceivedData}  token={token}/>
+          <SettingFightContent onReceiveData={handleReceivedData} token={token} />
           <p>받은 데이터: {JSON.stringify(receivedData)}</p>
         </div>
       </div>

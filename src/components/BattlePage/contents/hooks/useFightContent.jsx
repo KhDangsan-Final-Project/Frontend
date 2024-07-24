@@ -106,7 +106,14 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
     setSelectedCount(prevCount => prevCount - 1);
   };
 
+  const getAverageHp = () => {
+    if (selectedCards.length === 0) return 0;
+    const totalHp = selectedCards.reduce((acc, card) => acc + parseInt(card.hp, 10), 0);
+    return totalHp / selectedCards.length;
+  };
+
   const getRandomEnemyPokemons = () => {
+    const averageHp = getAverageHp();
     const randomPokemon = [];
     const shuffledCards = cards.sort(() => 0.5 - Math.random());
     let count = 0;
@@ -114,7 +121,7 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
 
     while (count < 3 && index < shuffledCards.length) {
       const card = shuffledCards[index];
-      if (!selectedCards.some(selectedCard => selectedCard.id === card.id)) {
+      if (!selectedCards.some(selectedCard => selectedCard.id === card.id) && parseInt(card.hp, 10) <= averageHp) {
         randomPokemon.push({
           ...card,
           miniImage: card.images.small

@@ -67,7 +67,8 @@ function UserInfoFightContent({ token }) {
       <h2>:::info:::</h2>
       <div className={styles.userInfoContainer}>
         <div className={styles.userImg}>
-          <div className={getRankImageClass()}></div> {/* 랭크 이미지를 배경으로 설정 */}
+          <div className={getRankImageClass()}></div> 
+        <div className={styles.userImage}></div>
         </div>
         <div className={styles.userNick}>
           <p className={styles.ptag}>"</p>

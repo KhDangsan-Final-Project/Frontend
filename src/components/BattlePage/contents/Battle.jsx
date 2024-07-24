@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
 import usePokemonBattle from './hooks/useBattle';
 import Chat from './Chat';
 import UserInfoFightContent from './UserInfoFightContent';
 import { useLocation } from 'react-router-dom';
 
-const getTypeLogo = () => {
+const getTypeLogo = (type) => {
   return null;
 };
 
-const getTypeLogoContainerClass = () => {
+const getTypeLogoContainerClass = (type) => {
   return null;
 };
 
@@ -18,17 +18,52 @@ function Battle({ token }) {
   const queryParams = new URLSearchParams(location.search);
   const roomId = queryParams.get('roomId');
 
+  const [selectedPokemon, setSelectedPokemon] = useState([]);
+  const [enemyPokemon, setEnemyPokemon] = useState([]);
+  const [showAttacks, setShowAttacks] = useState(false);
+  const [useSmallImages, setUseSmallImages] = useState(true);
+  const [selectedEnemy, setSelectedEnemy] = useState(null);
+  const [opponentInfo, setOpponentInfo] = useState(null);
+
   const {
-    selectedPokemon,
-    showAttacks,
-    useSmallImages,
-    selectedEnemy,
     handleFightClick,
     handleAttack,
     toggleSmallImages,
-    selectEnemyPokemon,
-    opponentInfo
+    selectEnemyPokemon
   } = usePokemonBattle(roomId);
+
+  useEffect(() => {
+    const loadPokemonData = () => {
+      const selectedPokemonData = localStorage.getItem('selectedPokemon');
+      const enemyPokemonData = localStorage.getItem('enemyPokemon');
+
+      if (selectedPokemonData) {
+        const parsedSelectedPokemon = JSON.parse(selectedPokemonData);
+        setSelectedPokemon(parsedSelectedPokemon);
+
+        // 평균 HP 계산
+        const totalHP = parsedSelectedPokemon.reduce((sum, pokemon) => sum + pokemon.hp, 0);
+        const averageHP = totalHP / parsedSelectedPokemon.length;
+
+        // 적 포켓몬 필터링
+        if (enemyPokemonData) {
+          const parsedEnemyPokemon = JSON.parse(enemyPokemonData);
+          const filteredEnemyPokemon = parsedEnemyPokemon.filter(pokemon => pokemon.hp <= averageHP);
+          setEnemyPokemon(filteredEnemyPokemon);
+        }
+      }
+    };
+
+    loadPokemonData();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemon));
+  }, [selectedPokemon]);
+
+  useEffect(() => {
+    localStorage.setItem('enemyPokemon', JSON.stringify(enemyPokemon));
+  }, [enemyPokemon]);
 
   const renderPokemonCards = (pokemons, isEnemy) => {
     return pokemons.length > 0 ? (
@@ -56,9 +91,8 @@ function Battle({ token }) {
               </div>
               {showAttacks && pokemon.attacks && (
                 <div className={styles.pokemonAttacks}>
-                  <h3>공격 기술</h3>
                   {pokemon.attacks.map((attack, index) => (
-                    <button key={index} className={styles.attackButton} onClick={() => handleAttack(attack.damage)}>
+                    <button key={index} className={styles.attackButton} onClick={() => handleAttack(attack.damage, isEnemy ? selectedEnemy : pokemon)}>
                       <div className={styles.attack}>
                         <p><strong>{attack.name}</strong></p>
                         <p>피해: {attack.damage}</p>
@@ -76,17 +110,24 @@ function Battle({ token }) {
     );
   };
 
+  const handleFightClickWrapper = () => {
+    setShowAttacks(true);
+    handleFightClick();
+  };
+
   return (
     <div className={styles.App}>
       <h1>Room ID: {roomId}</h1>
       <div className={styles.stage}>
         <div className={styles.enemyContainer}>
-          {renderPokemonCards(selectedPokemon, true)}
+          <h2>적 포켓몬</h2>
+          {renderPokemonCards(enemyPokemon, true)}
         </div>
         <div className={styles.body}>
-          <div className={styles.vs}></div>
+          <div className={styles.vs}>VS</div>
         </div>
         <div className={styles.selectedPokemonContainer}>
+          <h2>내 포켓몬</h2>
           {renderPokemonCards(selectedPokemon, false)}
         </div>
       </div>
@@ -96,8 +137,10 @@ function Battle({ token }) {
           <Chat roomId={roomId} token={token} />
         </div>
         <div className={styles.menu}>
-          <button onClick={handleFightClick}>Fight</button>
-          <button onClick={toggleSmallImages}>{useSmallImages ? '큰 이미지로 보기' : '작은 이미지로 보기'}</button>
+          <button onClick={handleFightClickWrapper}>Fight</button>
+          <button onClick={toggleSmallImages}>
+            {useSmallImages ? '큰 이미지로 보기' : '작은 이미지로 보기'}
+          </button>
         </div>
       </div>
     </div>

@@ -18,6 +18,7 @@ export default function SettingFightContent({ onReceiveData, token }) {
 
     websocket.onmessage = (event) => {
       console.log('서버로부터의 메시지:', event.data);
+  
       try {
         // 메시지를 JSON으로 파싱
         const data = JSON.parse(event.data);

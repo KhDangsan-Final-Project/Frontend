@@ -449,3 +449,13 @@ margin: 0;
   display: flex;
   flex-flow: column nowrap;
 }
+
+.userImage{
+  background-image: url(/public/img/user/userImage.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+ /* padding-top: 5px; */
+width: 100%;
+height: 100%;
+}

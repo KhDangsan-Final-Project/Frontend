@@ -1,92 +1,58 @@
 import { useState, useEffect } from 'react';
 
-const useBattle = (roomId) => {
+const useBattle = () => {
   const [selectedPokemon, setSelectedPokemon] = useState([]);
   const [enemyPokemon, setEnemyPokemon] = useState([]);
   const [showAttacks, setShowAttacks] = useState(false);
   const [useSmallImages, setUseSmallImages] = useState(false);
   const [selectedEnemy, setSelectedEnemy] = useState(null);
   const [enemyHP, setEnemyHP] = useState(0);
-  const [webSocket, setWebSocket] = useState(null);
-  const [opponentInfo, setOpponentInfo] = useState(null); // 상대방 정보 상태 추가
 
   useEffect(() => {
-    const ws = new WebSocket('ws://192.168.20.54:8090/ms2/battle');
-    setWebSocket(ws);
+    const storedPokemon = JSON.parse(localStorage.getItem('selectedPokemon')) || [];
+    const storedEnemyPokemon = JSON.parse(localStorage.getItem('enemyPokemon')) || [];
+    const removedPokemons = JSON.parse(localStorage.getItem('removedPokemons')) || [];
 
-    ws.onopen = () => {
-      console.log('WebSocket 연결 완료');
-      ws.send(JSON.stringify({ type: 'JOIN_ROOM', roomId }));
+    const updatePokemons = (pokemons) => {
+      return pokemons.map(pokemon => ({
+        ...pokemon,
+        isRemoved: removedPokemons.includes(pokemon.id)
+      }));
     };
 
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log('서버로부터의 데이터:', data);
+    setSelectedPokemon(updatePokemons(storedPokemon));
+    setEnemyPokemon(updatePokemons(storedEnemyPokemon));
+  }, []);
 
-        if (data.type === 'UPDATE_BATTLE') {
-          updateBattleState(data);
-        } else if (data.type === 'OPPONENT_INFO') { // 상대방 정보 업데이트
-          setOpponentInfo(data.opponentInfo);
-        }
-      } catch (error) {
-        console.error('JSON 파싱 오류:', error);
-      }
-    };
-
-    ws.onclose = () => {
-      console.log('WebSocket 연결 종료');
-    };
-
-    ws.onerror = (error) => {
-      console.error('WebSocket 오류:', error);
-    };
-
-    return () => {
-      if (ws) {
-        ws.close();
-      }
-    };
-  }, [roomId]);
-
-  const updateBattleState = (data) => {
-    setSelectedPokemon(data.selectedPokemon);
-    setEnemyPokemon(data.enemyPokemon);
+  const handleFightClick = () => {
+    setShowAttacks(true);
   };
 
   const handleAttack = (attackDamage) => {
-    if (selectedEnemy && webSocket) {
-      const updatedHP = selectedEnemy.hp - attackDamage;
-      const updatedEnemy = { ...selectedEnemy, hp: Math.max(updatedHP, 0) };
+    if (selectedEnemy) {
+      const updatedHP = enemyHP - attackDamage;
+      setEnemyHP(updatedHP >= 0 ? updatedHP : 0);
 
-      const updatedEnemyPokemon = enemyPokemon.map(pokemon =>
-        pokemon.id === selectedEnemy.id ? updatedEnemy : pokemon
-      );
+      const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
+        if (pokemon.id === selectedEnemy.id) {
+          return { ...pokemon, hp: updatedHP >= 0 ? updatedHP : 0, isRemoved: updatedHP <= 0 };
+        }
+        return pokemon;
+      });
 
-      webSocket.send(JSON.stringify({
-        type: 'ATTACK',
-        roomId,
-        enemyPokemon: updatedEnemyPokemon,
-        selectedPokemon
-      }));
+      setEnemyPokemon(updatedEnemyPokemon);
 
-      setSelectedPokemon(prevState => ({
-        ...prevState,
-        enemy: updatedEnemyPokemon.filter(pokemon => !pokemon.isRemoved),
-      }));
+      const removedPokemons = updatedEnemyPokemon.filter(pokemon => pokemon.hp <= 0).map(pokemon => pokemon.id);
+      if (removedPokemons.length > 0) {
+        localStorage.setItem('removedPokemons', JSON.stringify([...removedPokemons, ...JSON.parse(localStorage.getItem('removedPokemons') || '[]')]));
+      }
 
       if (updatedHP <= 0) {
         setSelectedEnemy(null);
         setEnemyHP(0);
         setShowAttacks(false);
       }
-    } else {
-      console.error('WebSocket이 연결되지 않았거나 적이 선택되지 않았습니다');
     }
-  };
-
-  const handleFightClick = () => {
-    setShowAttacks(true);
   };
 
   const toggleSmallImages = () => {
@@ -100,7 +66,7 @@ const useBattle = (roomId) => {
 
   const runBtn = () => {
     alert("도망칠 수 없었다!");
-  };
+  }
 
   return {
     selectedPokemon,
@@ -109,7 +75,6 @@ const useBattle = (roomId) => {
     useSmallImages,
     selectedEnemy,
     enemyHP,
-    opponentInfo, // 상대방 정보 반환
     handleFightClick,
     handleAttack,
     toggleSmallImages,
