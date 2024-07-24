@@ -1,0 +1,95 @@
+.container {
+  padding: 20px;
+  height: 1500px;
+  background-color: rgb(248, 248, 248);
+  border-radius: 30px;
+  box-shadow: 0px 0px 5px black;
+  margin-top: 30px;
+}
+.title {
+  font-size: 32px;
+  margin: 40px;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  font-size: 28px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.headerItem {
+  width: 350px;
+  margin: 10px;
+  text-align: center;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  margin-top: 20px;
+}
+
+.cancel {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.link {
+  color: black;
+  font-size: 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  text-decoration: none;
+  padding: 10px 0;
+}
+
+.mailSender, .mailSubject, .mailTimestamp {
+  flex: 1;
+  text-align: center;
+}
+
+.detail {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-top: 15px;
+  margin-bottom: 50px;
+}
+
+.detail > div {
+  font-size: 20px;
+  margin: 10px;
+}
+
+.button {
+  width: 70px;
+  margin: 0 auto;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none; 
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.sendMail {
+  width: 80px;
+  padding: 5px;
+  margin: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff4b5c;
+  color: white;
+  font-size: 14px;
+}

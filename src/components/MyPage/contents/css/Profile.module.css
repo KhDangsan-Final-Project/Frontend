@@ -77,8 +77,6 @@
   opacity: 0;
 }
 
-
-
 .emailSection {
   display: flex;
   align-items: center;
@@ -116,12 +114,12 @@
   font-size: 16px;
 }
 
-.cancel {
+.cancel_btn {
   width: 150px;
   padding: 10px;
   margin: 10px 5px;
   background-color: white;
-  border: 1px solid black;
+  border: none;
   border-radius: 5px;
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Profile from './contents/Profile';
 import styles from './css/MyPage.module.css';
-import Library from './contents/Library';
+import MyLibrary from './contents/MyLibrary';
 import Friends from './contents/Friends';
 import MailBox from './contents/MailBox';
 import Attendance from './contents/Attendance';
@@ -41,7 +41,7 @@ export default function MyPage({ setToken }) {
             </nav>
             <div className={styles.content}>
                 {currentPage === 'profile' && <Profile />}
-                {currentPage === 'myDex' && <Library />}
+                {currentPage === 'myDex' && <MyLibrary />}
                 {currentPage === 'myFriends' && <Friends />}
                 {currentPage === 'mailbox' && <MailBox />}
                 {currentPage === 'attendance' && <Attendance />}
