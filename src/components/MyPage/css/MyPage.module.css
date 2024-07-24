@@ -4,22 +4,26 @@
   radial-gradient(circle at 80% 60%, rgba(173, 216, 230, 0.6), transparent),
   radial-gradient(circle at 50% 70%, rgba(154, 223, 239, 0.6), transparent);
   background-repeat: repeat;
-  padding: 120px;
+  overflow: hidden;
 }
 
 .nav {
   display: flex;
   justify-content: center; 
   margin-top: 30px;
-  gap: 100px;
+  gap: 30px;
+  font-family: 'ONE-Mobile-POP';
+  flex-flow: row wrap;
 }
 
 .nav button {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 25px;
   padding: 10px 20px;
   cursor: pointer;
+  border: 3px solid black;
+  border-radius: 20px;
 }
 
 .nav button:hover {
@@ -36,4 +40,14 @@
   text-align: center;
   font-size: 3em;
   margin-bottom: 20px;
+  font-family: 'K2D';
+  font-weight: bold;
+}
+
+.jumpUp {
+  height: 150px;
+}
+
+.jump {
+  height: 50px;
 }

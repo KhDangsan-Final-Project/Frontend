@@ -54,6 +54,7 @@ export default function Attendance() {
     
     return (
         <div className={styles.attendanceContainer}>
+            <h2 className={styles.bigTitle}>출석체크</h2>
             <button onClick={handleAttendanceCheck} className={styles.btn}>출석하기</button>
             <div className={styles.calendar}>
                 {attendance.map((checked, index) => (
