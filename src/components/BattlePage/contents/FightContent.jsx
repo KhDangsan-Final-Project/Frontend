@@ -12,6 +12,7 @@ function FightContent({ token }) {
   const navigate = useNavigate();
   const [receivedData, setReceivedData] = useState(null);
   const [roomNumber, setRoomNumber] = useState('');
+  const [nickname, setNickname] = useState('');
   const [ws, setWs] = useState(null);
 
   const {
@@ -34,12 +35,7 @@ function FightContent({ token }) {
     getRandomEnemyPokemons,
   } = useFightContent(API_KEY, PAGE_SIZE);
 
-  const handleReceivedData = (data) => {
-    setReceivedData(data);
-    setRoomNumber(data);
-    console.log('받은 데이터:', data);
-  };
-
+  
   useEffect(() => {
     if (token) {
       const ws = new WebSocket('ws://192.168.20.54:8090/ms2/token');
@@ -48,34 +44,44 @@ function FightContent({ token }) {
         console.log('Connected to WebSocket');
         ws.send(JSON.stringify({ token }));
       };
-
+      
       ws.onmessage = function(event) {
         console.log('Message from server:', event.data);
         try {
           const data = JSON.parse(event.data);
+          console.log("onmessage data" , data.nickname);
+          
+          setNickname(data.nickname);
+          
           handleReceivedData(data.roomNumber);
         } catch (error) {
           console.error('Error parsing message:', error);
         }
       };
-
+      
       ws.onerror = function(event) {
         console.error('WebSocket error:', event);
         console.log('WebSocket readyState:', ws.readyState);
       };
-
+      
       ws.onclose = () => {
         console.log('Disconnected from WebSocket');
       };
-
+      
       setWs(ws);
-
+      
       return () => {
         ws.close();
       };
     }
   }, [token]);
-
+  
+  const handleReceivedData = (data) => {
+    console.log("handeRecivced data ", data);
+    setReceivedData(data);
+    setRoomNumber(data);
+    console.log('받은 데이터:', data);
+  };
   const sendBattlePokemon = () => {
     const selectedPokemon = selectedCards.slice(0, 3);
     const selectedPokemonWithMiniImages = selectedPokemon.map(card => ({
@@ -83,11 +89,11 @@ function FightContent({ token }) {
       miniImage: card.images.small
     }));
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemonWithMiniImages));
-
+    
     const randomEnemyPokemon = getRandomEnemyPokemons();
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
-
-    navigate(`/battle?roomId=${roomNumber}`);
+    alert(`${nickname}`);
+    navigate(`/battle?roomId=${roomNumber}&nickname=${nickname}`);
   };
 
   const handleDecisionClick = () => {

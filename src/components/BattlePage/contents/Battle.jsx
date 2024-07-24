@@ -100,6 +100,8 @@ function Battle({ token }) {
     loadPokemonData();
   }, []);
 
+  const nickname = location.state?.nickname; // nickname을 받아옴
+
   // 포켓몬 데이터 저장
   useEffect(() => {
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemon));
@@ -115,13 +117,13 @@ function Battle({ token }) {
       alert('챔피언 ALDER 와의 \n승부에서 이겼다!');
       alert('싸움이 끝나고 나의 마음에\n상쾌한 바람이 지나갔다 . . .');
       alert('우리의 싸움을\n다음 스텝으로의 발판 삼아 나아가라! !')
-      alert('PLAYER 는 상금으로 0원을 손에 넣었다!');
+      alert(`${nickname} 는 상금으로 0원을 손에 넣었다!`);
       const battlePage = window.confirm('메인 화면으로 이동하시겠습니까?');
       if (battlePage) {
         navigate('/fight'); // fightContent 페이지로 이동
       }
     }
-  }, [isBattleFinished, enemyPokemon, navigate]);
+  }, [isBattleFinished, enemyPokemon]);
 
   // 포켓몬 데이터 로딩 완료 상태 체크 및 알림
   useEffect(() => {
@@ -234,9 +236,9 @@ function Battle({ token }) {
   // 패배 처리
   useEffect(() => {
     if (enemyPokemon.length > 0 && selectedPokemon.length === 0) {
-      alert('PLAYER 에게는 더 이상 \n싸울 수 있는 포켓몬이 없다!');
+      alert(`${nickname} 에게는 더 이상 \n싸울 수 있는 포켓몬이 없다!`);
       alert('. . .  . . .  . . .  \n. . .  . . .  . . .');
-      alert('PLAYER는 눈앞이 캄캄해졌다!');
+      alert(`${nickname}는 눈앞이 캄캄해졌다!`);
       navigate('/fight'); // 전투 페이지로 이동
     }
   }, [selectedPokemon, navigate]);
@@ -252,7 +254,7 @@ function Battle({ token }) {
           <div className={styles.vs}></div>
         </div>
         <div className={styles.selectedPokemonContainer}>
-          <div><h2>player pokemons</h2></div>
+          <div><h2>{nickname} pokemons</h2></div>
           {renderPokemonCards(selectedPokemon, false)}
         </div>
       </div>
