@@ -77,10 +77,12 @@ function Battle({ token }) {
     if (selectedEnemy) {
       const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
         if (pokemon.id === selectedEnemy.id) {
-          // HP가 0이면 카드에 애니메이션 클래스 추가
           const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - damage, 0) };
           if (newPokemon.hp === 0) {
             newPokemon.isFading = true;
+            setTimeout(() => {
+              setEnemyPokemon(prev => prev.filter(p => p.id !== newPokemon.id));
+            }, 1000); // 애니메이션 후 데이터 삭제
           }
           return newPokemon;
         }
@@ -99,7 +101,11 @@ function Battle({ token }) {
             className={`${styles.pokemonCard} ${pokemon.isFading ? styles.fadeOut : ''} ${isEnemy && selectedEnemy && selectedEnemy.id === pokemon.id ? styles.selectedEnemy : ''}`}
             onClick={() => isEnemy ? handleEnemyPokemonClick(pokemon) : handlePlayerPokemonClick(pokemon)}
           >
-            <img src={useSmallImages ? pokemon.images.card : pokemon.images.small} alt={pokemon.name} className={styles.myCard} />
+            <img 
+              src={useSmallImages ? pokemon.images.card : pokemon.images.small} 
+              alt={pokemon.name} 
+              className={`${styles.myCard} ${pokemon.isFading ? styles.hiddenImage : ''}`} 
+            />
             <div className={styles.pokemonCardInfo}>
               <div className={styles.types}>
                 {pokemon.types.map((type, index) => (
