@@ -53,6 +53,7 @@ function Battle({ token }) {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const roomId = queryParams.get('roomId');
+  const nickname = queryParams.get('nickname');
   const [isHighlighted, setIsHighlighted] = useState(true);
 
   // 상태 변수 정의
@@ -100,7 +101,7 @@ function Battle({ token }) {
     loadPokemonData();
   }, []);
 
-  const nickname = location.state?.nickname; // nickname을 받아옴
+
 
   // 포켓몬 데이터 저장
   useEffect(() => {
