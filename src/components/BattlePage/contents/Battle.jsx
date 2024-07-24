@@ -133,6 +133,7 @@ function Battle({ token }) {
   useEffect(() => {
     if (isDataLoaded && enemyPokemon.length > 0) {
       alert('챔피언 ALDER가 \n승부를 걸어왔다!');
+      alert('"먼저 공격할 차례"를 얻었다!');
     }
   }, [isDataLoaded]);
 

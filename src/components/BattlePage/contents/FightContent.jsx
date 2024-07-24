@@ -154,7 +154,7 @@ function FightContent({ token }) {
           )}
         </div>
         <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
-          <h4>선택된 포켓몬 카드</h4>
+          <h4>:::선택된 포켓몬 카드:::</h4>
           {selectedCards.length > 0 && (
             <button onClick={handleDecisionClick}>결정</button>
           )}

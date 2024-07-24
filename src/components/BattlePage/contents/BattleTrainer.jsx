@@ -19,7 +19,7 @@ export default function BattleTrainer() {
             <>
               <p className={styles.nick}>Nickname:<br /> ALDER</p>
               <p className={styles.ptag}>"</p>
-              <p className={styles.victory}>trainer♪</p>
+              <p className={styles.victory}>champion♪</p>
             </>
         
         </div>
