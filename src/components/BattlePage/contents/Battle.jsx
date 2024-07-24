@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
 import usePokemonBattle from './hooks/useBattle';
 import Chat from './Chat';
-import UserInfoFightContent from './UserInfoFightContent';
 import { useLocation } from 'react-router-dom';
+import UserInfoFightContent from './UserInfoFightContent';
 
 const getTypeLogo = (type) => {
   // 포켓몬 타입 로고 이미지 경로를 반환하는 함수
+  // 실제 구현 필요
   return null;
 };
 
 const getTypeLogoContainerClass = (type) => {
   // 포켓몬 타입에 따라 로고 컨테이너 클래스 반환
+  // 실제 구현 필요
   return null;
 };
 
@@ -67,10 +69,12 @@ function Battle({ token }) {
 
   const handlePlayerPokemonClick = (pokemon) => {
     setSelectedPlayerPokemon(pokemon);
+    setShowAttacks(true);
   };
 
   const handleEnemyPokemonClick = (pokemon) => {
     setSelectedEnemy(pokemon);
+    selectEnemyPokemon(pokemon);
   };
 
   const handleAttackClick = (damage) => {
@@ -82,7 +86,7 @@ function Battle({ token }) {
             newPokemon.isFading = true;
             setTimeout(() => {
               setEnemyPokemon(prev => prev.filter(p => p.id !== newPokemon.id));
-            }, 1000); // 애니메이션 후 데이터 삭제
+            }, 1000);
           }
           return newPokemon;
         }
@@ -102,7 +106,7 @@ function Battle({ token }) {
             onClick={() => isEnemy ? handleEnemyPokemonClick(pokemon) : handlePlayerPokemonClick(pokemon)}
           >
             <img 
-              src={useSmallImages ? pokemon.images.card : pokemon.images.small} 
+              src={useSmallImages ? pokemon.miniImage : pokemon.images.small} 
               alt={pokemon.name} 
               className={`${styles.myCard} ${pokemon.isFading ? styles.hiddenImage : ''}`} 
             />
@@ -158,22 +162,18 @@ function Battle({ token }) {
           <div className={styles.vs}>VS</div>
         </div>
         <div className={styles.selectedPokemonContainer}>
-          <h2>내 포켓몬</h2>
+          <h2>플레이어 포켓몬</h2>
           {renderPokemonCards(selectedPokemon, false)}
         </div>
       </div>
-      <div className={styles.footer}>
-        <UserInfoFightContent token={token} />
-        <div className={styles.margin}>
-          <Chat roomId={roomId} token={token} />
-        </div>
-        <div className={styles.menu}>
-          <button onClick={handleFightClickWrapper}>Fight</button>
-          <button onClick={toggleSmallImages}>
-            {useSmallImages ? '큰 이미지로 보기' : '작은 이미지로 보기'}
-          </button>
-        </div>
-      </div>
+      <div>
+
+      <UserInfoFightContent />
+      <Chat />
+          {selectedPokemon.length > 0 && (
+            <button onClick={handleFightClickWrapper}>전투 시작</button>
+          )}
+          </div>
     </div>
   );
 }

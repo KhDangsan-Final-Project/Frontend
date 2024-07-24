@@ -7,12 +7,12 @@ import UserInfoFightContent from './UserInfoFightContent';
 import SettingFightContent from './SettingFightContent';
 
 function FightContent({ token }) {
-  const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde'; // API 키 확인
+  const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde';
   const PAGE_SIZE = 20;
   const navigate = useNavigate();
-  const [receivedData, setReceivedData] = useState(null); // 상태를 추가하여 받은 데이터를 저장합니다
-  const [roomNumber, setRoomNumber] = useState(''); // 방 번호 상태
-  const [ws, setWs] = useState(null); // WebSocket 상태
+  const [receivedData, setReceivedData] = useState(null);
+  const [roomNumber, setRoomNumber] = useState('');
+  const [ws, setWs] = useState(null);
 
   const {
     cards,
@@ -35,19 +35,17 @@ function FightContent({ token }) {
   } = useFightContent(API_KEY, PAGE_SIZE);
 
   const handleReceivedData = (data) => {
-    setReceivedData(data); // 전달받은 데이터를 상태에 저장합니다
-    setRoomNumber(data); // 방 번호 업데이트
-    console.log('받은 데이터:', data); // 콘솔에 출력하여 확인합니다
+    setReceivedData(data);
+    setRoomNumber(data);
+    console.log('받은 데이터:', data);
   };
 
   useEffect(() => {
     if (token) {
-      // WebSocket 연결
       const ws = new WebSocket('ws://192.168.20.54:8090/ms2/token');
 
       ws.onopen = () => {
         console.log('Connected to WebSocket');
-        // 토큰 값 서버로 전송
         ws.send(JSON.stringify({ token }));
       };
 
@@ -55,7 +53,7 @@ function FightContent({ token }) {
         console.log('Message from server:', event.data);
         try {
           const data = JSON.parse(event.data);
-          handleReceivedData(data.roomNumber); // 방 번호를 처리합니다
+          handleReceivedData(data.roomNumber);
         } catch (error) {
           console.error('Error parsing message:', error);
         }
@@ -73,7 +71,6 @@ function FightContent({ token }) {
       setWs(ws);
 
       return () => {
-        // 컴포넌트가 언마운트 되었을 때 WebSocket 연결 닫기
         ws.close();
       };
     }
@@ -90,18 +87,15 @@ function FightContent({ token }) {
     const randomEnemyPokemon = getRandomEnemyPokemons();
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
 
-    navigate(`/battle?roomId=${roomNumber}`); // URL에 roomId 쿼리 매개변수 추가
+    navigate(`/battle?roomId=${roomNumber}`);
   };
 
   const handleDecisionClick = () => {
     if (roomNumber) {
-      // 방 번호를 경고창으로 띄우기
       alert(`방 번호: ${roomNumber}`);
-
-      // 확인 메시지 띄우기
       const confirmMove = window.confirm('이동하시겠습니까?');
       if (confirmMove) {
-        sendBattlePokemon(); // 선택한 포켓몬 카드를 저장하고 페이지로 이동
+        sendBattlePokemon();
       } else {
         console.log('이동 취소');
       }
@@ -155,7 +149,6 @@ function FightContent({ token }) {
             <button onClick={loadMore}>더 불러오기</button>
           )}
         </div>
-        {/* myCardArea */}
         <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
           <h4>선택된 포켓몬 카드</h4>
           {selectedCards.length > 0 && (

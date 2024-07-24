@@ -496,10 +496,6 @@ flex-flow: row;
   }
 }
 
-/* 나머지 스타일은 유지 */
-.pokemonCardInfo {
-  /* 기존 스타일 */
-}
 
 /* 선택된 적 포켓몬에 대한 스타일 */
 .selectedEnemy {
