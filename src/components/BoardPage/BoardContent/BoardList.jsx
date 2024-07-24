@@ -36,6 +36,17 @@ export default function BoardList() {
         (_, i) => pagging.startPageOfPageGroup + i
     );
 
+    const handlePreviousPageGroup = () => {
+        if (pagging.previousPageGroup && pageNo > 1) {
+            setPageNo(pagging.startPageOfPageGroup - 1);
+        }
+    };
+
+    const handleNextPageGroup = () => {
+        if (pagging.nextPageGroup) {
+            setPageNo(pagging.endPageOfPageGroup + 1);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -63,16 +74,16 @@ export default function BoardList() {
                 <tfoot className={styles.page}>
                     <tr>
                         <td colSpan={5}>
-                            {pagging.previousPageGroup && (
-                                <a onClick={() => setPageNo(pagging.startPageofPageGroup - 1)}>◀</a>
+                        {pagging.startPageOfPageGroup > 1 && (
+                                <a onClick={handlePreviousPageGroup}>◀</a>
                             )}
                             {pages.map(page => (
                                 <a key={page} onClick={() => setPageNo(page)}>
                                     {page}
                                 </a>
                             ))}
-                            {pagging.nextPageGroup && (
-                                <a onClick={() => setPageNo(pagging.endPageOfPageGroup + 1)}>▶</a>
+                              {pagging.nextPageGroup && (
+                                <a onClick={handleNextPageGroup}>▶</a>
                             )}
                         </td>
                     </tr>
