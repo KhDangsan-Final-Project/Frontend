@@ -8,7 +8,7 @@
 }
 .title {
   font-size: 32px;
-  margin: 40px 0px;
+  margin: 40px;
   text-align: center;
 }
 
@@ -23,29 +23,14 @@
 }
 
 .headerItem {
-  width: 300px;
+  width: 350px;
   margin: 10px;
   text-align: center;
 }
 
-
 .buttonContainer {
   display: flex;
   justify-content: flex-end;
-}
-
-.mailList {
-  list-style: none;
-  padding: 0;
-}
-
-.mailItem {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
-}
-
-.mailItem p {
-  margin: 5px 0;
 }
 
 .btn {
@@ -100,12 +85,11 @@
 
 .sendMail {
   width: 80px;
+  padding: 5px;
   margin: 20px;
-  border: 1px solid black;
-  padding: 7px;
+  border: none;
   border-radius: 5px;
-  background-color: white;
-  color: black;
+  background-color: #ff4b5c;
+  color: white;
   font-size: 14px;
-  cursor: pointer;
 }

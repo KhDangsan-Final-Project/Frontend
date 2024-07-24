@@ -1,6 +1,6 @@
-import styles from './css/Library.module.css'
+import styles from './css/MyLibrary.module.css'
 
-export default function Library() {
+export default function MyLibrary() {
 
 
   return (
