@@ -329,14 +329,21 @@ export default function BoardWrite({ showBoard }) {
         setFiles(e.target.files);
     }
 
+    function stripHtmlTags(html) {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
+    }
+
     const token = localStorage.getItem('token');
     async function handleSubmitContent(e) {
         e.preventDefault();
+        const plainTextContent = stripHtmlTags(content);
+
 
         const formData = new FormData();
         formData.append('category', category);
         formData.append('title', title);
-        formData.append('content', content);
+        formData.append('content', plainTextContent);
 
         for (let i = 0; i < files.length; i++) {
             formData.append('file', files[i]);

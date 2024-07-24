@@ -48,7 +48,7 @@ function App() {
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
         {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
         {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
-        <Route path="/boardContent" element={<BoardContent/>}/>
+        <Route path="/boardContent/:boardNo" element={<BoardContent/>}/>
         <Route path="/boardEvent" element={<BoardEvent/>}/>
         <Route path="/boardNotice" element={<BoardNotice/>}/>
         <Route path="/boardList" element={<BoardList/>}/>
