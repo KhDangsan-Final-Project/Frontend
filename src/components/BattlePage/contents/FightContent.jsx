@@ -5,6 +5,7 @@ import useFightContent from './hooks/useFightContent';
 import FightNavBar from './navFightContent';
 import UserInfoFightContent from './UserInfoFightContent';
 import SettingFightContent from './SettingFightContent';
+import Chat from './Chat';
 
 function FightContent({ token }) {
   const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde';
@@ -189,6 +190,7 @@ function FightContent({ token }) {
           <p>ROOM ID : {JSON.stringify(receivedData)}</p>
         </div>
       </div>
+      <Chat nickname={nickname}/>
       <div className={styles.card2}></div>
     </div>
   );

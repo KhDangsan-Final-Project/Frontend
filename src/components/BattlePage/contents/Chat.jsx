@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-// props로 token을 받도록 수정
-const Chat = ({ token }) => {
+// props로 nickname을 받도록 수정
+const Chat = ({ nickname }) => {
     const [webSocket, setWebSocket] = useState(null);
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
-    const [userInput, setUserInput] = useState('');
 
     useEffect(() => {
-        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/ws');
+        // WebSocket 연결 설정
+        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/chat');
         setWebSocket(ws);
 
         ws.onopen = () => {
             console.log('Connected to WebSocket');
-            // 연결 시 토큰 전송
-            ws.send(JSON.stringify({ token: token }));
         };
 
         ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
                 console.log('Received data:', data);
-
-                // 서버에서 받은 nickname 설정
-                if (data.sender) {
-                    setUserInput(data.sender);
-                }
 
                 setMessages(prevMessages => [...prevMessages, data]);
             } catch (error) {
@@ -46,15 +39,20 @@ const Chat = ({ token }) => {
                 ws.close();
             }
         };
-    }, [token]);
+    }, []);
 
     const sendMessage = () => {
         if (webSocket && messageInput.trim() !== '') {
+            // 메시지 객체 생성
             const message = {
-                sender: userInput, // 사용자의 닉네임 설정
-                content: messageInput
+                nickname: nickname, // 사용자의 닉네임 설정
+                content: messageInput, // 페이지에서 입력한 내용
             };
+            
+            // 메시지를 JSON으로 변환하여 서버로 전송
             webSocket.send(JSON.stringify(message));
+            
+            // 입력 필드 초기화
             setMessageInput('');
         }
     };
@@ -62,11 +60,12 @@ const Chat = ({ token }) => {
     return (
         <div>
             <h1>WebSocket Chat</h1>
-            {/* token 출력 */}
-            <p>Token: {token}</p>
+            <p>All Chat Messages:</p>
             <div>
                 {messages.map((msg, index) => (
-                    <p key={index}><strong>{msg.sender || "unknown"}: </strong>{msg.content || "empty"}</p>
+                    <p key={index}>
+                        <strong>{msg.nickname || "unknown"}: </strong>{msg.content || "empty"}
+                    </p>
                 ))}
             </div>
             <div>

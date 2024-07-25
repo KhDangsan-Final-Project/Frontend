@@ -12,7 +12,7 @@ export default function SettingFightContent({ onReceiveData, token }) {
 
     websocket.onopen = () => {
       console.log('WebSocket 연결 완료');
-      // console.log('받아온 토큰값 : ', token);
+      console.log('받아온 토큰값 : ', token);
       setWs(websocket); // WebSocket 객체를 상태에 저장
     };
 
