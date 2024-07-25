@@ -10,12 +10,11 @@ import BoardPage from './components/BoardPage/BoardPage';
 import AIPage from './components/AIPage/AIPage';
 import MyPage from './components/MyPage/MyPage';
 import Scroll from './components/Menu/Scroll/Scroll';
+import PasswordResetRequestPage from './components/LoginPage/PasswdReset/PasswordResetRequestPage';
 import BoardContent from './components/BoardPage/BoardContent/BoardContent';
 import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
 import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
 import BoardList from './components/BoardPage/BoardContent/BoardList';
-// import Chat from './components/BattlePage/contents/Chat';
-// import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -46,8 +45,7 @@ function App() {
         <Route path="/boardmain" element={<BoardPage setToken={setToken} token={token}/>} />
         <Route path="/ai" element={<AIPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
-        {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
-        {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
+        <Route path="/resetPass" element={<PasswordResetRequestPage/>}/>
         <Route path="/boardContent/:boardNo" element={<BoardContent/>}/>
         <Route path="/boardEvent" element={<BoardEvent/>}/>
         <Route path="/boardNotice" element={<BoardNotice/>}/>

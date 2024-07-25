@@ -22,7 +22,6 @@ export default function MainPage({ setToken }) {
   const ranks = useRankData();
   const [loading, setLoading] = useState(true);
   const [additionalLoading, setAdditionalLoading] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
 
   const visitorCount = useVisitorCount(setLoading);
   const displayedCount = useDisplayedCount(visitorCount, loading);

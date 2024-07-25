@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/Login.module.css';
 import { useCookies } from 'react-cookie';
 
 
-export default function Login({ setToken, showRegister }) {
+export default function Login({ setToken, showRegister, showPassWordReset }) {
   const [formData, setFormData] = useState({
     id: '',
     password: ''
@@ -31,10 +31,6 @@ export default function Login({ setToken, showRegister }) {
       removeCookie("rememberUserAccount");
     }
   };
-
-  const handleRegisterClick = () => {
-    showRegister();
-};
 
   const navigate = useNavigate();
 
@@ -96,14 +92,14 @@ export default function Login({ setToken, showRegister }) {
                 <input type="checkbox" id="check1" className={styles.checkbox} onChange={handleOnChange} checked={isRemember} />
                 </label>
             </div>
-            <a href="/password-reset-request" className={styles.searchPS}>비밀번호 찾기</a>
+            <a href='#' onClick={showPassWordReset} className={styles.searchPS}>비밀번호 찾기</a>
           </div>
           <div className={`${styles.error} ${error ? styles.visible : styles.hidden}`}>{error}</div>
           <button type="submit" className={styles.btn_login}>Login</button>
         </form>
         <div className={styles.register_bar}>
           <p>계정을 가지고 있지 않나요?</p> 
-          <a href='#' onClick={handleRegisterClick}>회원가입</a></div>
+          <a href='#' onClick={showRegister}>회원가입</a></div>
       </div>
     </div>
   );
