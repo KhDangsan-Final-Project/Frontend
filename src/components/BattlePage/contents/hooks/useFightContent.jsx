@@ -72,6 +72,7 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
       const data = await response.json();
       setCards(prevCards => reset ? data.data : [...prevCards, ...data.data]);
       setHasMore(data.data.length === PAGE_SIZE);
+      console.log('Fetched Cards:', data.data); // API 응답 확인
     } catch (error) {
       console.error('카드 데이터를 불러오는 중 오류 발생:', error);
     } finally {
@@ -106,25 +107,51 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
     setSelectedCount(prevCount => prevCount - 1);
   };
 
-  const getRandomEnemyPokemons = () => {
-    const randomPokemon = [];
-    const shuffledCards = cards.sort(() => 0.5 - Math.random());
-    let count = 0;
-    let index = 0;
+  const getAverageHp = (cards) => {
+    if (cards.length === 0) return 0;
+    const totalHp = cards.reduce((acc, card) => acc + parseInt(card.hp, 10), 0);
+    return totalHp / cards.length;
+  };
 
-    while (count < 3 && index < shuffledCards.length) {
-      const card = shuffledCards[index];
-      if (!selectedCards.some(selectedCard => selectedCard.id === card.id)) {
-        randomPokemon.push({
+  const getRandomEnemyPokemons = () => {
+    const userAverageHp = getAverageHp(selectedCards);
+
+    // 필터링된 포켓몬 중에서 선택되지 않은 포켓몬만 포함
+    const eligiblePokemons = cards
+      .filter(card => !selectedCards.some(selectedCard => selectedCard.id === card.id)) // 선택된 포켓몬 제외
+      .filter(card => parseInt(card.hp, 10) <= userAverageHp);
+
+    if (eligiblePokemons.length === 0) return [];
+
+    const shuffledCards = eligiblePokemons.sort(() => 0.5 - Math.random());
+    let selectedEnemies = [];
+    let totalHp = 0;
+
+    for (let i = 0; i < shuffledCards.length; i++) {
+      const card = shuffledCards[i];
+      const cardHp = parseInt(card.hp, 10);
+
+      if ((totalHp + cardHp) / (selectedEnemies.length + 1) <= userAverageHp) {
+        selectedEnemies.push({
           ...card,
-          miniImage: card.images.small
+          miniImage: card.images.small,
         });
-        count++;
+        totalHp += cardHp;
+
+        if (selectedEnemies.length === 3) break;
       }
-      index++;
     }
 
-    return randomPokemon;
+    // Ensure we have at least one enemy Pokemon
+    if (selectedEnemies.length === 0 && shuffledCards.length > 0) {
+      selectedEnemies.push({
+        ...shuffledCards[0],
+        miniImage: shuffledCards[0].images.small,
+      });
+    }
+
+    console.log('Random Enemy Pokemons:', selectedEnemies);
+    return selectedEnemies;
   };
 
   const loadMore = () => {

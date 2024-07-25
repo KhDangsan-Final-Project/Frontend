@@ -22,7 +22,6 @@ export default function MainPage({ setToken }) {
   const ranks = useRankData();
   const [loading, setLoading] = useState(true);
   const [additionalLoading, setAdditionalLoading] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
 
   const visitorCount = useVisitorCount(setLoading);
   const displayedCount = useDisplayedCount(visitorCount, loading);
@@ -44,20 +43,6 @@ export default function MainPage({ setToken }) {
     }
   }, [loading]);
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      const tokenData = JSON.parse(atob(storedToken.split('.')[1]));
-      const grantNo = tokenData.grantNo;
-      if (grantNo === 0) {
-        setShowPopup(true);
-      }
-    }
-  }, []);
-
-  const closePopup = () => {
-    setShowPopup(false);
-  };
 
   if (pokemonLoading || ranks.length === 0 || loading || additionalLoading) {
     return <Loading />;
@@ -71,12 +56,6 @@ export default function MainPage({ setToken }) {
           <ViewText visitorCount={visitorCount} displayedCount={displayedCount} />
           <View />
         </section>
-        {showPopup && (
-          <div className={styles.popup}>
-            <button onClick={closePopup} className={styles.closeButton}>닫기</button>
-            <a href='http://localhost:9996/ms4/user/list' target='_blank' rel='noopener noreferrer'>유저 목록 바로보기</a>
-          </div>
-        )}
       </div>
       <div className={styles.jump} />
       <section ref={ContentInfoRef} className={`${styles.section3} ${ContentInfoView ? styles['slide-in'] : ''}`}>

@@ -6,11 +6,12 @@
     background-repeat: repeat;
     background-size: cover;
     background-position: center;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
 }
+
+.outletWrapper{
+        background: inherit;
+}
+
 
 @media (min-width: 320px) {
     .container{
