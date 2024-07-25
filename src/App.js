@@ -15,6 +15,8 @@ import BoardContent from './components/BoardPage/BoardContent/BoardContent';
 import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
 import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
 import BoardList from './components/BoardPage/BoardContent/BoardList';
+import FightContent from './components/BattlePage/contents/FightContent';
+import Battle from './components/BattlePage/contents/Battle';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -50,6 +52,8 @@ function App() {
         <Route path="/boardEvent" element={<BoardEvent/>}/>
         <Route path="/boardNotice" element={<BoardNotice/>}/>
         <Route path="/boardList" element={<BoardList/>}/>
+        <Route path="/fight" element={<FightContent token={token} />} />
+        <Route path="/battle" element={<Battle token={token} />} />
       </Routes>
       <Scroll />
     </>
