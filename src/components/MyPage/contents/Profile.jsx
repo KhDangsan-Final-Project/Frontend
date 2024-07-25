@@ -6,13 +6,7 @@ import Loading from '../../Loading/Loading';
 
 export default function Profile() {
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState({
-    name: '',
-    id: '',
-    email: '',
-    password: '',
-    nickname: ''
-  });
+  const [userData, setUserData] = useState({ name: '', id: '', email: '', password: '', nickname: '' });
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordValid, setPasswordValid] = useState(true);
   const [passwordMatch, setPasswordMatch] = useState(true);
@@ -26,7 +20,6 @@ export default function Profile() {
       setLoading(false);
       return;
     }
-
     axios.get('http://teeput.synology.me:30112/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
@@ -41,11 +34,9 @@ export default function Profile() {
         setLoading(false);
       });
   }, []);
-
   if (loading) {
     return <Loading />;
   }
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData(prevState => ({
@@ -53,34 +44,29 @@ export default function Profile() {
       [name]: value
     }));
   };
-
   const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setUserData(prevState => ({
       ...prevState,
-      [name]: value
+      password: value
     }));
     setPasswordValid(checkPassword(value));
   };
-
   const handlePasswordCheckChange = (e) => {
-    setPasswordCheck(e.target.value);
-    setPasswordMatch(e.target.value === userData.password);
+    const { value } = e.target;
+    setPasswordCheck(value);
+    setPasswordMatch(value === userData.password);
   };
-
   const checkPassword = (password) => {
-    let reg = /(?=.*\d)(?=.*[!@#$%^&*~])[A-Za-z\d!@#$%^&*~]{7,32}$/;
+    let reg = /(?=.*\d)(?=.*[!@#$%^&*~])[A-Za-z\d!@#$%^&*~]{8,32}$/;
     return reg.test(password);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-
     if (!passwordValid || !passwordMatch) {
       return;
     }
-
     try {
       const response = await axios.put('http://teeput.synology.me:30112/ms3/mypage/update', userData, {
         params: { token }
@@ -89,13 +75,12 @@ export default function Profile() {
         alert('정보가 성공적으로 업데이트되었습니다.');
         navigate('/');
       } else {
-        alert('정보 업데이트에 실패했습니다.');
+        console.error('정보 업데이트에 실패했습니다.');
       }
     } catch (error) {
-      console.error("정보 업데이트 중 오류가 발생했습니다!", error);
+      console.error('정보 업데이트 중 오류가 발생했습니다!', error);
     }
   };
-
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>프로필</h2>
@@ -104,32 +89,22 @@ export default function Profile() {
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label>
+        <label className={styles.label}>
           <span>이름</span>
           <input type="text" placeholder="이름" className={styles.info} value={userData.name} readOnly />
         </label>
         
-        <label>
+        <label className={styles.label}>
           <span>아이디</span>
           <input type="text" placeholder="아이디" value={userData.id} readOnly />
         </label>
 
         <div className={styles.emailSection}>
-          <label>
+          <label className={styles.label2}>
             <span>이메일</span>
-            <input 
-              type="text" 
-              placeholder="이메일을 입력해주세요" 
-              className={styles.email} 
-              value={userData.email.split('@')[0]} 
-              name="email"
-              onChange={handleInputChange}
-            />
+            <input type="text" placeholder="이메일을 입력해주세요" className={styles.email} value={userData.email.split('@')[0]} onChange={handleInputChange} />
             @
-            <select 
-              value={userData.email.split('@')[1]} 
-              onChange={(e) => handleInputChange({ target: { name: 'email', value: `${userData.email.split('@')[0]}@${e.target.value}` } })}
-            >
+            <select value={userData.email.split('@')[1]} onChange={(e) => handleInputChange({ target: { name: 'email', value: `${userData.email.split('@')[0]}@${e.target.value}` } })}>
               <option value="naver.com">naver.com</option>
               <option value="gmail.com">gmail.com</option>
               <option value="daum.net">daum.net</option>
@@ -137,15 +112,15 @@ export default function Profile() {
           </label>
         </div>
 
-        <label>
+        <label className={styles.label}>
           <span>비밀번호</span>
-          <input type="password" placeholder="비밀번호" className={styles.info} name="password" onChange={handlePasswordChange} />
+          <input type="password" placeholder="비밀번호" className={styles.info} onChange={handlePasswordChange} />
         </label>
         <span className={`${styles.error} ${passwordValid ? styles.hidden : styles.visible}`}>
-          *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요
+          *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요.
         </span>
 
-        <label>
+        <label className={styles.label}>
           <span>비밀번호 확인</span>
           <input type="password" placeholder="비밀번호 확인" className={styles.info} value={passwordCheck} onChange={handlePasswordCheckChange} />
         </label>
@@ -153,14 +128,14 @@ export default function Profile() {
           *암호가 일치하지 않습니다.
         </span>
 
-        <label>
+        <label className={styles.label}>
           <span>닉네임</span>
-          <input type="text" placeholder="닉네임" className={styles.info} value={userData.nickname} name="nickname" onChange={handleInputChange} />
+          <input type="text" placeholder="닉네임" className={styles.info} value={userData.nickname} onChange={handleInputChange} />
         </label>
 
         <div className={styles.btn}>
-          <button type="submit" className={styles.update_btn} onClick={handleSubmit}>수정하기</button>
-          <button type="button" className={styles.cancel} onClick={() => navigate('/')}>취소</button>
+          <button type="submit" className={styles.update_btn}>수정하기</button>
+          <button type="button" className={styles.cancel_btn} onClick={() => navigate('/')}>취소</button>
         </div>
       </form>
     </div>

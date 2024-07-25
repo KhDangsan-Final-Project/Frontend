@@ -108,14 +108,17 @@ flex-direction: column;
 .typeLogo {
   width: 100%;
   height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .hpBarContainer {
-  width: 100%;
+  width: 20px;
   height: 10px;
   background-color: #ddd;
   border-radius: 5px;
   margin-bottom: 5px;
+ 
 }
 
 .hpBar {
@@ -252,16 +255,7 @@ flex-direction: column;
   overflow-y: auto;
 
 }
-/* battle.module.css */
 
-.pokemonCard {
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.pokemonCard.selected {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-}
 /* ---------------------------------------------------------------- */
 
 .textContainer{
@@ -275,4 +269,323 @@ box-sizing: border-box;
 }
 .chatInput{
   width: 100%;
+}
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+.stage {
+  display: flex;
+  /* justify-content: space-around; */
+  /* align-items: center; */
+  flex: 1;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.enemyContainer, .selectedPokemonContainer {
+  width: 40%;
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  padding: 10px;
+}
+
+.enemyContainer {
+display: flex;
+flex-flow: row;
+
+}
+
+/* 포켓몬 카드 스타일 */
+.pokemonCard {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  width: 100%;
+  max-width: 300px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pokemonCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.pokemonCardInfo {
+  padding: 10px;
+}
+
+.pokemonName {
+  font-size: 1.5em;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.hpBarContainer {
+  margin: 10px 0;
+}
+
+
+
+/* 공격 기술 스타일 */
+.pokemonAttacks {
+  margin-top: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.attackButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.attackButton:hover {
+  background-color: #0056b3;
+}
+
+.attack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 버튼 및 메뉴 스타일 */
+.menu {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+.vs {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 20px;
+}
+
+
+
+/* 유형 로고 스타일 */
+.typeLogoContainer {
+  display: inline-block;
+  margin: 5px;
+}
+
+
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .stage {
+    flex-direction: column;
+  }
+
+  .enemyContainer, .selectedPokemonContainer {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #333;
+  }
+}
+
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* battle.module.css */
+
+
+
+
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vs {
+  font-size: 2rem;
+  margin: 1rem;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.margin {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+}
+
+.pokemonCard {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+}
+
+
+
+.pokemonCardInfo {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.hpBarContainer {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+/* ------------------------------------------------------------------------------------------------------------ */
+.attackButton {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.attack {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* battle.module.css */
+.selectedEnemy {
+  border: 2px solid red; /* 적 포켓몬이 선택되었음을 강조 */
+  background-color: rgba(255, 0, 0, 0.2); /* 배경색을 약간 빨갛게 */
+}
+.pokemonCard {
+  position: relative;
+  transition: opacity 1s ease-out;
+}
+
+/* 포켓몬 카드가 사라지는 애니메이션 */
+.fadeOut {
+  opacity: 0;
+  animation: fadeOutAnimation 1s forwards;
+}
+
+/* 애니메이션 정의 */
+@keyframes fadeOutAnimation {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 애니메이션 정의 */
+@keyframes haloCard {
+  0% {
+    box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+                3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+                0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+                0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: -6px -6px 6px 0 rgba(38, 230, 247, 0.5),
+                6px 6px 6px 0 rgba(247, 89, 228, 0.5),
+                0px 0px 10px 2px rgba(255, 231, 89, 0.5),
+                0px 45px 30px -15px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+                3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+                0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+                0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes halaGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* .highlighted 클래스 정의 */
+.highlighted {
+  border-radius: 5px;
+  box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3),
+              3px 3px 3px 0 rgba(247, 89, 228, 0.3),
+              0px 0px 6px 2px rgba(255, 231, 89, 0.3),
+              0px 35px 25px -15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 20px 10px;
+  animation: haloCard 15s ease infinite;
+}
+
+.highlighted::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: url("https://assets.codepen.io/13471/sparkles.gif"), url("https://assets.codepen.io/13471/holo.png");
+  background-size: 180%;
+  mix-blend-mode: color-dodge;
+  opacity: 1;
+  z-index: 1;
+  animation: halaGradient 15s ease infinite;
+}
+
+.highlighted::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(0, 231, 255) 30%,
+    rgb(255, 0, 231) 70%
+  );
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  mix-blend-mode: color-dodge;
+  opacity: 0.2;
+  z-index: 0;
+  animation: halaGradient 15s ease infinite;
+}
+
+.highlighted.active::before {
+  opacity: 1;
+  animation: none;
+  transition: none;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
 }

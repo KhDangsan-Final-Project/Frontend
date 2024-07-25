@@ -10,7 +10,9 @@ export default function BoardContent() {
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [commentText, setCommentText] = useState('');
-    
+    const [comments, setComments] = useState([]); // 이미 빈 배열로 설정됨
+
+
     const token = localStorage.getItem('token');
     useEffect(() => {
         async function fetchBoard() {
@@ -18,8 +20,8 @@ export default function BoardContent() {
                 //boardNo에 맞는 게시물 조회
                 const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
-                
-                //해당 게시물의 좋아요 수 확인
+
+                //좋아요 상태 및 수 확인
                 const likeResponse = await axios.get(`http://localhost:8090/ms1/boardLikeView/${boardNo}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
@@ -27,29 +29,45 @@ export default function BoardContent() {
                 });
                 setLiked(likeResponse.data.liked);
                 setLikeCount(likeResponse.data.count);
+
+                //댓글 목록 조회
+                fetchComments();
+
             } catch (err) {
                 setError(err);
             }
         }
+        // 댓글 목록을 불러오는 함수
+        async function fetchComments() {
+            try {
+                // 올바른 URL을 확인하고 요청합니다
+                const commentListUrl = `http://localhost:8090/ms1/comments/${boardNo}`;
+                const response = await axios.get(commentListUrl);
+                setComments(response.data || []); // 댓글이 없을 때 빈 배열로 설정
+            } catch (err) {
+                console.error('댓글 목록을 불러오는 중 오류가 발생했습니다.', err);
+            }
+        }
+
         fetchBoard();
 
     }, [boardNo, token]);
 
-    
+
     async function buttonLike() {
         const token = localStorage.getItem('token');
         try {
             //좋아요 기능 
-            const response = await axios.post(`http://localhost:8090/ms1/boardLike/${boardNo}`,{}, {
+            const response = await axios.post(`http://localhost:8090/ms1/boardLike/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
             });
-            if(response.data.code === 1){
+            if (response.data.code === 1) {
                 setLiked(prevLiked => !prevLiked);
                 setLikeCount(response.data.count);
-            }else{
-                console.error("Error: " , response.data.msg);
+            } else {
+                console.error("Error: ", response.data.msg);
             }
         } catch (err) {
             console.error('Error:', err);
@@ -57,16 +75,16 @@ export default function BoardContent() {
         }
     }
 
-    async function submitComment(e){
+    async function submitComment(e) {
         e.preventDefault();
-        if (!commentText.trim()){
+        if (!commentText.trim()) {
             alert('댓글을 입력해주세요.');
             return;
         }
 
         const token = localStorage.getItem('token');
 
-        try{
+        try {
             const response = await axios.post(`http://localhost:8090/ms1/comment/insert/${boardNo}`, new URLSearchParams({
                 comment: commentText
             }), {
@@ -75,23 +93,27 @@ export default function BoardContent() {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             });
-            
-            if(response.status === 200){
+
+            if (response.status === 200) {
                 alert('댓글 작성 성공');
                 setCommentText('');
-            }else{
-                alert('댓글 작성 실패: '+ response.data);
+                const updatedComments = await axios.get(`http://localhost:8090/ms1/board/commentList/${boardNo}`);
+                setComments(updatedComments.data);
+            } else {
+                alert('댓글 작성 실패: ' + response.data);
             }
-        }catch (err){
+        } catch (err) {
             console.error('error: ', err);
             alert('댓글 작성 중 오류가 발생했습니다. 다시 시도해 주세요.');
         }
     }
-    
-    
+
+
+
+
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
-    
-    
+
+
     return (
         <div>
             {board ? (
@@ -118,7 +140,7 @@ export default function BoardContent() {
                         <span>{board.boardContent}</span>
                     </div>
                     <div className={styles.boardLike}>
-                        <button onClick={buttonLike}  className={`${styles.boardLike} ${liked ? styles.heartActive : styles.heartNone}`}><span>{likeCount}</span></button>
+                        <button onClick={buttonLike} className={`${styles.boardLike} ${liked ? styles.heartActive : styles.heartNone}`}><span>{likeCount}</span></button>
                     </div>
                     <hr />
                     <div className={styles.commentArea}>
@@ -133,6 +155,22 @@ export default function BoardContent() {
                             </div>
                         </div>
                         <hr />
+                        <div className={styles.commentList}>
+                            {comments && comments.length > 0 ? (
+                                comments.map(comment => (
+                                    <div key={comment.cno} className={styles.comment}>
+                                        <div className={styles.commentUser}>
+                                            <img src='/img/jiwoo.jpg' alt="profile" />
+                                            <span>{comment.id}</span>
+                                        </div>
+                                        <span>{comment.comment}</span>
+                                        <span>{comment.cdate}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>댓글이 없습니다.</p>
+                            )}
+                        </div>
                     </div>
                 </div>
             ) : (

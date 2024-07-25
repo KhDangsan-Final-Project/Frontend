@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-const Chat = () => {
+// props로 token을 받도록 수정
+const Chat = ({ token }) => {
     const [webSocket, setWebSocket] = useState(null);
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
     const [userInput, setUserInput] = useState('');
-    const [token, setToken] = useState('your-jwt-token-here'); // 예시 토큰
 
     useEffect(() => {
         const ws = new WebSocket('ws://192.168.20.54:8090/ms2/ws');
@@ -21,7 +21,6 @@ const Chat = () => {
             try {
                 const data = JSON.parse(event.data);
                 console.log('Received data:', data);
-                console.log('Received data:', data.sender);
 
                 // 서버에서 받은 nickname 설정
                 if (data.sender) {
@@ -63,6 +62,8 @@ const Chat = () => {
     return (
         <div>
             <h1>WebSocket Chat</h1>
+            {/* token 출력 */}
+            <p>Token: {token}</p>
             <div>
                 {messages.map((msg, index) => (
                     <p key={index}><strong>{msg.sender || "unknown"}: </strong>{msg.content || "empty"}</p>
