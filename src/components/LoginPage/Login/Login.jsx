@@ -4,7 +4,6 @@ import axios from 'axios';
 import styles from './css/Login.module.css';
 import { useCookies } from 'react-cookie';
 
-
 export default function Login({ setToken, showRegister }) {
   const [formData, setFormData] = useState({
     id: '',
@@ -14,19 +13,17 @@ export default function Login({ setToken, showRegister }) {
   const [cookies, setCookie, removeCookie] = useCookies(["rememberUserAccount"]);
   const [error, setError] = useState('');
 
-  useEffect(() =>{
-    if (cookies.rememberUserAccount !== undefined){
-      setFormData({ ...formData, id: cookies.rememberUserAccount});
-   //   setFormData({ ...formData, password: cookies.rememberUserAccount});
+  useEffect(() => {
+    if (cookies.rememberUserAccount) {
+      setFormData((prevData) => ({ ...prevData, id: cookies.rememberUserAccount }));
       setIsRemember(true);
     }
-  }, []);
+  }, [cookies]);
 
   const handleOnChange = (e) => {
     setIsRemember(e.target.checked);
-    if(e.target.checked){
-      setCookie("rememberUserAccount", formData.id, {maxAge: 2000});
-    //  setCookie("rememberUserAccount", formData.password, {maxAge: 2000});
+    if (e.target.checked) {
+      setCookie("rememberUserAccount", formData.id, { maxAge: 60 * 60 * 24 * 30 }); // 30일
     } else {
       removeCookie("rememberUserAccount");
     }
@@ -34,7 +31,7 @@ export default function Login({ setToken, showRegister }) {
 
   const handleRegisterClick = () => {
     showRegister();
-};
+  };
 
   const navigate = useNavigate();
 
@@ -45,26 +42,24 @@ export default function Login({ setToken, showRegister }) {
     });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://teeput.synology.me:30112/ms3/user/select', formData);
+      const response = await axios.post('http://localhost:8090/ms3/user/select', formData);
       if (response.data.result) {
         alert(response.data.msg);
-        
-        setToken(response.data.token);
-        localStorage.setItem('token', response.data.token);
+        const token = response.data.token;
+        setToken(token);
+        localStorage.setItem('token', token);
         navigate('/');
-      } else{
-       setError('! 아이디 또는 비밀번호를 정확히 입력해 주세요.'); 
+      } else {
+        setError('! 아이디 또는 비밀번호를 정확히 입력해 주세요.');
       }
     } catch (error) {
       alert('로그인 중 오류 발생: ' + error.message);
     }
   };
 
- 
   return (
     <div className={styles.body}>
       <div className={styles.container}>
@@ -75,7 +70,7 @@ export default function Login({ setToken, showRegister }) {
               type="text"
               name="id"
               placeholder="아이디를 입력해주세요"
-              value={formData.id} // 수정
+              value={formData.id}
               onChange={handleChange}
             />
             <i className="bi bi-person-circle"></i>
@@ -85,16 +80,23 @@ export default function Login({ setToken, showRegister }) {
               type="password"
               name="password"
               placeholder="패스워드를 입력해주세요"
-              value={formData.password} // 수정
+              value={formData.password}
               onChange={handleChange}
             />
             <i className="bi bi-lock"></i>
           </div>
           <div className={styles.chk_bar}>
             <div>
-                <label htmlFor="check1" className={styles.checkboxLabel}>이 계정 기억하기
-                <input type="checkbox" id="check1" className={styles.checkbox} onChange={handleOnChange} checked={isRemember} />
-                </label>
+              <label htmlFor="check1" className={styles.checkboxLabel}>
+                이 계정 기억하기
+                <input
+                  type="checkbox"
+                  id="check1"
+                  className={styles.checkbox}
+                  onChange={handleOnChange}
+                  checked={isRemember}
+                />
+              </label>
             </div>
             <a href="/password-reset-request" className={styles.searchPS}>비밀번호 찾기</a>
           </div>
@@ -102,8 +104,9 @@ export default function Login({ setToken, showRegister }) {
           <button type="submit" className={styles.btn_login}>Login</button>
         </form>
         <div className={styles.register_bar}>
-          <p>계정을 가지고 있지 않나요?</p> 
-          <a href='#' onClick={handleRegisterClick}>회원가입</a></div>
+          <p>계정을 가지고 있지 않나요?</p>
+          <a href='#' onClick={handleRegisterClick}>회원가입</a>
+        </div>
       </div>
     </div>
   );

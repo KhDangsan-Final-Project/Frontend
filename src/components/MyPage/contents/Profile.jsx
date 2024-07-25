@@ -34,9 +34,11 @@ export default function Profile() {
         setLoading(false);
       });
   }, []);
+
   if (loading) {
     return <Loading />;
   }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData(prevState => ({
@@ -44,6 +46,7 @@ export default function Profile() {
       [name]: value
     }));
   };
+
   const handlePasswordChange = (e) => {
     const { value } = e.target;
     setUserData(prevState => ({
@@ -52,15 +55,18 @@ export default function Profile() {
     }));
     setPasswordValid(checkPassword(value));
   };
+
   const handlePasswordCheckChange = (e) => {
     const { value } = e.target;
     setPasswordCheck(value);
     setPasswordMatch(value === userData.password);
   };
+
   const checkPassword = (password) => {
     let reg = /(?=.*\d)(?=.*[!@#$%^&*~])[A-Za-z\d!@#$%^&*~]{8,32}$/;
     return reg.test(password);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -80,7 +86,35 @@ export default function Profile() {
     } catch (error) {
       console.error('정보 업데이트 중 오류가 발생했습니다!', error);
     }
+  };  
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.delete(`http://localhost:8090/ms3/user/delete`, {
+        params: { id: userData.id, token: token }
+      });
+
+      if (response.data.status === 'success') {
+        alert('회원 탈퇴가 성공적으로 처리되었습니다.');
+        localStorage.removeItem('token'); 
+        navigate('/'); 
+      } else {
+        alert(response.data.message || '회원 탈퇴에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('회원 탈퇴 중 오류가 발생했습니다!', error);
+      alert('회원 탈퇴 중 오류가 발생했습니다!');
+    }
   };
+
+
+
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>프로필</h2>
@@ -137,6 +171,7 @@ export default function Profile() {
           <button type="submit" className={styles.update_btn}>수정하기</button>
           <button type="button" className={styles.cancel_btn} onClick={() => navigate('/')}>취소</button>
         </div>
+        <a href="#" onClick={handleDeleteAccount} className={styles.delete}>회원을 탈퇴하시겠습니까?</a>
       </form>
     </div>
   );
