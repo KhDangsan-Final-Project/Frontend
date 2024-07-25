@@ -1,56 +1,109 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import styles from './css/BoardContent.module.css'
 
 export default function BoardContent() {
     const { boardNo } = useParams();
     const [board, setBoard] = useState(null);
     const [error, setError] = useState(null);
+    const [liked, setLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
 
+    
+    const token = localStorage.getItem('token');
     useEffect(() => {
         async function fetchBoard() {
             try {
+                //boardNo에 맞는 게시물 조회
                 const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
+                
+                //해당 게시물의 좋아요 수 확인
+                const likeResponse = await axios.get(`http://localhost:8090/ms1/boardLikeView/${boardNo}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+                setLiked(likeResponse.data.liked);
+                setLikeCount(likeResponse.data.count);
             } catch (err) {
                 setError(err);
             }
         }
         fetchBoard();
 
-    }, [boardNo]);
+    }, [boardNo, token]);
 
+    
+    async function buttonLike() {
+        const token = localStorage.getItem('token');
+        try {
+            //좋아요 기능 
+            const response = await axios.post(`http://localhost:8090/ms1/boardLike/${boardNo}`,{}, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            if(response.data.code === 1){
+                setLiked(prevLiked => !prevLiked);
+                setLikeCount(response.data.count);
+            }else{
+                console.error("Error: " , response.data.msg);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            setError(err);
+        }
+    }
+    
+    
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
-
-
+    
+    
     return (
         <div>
             {board ? (
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>글번호</th>
-                            <td>{board.boardNo}</td>
-                        </tr>
-                        <tr>
-                            <th>제목</th>
-                            <td>{board.boardTitle}</td>
-                        </tr>
-                        <tr>
-                            <th>작성자</th>
-                            <td>{board.id}</td>
-                        </tr>
-                        <tr>
-                            <th>조회수</th>
-                            <td>{board.boardCount}</td>
-                        </tr>
-                        <tr>
-                            <td colSpan="2">
-                                {board.boardContent}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className={styles.container}>
+                    <h6>{board.boardCategory}</h6>
+                    <h2>{board.BoardContentitle}</h2>
+                    <div className={styles.profile_bar}>
+                        <div className={styles.profile}>
+                            <img src='/img/jiwoo.jpg' />
+                        </div>
+                        <div className={styles.userInfo}>
+                            <div className={styles.userName}>
+                                <p>{board.id}</p>
+                            </div>
+                            <div className={styles.boardInfo}>
+                                <li>{board.boardWrite}</li>
+                                <img src='/img/eye.png' />
+                                <span>{board.boardCount}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <span>{board.boardContent}</span>
+                    </div>
+                    <div className={styles.boardLike}>
+                        <button onClick={buttonLike}  className={`${styles.boardLike} ${liked ? styles.heartActive : styles.heartNone}`}><span>{likeCount}</span></button>
+                    </div>
+                    <hr />
+                    <div className={styles.commentArea}>
+                        <h6>댓글</h6>
+                        <div className={styles.comment_wrap}>
+                            <div className={styles.commentProfile}>
+                                <img src='/img/jiwoo.jpg' />
+                            </div>
+                            <div className={styles.commentInsert}>
+                                <textarea></textarea>
+                                <button type='submit'>등록</button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
             ) : (
                 <div>게시글이 없습니다.</div> // board가 없을 때 처리
             )}
