@@ -11,7 +11,7 @@ import Card from './Card';
 
 const fetchPokemonIdByName = async (name) => {
     try {
-        const response = await axios.get(`http://localhost:8090/ms2/pokemon/search?koreanName=${name}`);
+        const response = await axios.get(`http://teeput.synology.me:30112/ms2/pokemon/search?koreanName=${name}`);
         if (response.data.length > 0) {
             console.log(response.data[0].id);
             return response.data[0].id;
