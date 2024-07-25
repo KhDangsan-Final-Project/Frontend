@@ -1,9 +1,18 @@
 import { useEffect, useRef } from 'react';
 
-const useAI = (selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemon, playerTurn, setPlayerTurn) => {
+const useAI = (
+  selectedPokemon,
+  enemyPokemon,
+  setSelectedPokemon,
+  setEnemyPokemon,
+  playerTurn,
+  setPlayerTurn,
+  getCleanDamageValue
+) => {
   const aiTurnRef = useRef(false); // AI 턴 실행 여부를 확인하기 위한 ref
 
   useEffect(() => {
+    // 플레이어의 턴이거나, 포켓몬이 없거나, AI 턴이 이미 진행 중이면 실행하지 않음
     if (playerTurn || !selectedPokemon.length || !enemyPokemon.length || aiTurnRef.current) return;
 
     aiTurnRef.current = true; // AI 턴 시작
@@ -15,11 +24,13 @@ const useAI = (selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemo
       const targetPlayerPokemon = selectedPokemon[Math.floor(Math.random() * selectedPokemon.length)];
 
       if (targetPlayerPokemon) {
-        
+        const damage = getCleanDamageValue(randomAttack.damage); // 기호를 제거한 데미지 값
+
         setTimeout(() => {
+          // 플레이어의 포켓몬 상태 업데이트
           const updatedPlayerPokemon = selectedPokemon.map(pokemon => {
             if (pokemon.id === targetPlayerPokemon.id) {
-              const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - randomAttack.damage, 0) };
+              const newPokemon = { ...pokemon, hp: Math.max(pokemon.hp - damage, 0) };
               if (newPokemon.hp === 0) {
                 newPokemon.isFading = true;
                 setTimeout(() => {
@@ -30,6 +41,7 @@ const useAI = (selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemo
             }
             return pokemon;
           });
+
           setSelectedPokemon(updatedPlayerPokemon);
 
           // AI 턴이 끝난 후 플레이어 턴으로 전환
@@ -42,7 +54,7 @@ const useAI = (selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemo
     };
 
     aiTurn();
-  }, [playerTurn, selectedPokemon, enemyPokemon, setSelectedPokemon, setPlayerTurn]);
+  }, [playerTurn, selectedPokemon, enemyPokemon, setSelectedPokemon, setPlayerTurn, getCleanDamageValue]);
 };
 
 export default useAI;

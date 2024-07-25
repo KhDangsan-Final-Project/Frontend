@@ -67,7 +67,6 @@ export default function SettingFightContent({ onReceiveData, token }) {
           roomId: roomNumber,
           token: token // 토큰 추가
         }));
-        console.log('방 번호와 토큰 전송:', roomNumber, token);
         setError(''); // 에러 초기화
       } else {
         setError('방 번호는 숫자만 입력 가능합니다.');

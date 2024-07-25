@@ -13,6 +13,7 @@ function FightContent({ token }) {
   const [receivedData, setReceivedData] = useState(null);
   const [roomNumber, setRoomNumber] = useState('');
   const [nickname, setNickname] = useState('');
+  const [matchWin, setMatchWin] = useState('');
   const [ws, setWs] = useState(null);
 
   const {
@@ -46,13 +47,12 @@ function FightContent({ token }) {
       };
       
       ws.onmessage = function(event) {
-        console.log('Message from server:', event.data);
+        console.log('Message from server by FightContent:', event.data);
         try {
           const data = JSON.parse(event.data);
           console.log("onmessage data" , data.nickname);
-          
           setNickname(data.nickname);
-          
+          setMatchWin(data.matchWin);
           handleReceivedData(data.roomNumber);
         } catch (error) {
           console.error('Error parsing message:', error);
@@ -77,10 +77,8 @@ function FightContent({ token }) {
   }, [token]);
   
   const handleReceivedData = (data) => {
-    console.log("handeRecivced data ", data);
     setReceivedData(data);
     setRoomNumber(data);
-    console.log('받은 데이터:', data);
   };
   const sendBattlePokemon = () => {
     const selectedPokemon = selectedCards.slice(0, 3);
@@ -92,15 +90,13 @@ function FightContent({ token }) {
     
     const randomEnemyPokemon = getRandomEnemyPokemons();
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
-    alert(`${nickname}`);
-    navigate(`/battle?roomId=${roomNumber}&nickname=${nickname}`);
+    navigate(`/battle?roomId=${roomNumber}&nickname=${nickname}&matchWin=${matchWin}`);
   };
 
   const handleDecisionClick = () => {
     if (roomNumber) {
       alert(`방 번호: ${roomNumber}`);
       
-
       const confirmMove = window.confirm('이동하시겠습니까?');
       if (confirmMove) {
         const battlePokemons = getRandomEnemyPokemons();
@@ -160,7 +156,7 @@ function FightContent({ token }) {
           )}
         </div>
         <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
-          <h4>:::선택된 포켓몬 카드:::</h4>
+          <h4>: : : 선택된 포켓몬 카드 : : :</h4>
           {selectedCards.length > 0 && (
             <button onClick={handleDecisionClick}>결정</button>
           )}
@@ -190,7 +186,7 @@ function FightContent({ token }) {
         <div className={styles.conponents}>
           <UserInfoFightContent token={token} />
           <SettingFightContent onReceiveData={handleReceivedData} token={token} />
-          <p>받은 데이터: {JSON.stringify(receivedData)}</p>
+          <p>ROOM ID : {JSON.stringify(receivedData)}</p>
         </div>
       </div>
       <div className={styles.card2}></div>
