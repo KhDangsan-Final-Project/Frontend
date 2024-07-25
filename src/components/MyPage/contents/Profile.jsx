@@ -20,7 +20,7 @@ export default function Profile() {
       setLoading(false);
       return;
     }
-    axios.get('http://localhost:8090/ms3/mypage', { params: { token } })
+    axios.get('http://teeput.synology.me:30112/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
           setUserData(response.data);
@@ -62,6 +62,15 @@ export default function Profile() {
     setPasswordMatch(value === userData.password);
   };
 
+  const handleEmailChange = (part, value) => {
+    const emailParts = userData.email.split('@');
+    emailParts[part] = value;
+    setUserData(prevState => ({
+      ...prevState,
+      email: emailParts.join('@')
+    }));
+  };
+
   const checkPassword = (password) => {
     let reg = /(?=.*\d)(?=.*[!@#$%^&*~])[A-Za-z\d!@#$%^&*~]{8,32}$/;
     return reg.test(password);
@@ -74,7 +83,7 @@ export default function Profile() {
       return;
     }
     try {
-      const response = await axios.put('http://localhost:8090/ms3/mypage/update', userData, {
+      const response = await axios.put('http://teeput.synology.me:30112/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
@@ -112,9 +121,6 @@ export default function Profile() {
     }
   };
 
-
-
-
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>프로필</h2>
@@ -123,22 +129,23 @@ export default function Profile() {
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label>
+        <label className={styles.label}>
           <span>이름</span>
           <input type="text" placeholder="이름" className={styles.info} value={userData.name} readOnly />
         </label>
         
-        <label>
+        <label className={styles.label}>
           <span>아이디</span>
           <input type="text" placeholder="아이디" value={userData.id} readOnly />
         </label>
 
         <div className={styles.emailSection}>
-          <label>
+          <label className={styles.label2}>
             <span>이메일</span>
-            <input type="text" placeholder="이메일을 입력해주세요" className={styles.email} value={userData.email.split('@')[0]} onChange={handleInputChange} />
+            <input 
+              type="text"  placeholder="이메일을 입력해주세요"  className={styles.email}  value={userData.email.split('@')[0]}  onChange={(e) => handleEmailChange(0, e.target.value)}  />
             @
-            <select value={userData.email.split('@')[1]} onChange={(e) => handleInputChange({ target: { name: 'email', value: `${userData.email.split('@')[0]}@${e.target.value}` } })}>
+            <select value={userData.email.split('@')[1]} onChange={(e) => handleEmailChange(1, e.target.value)}>
               <option value="naver.com">naver.com</option>
               <option value="gmail.com">gmail.com</option>
               <option value="daum.net">daum.net</option>
@@ -146,7 +153,7 @@ export default function Profile() {
           </label>
         </div>
 
-        <label>
+        <label className={styles.label}>
           <span>비밀번호</span>
           <input type="password" placeholder="비밀번호" className={styles.info} onChange={handlePasswordChange} />
         </label>
@@ -154,7 +161,7 @@ export default function Profile() {
           *암호는 숫자, 특수문자 1글자씩 포함되어야합니다. 8~32글자 사이로 입력하세요.
         </span>
 
-        <label>
+        <label className={styles.label}>
           <span>비밀번호 확인</span>
           <input type="password" placeholder="비밀번호 확인" className={styles.info} value={passwordCheck} onChange={handlePasswordCheckChange} />
         </label>
@@ -162,9 +169,16 @@ export default function Profile() {
           *암호가 일치하지 않습니다.
         </span>
 
-        <label>
+        <label className={styles.label}>
           <span>닉네임</span>
-          <input type="text" placeholder="닉네임" className={styles.info} value={userData.nickname} onChange={handleInputChange} />
+          <input 
+            type="text" 
+            placeholder="닉네임" 
+            className={styles.info} 
+            value={userData.nickname} 
+            name="nickname"
+            onChange={handleInputChange} 
+          />
         </label>
 
         <div className={styles.btn}>

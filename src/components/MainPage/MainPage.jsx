@@ -43,6 +43,7 @@ export default function MainPage({ setToken }) {
     }
   }, [loading]);
 
+
   if (pokemonLoading || ranks.length === 0 || loading || additionalLoading) {
     return <Loading />;
   }

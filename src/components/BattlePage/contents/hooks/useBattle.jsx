@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const useBattle = () => {
   const [selectedPokemon, setSelectedPokemon] = useState([]);
@@ -11,9 +11,17 @@ const useBattle = () => {
   useEffect(() => {
     const storedPokemon = JSON.parse(localStorage.getItem('selectedPokemon')) || [];
     const storedEnemyPokemon = JSON.parse(localStorage.getItem('enemyPokemon')) || [];
-    
-    setSelectedPokemon(storedPokemon);
-    setEnemyPokemon(storedEnemyPokemon);
+    const removedPokemons = JSON.parse(localStorage.getItem('removedPokemons')) || [];
+
+    const updatePokemons = (pokemons) => {
+      return pokemons.map(pokemon => ({
+        ...pokemon,
+        isRemoved: removedPokemons.includes(pokemon.id)
+      }));
+    };
+
+    setSelectedPokemon(updatePokemons(storedPokemon));
+    setEnemyPokemon(updatePokemons(storedEnemyPokemon));
   }, []);
 
   const handleFightClick = () => {
@@ -25,13 +33,19 @@ const useBattle = () => {
       const updatedHP = enemyHP - attackDamage;
       setEnemyHP(updatedHP >= 0 ? updatedHP : 0);
 
-      setEnemyPokemon(prevState =>
-        prevState.map(pokemon =>
-          pokemon.id === selectedEnemy.id
-            ? { ...pokemon, hp: updatedHP >= 0 ? updatedHP : 0 }
-            : pokemon
-        )
-      );
+      const updatedEnemyPokemon = enemyPokemon.map(pokemon => {
+        if (pokemon.id === selectedEnemy.id) {
+          return { ...pokemon, hp: updatedHP >= 0 ? updatedHP : 0, isRemoved: updatedHP <= 0 };
+        }
+        return pokemon;
+      });
+
+      setEnemyPokemon(updatedEnemyPokemon);
+
+      const removedPokemons = updatedEnemyPokemon.filter(pokemon => pokemon.hp <= 0).map(pokemon => pokemon.id);
+      if (removedPokemons.length > 0) {
+        localStorage.setItem('removedPokemons', JSON.stringify([...removedPokemons, ...JSON.parse(localStorage.getItem('removedPokemons') || '[]')]));
+      }
 
       if (updatedHP <= 0) {
         setSelectedEnemy(null);
@@ -50,10 +64,6 @@ const useBattle = () => {
     setEnemyHP(pokemon.hp);
   };
 
-  const runBtn = () => {
-    alert("도망칠 수 없었다!");
-  }
-
   return {
     selectedPokemon,
     enemyPokemon,
@@ -65,8 +75,6 @@ const useBattle = () => {
     handleAttack,
     toggleSmallImages,
     selectEnemyPokemon,
-    runBtn
   };
 };
-
 export default useBattle;
