@@ -10,7 +10,7 @@ export default function BoardContent() {
     useEffect(() => {
         async function fetchBoard() {
             try {
-                const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
+                const response = await axios.get(`http://teeput.synology.me:30112/ms1/board/${boardNo}`);
                 setBoard(response.data);
             } catch (err) {
                 setError(err);

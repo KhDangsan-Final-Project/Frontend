@@ -11,7 +11,7 @@ export default function Attendance() {
         const token = localStorage.getItem("token");
 
         // 페이지 로드 시 출석 데이터를 가져옴
-        axios.get('http://localhost:8090/ms3/attendance/list', {
+        axios.get('http://teeput.synology.me:30112/ms3/attendance/list', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -33,7 +33,7 @@ export default function Attendance() {
     const handleAttendanceCheck = () => {
         const token = localStorage.getItem("token");
 
-        axios.get('http://localhost:8090/ms3/attendance/add', {
+        axios.get('http://teeput.synology.me:30112/ms3/attendance/add', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
