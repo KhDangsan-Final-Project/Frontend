@@ -4,6 +4,7 @@ background-image: url(/public/img/backgroundImg.jpg);
 }
 .container{
   display: flex;
+  justify-content: center;
   flex-flow: row nowrap;
 
   max-height: 740px; /* Limit the height */
@@ -448,4 +449,35 @@ margin: 0;
 .conponents{
   display: flex;
   flex-flow: column nowrap;
+}
+
+.userImage{
+  background-image: url(/public/img/user/userImage.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+ /* padding-top: 5px; */
+width: 100%;
+height: 100%;
+}
+.trainer{
+  background-image: url(/public/img/trainer.png);
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+border-radius: 10px;
+ /* padding-top: 5px; */
+width: 100%;
+height: 100%;
+}
+.trainerRankImg{
+  background-image: url(/public/img/trainerBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
 }

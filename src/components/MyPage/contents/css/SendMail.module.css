@@ -1,0 +1,53 @@
+.container {
+  padding: 20px;
+  height: 1500px;
+}
+
+.title {
+  font-size: 24px;
+  border: none;
+  margin: 40px;
+}
+
+.input  {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  height: 500px;
+  border-radius: 10px;
+  border: none;
+  padding: 15px;
+}
+
+.sendButton {
+  width: 150px;
+  padding: 10px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff4b5c;
+  color: white;
+  font-size: 16px;
+}
+
+.cancelButton {
+  width: 150px;
+  padding: 10px;
+  margin: 10px 5px;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

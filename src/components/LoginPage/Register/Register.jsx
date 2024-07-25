@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // react-router-dom에서 useNavigate를 가져옵니다.
 import styles from './css/Register.module.css';
 import axios from 'axios';
 
-export default function Register( {showLoginComponent} ) {
+export default function Register( {showLogin} ) {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -14,6 +15,9 @@ export default function Register( {showLoginComponent} ) {
     const [passwordValid, setPasswordValid] = useState(true);
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [idCheckStatus, setIdCheckStatus] = useState(true);
+
+    const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+
     function checkId(id) {
         let reg = /(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/;
         return reg.test(id);
@@ -55,15 +59,13 @@ export default function Register( {showLoginComponent} ) {
         setNickname(e.target.value);
     }
 
-    function handleCancelClick(){
-        showLoginComponent();
-    }
+    
 
     
     const handleIdCheck = async(e) => {
         e.preventDefault();
-        try{
-            const response = await axios.post("http://teeput.synology.me:30112/ms3/user/idcheck", JSON.stringify({ id }),{
+        try {
+            const response = await axios.post("http://teeput.synology.me:30112/ms3/user/idcheck", JSON.stringify({ id }), {
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8',
                 }
@@ -76,13 +78,11 @@ export default function Register( {showLoginComponent} ) {
                 setIdCheckStatus(true);
             }
         } catch (error) {
-            
             alert("Error: " + error);
         }
     };
-    
-        
-    function handleSubmit(e) {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!idValid || !passwordValid || !passwordMatch || idCheckStatus === false) {
             return;
@@ -95,26 +95,27 @@ export default function Register( {showLoginComponent} ) {
             nickname
         });
 
-        fetch("http://teeput.synology.me:30112/ms3/user/insert", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8',
-            },
-            credentials: 'include'
-        }).then(response => {
-            return response.json();
-        }).then(result => {
+        try {
+            const response = await fetch("http://localhost:8090/ms3/user/insert", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                },
+                credentials: 'include'
+            });
+            const result = await response.json();
             console.log(result);
-        })
-            .catch(error => console.error('Error:', error));
+            if (result.result) {
+                navigate('/');
+            } else {
+                alert(result.msg);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
-    }
-
-
-    
-
-        
     return (
         <header>
             <div className={styles.page}>
@@ -161,7 +162,7 @@ export default function Register( {showLoginComponent} ) {
                                 <input type="text" value={nickname} onChange={handleNicknameChange} placeholder="닉네임을 입력해주세요" />
                             </div>
                             <button type="submit" id="submit" className={styles.btn_submit}>Submit</button>
-                            <button type="reset" className={styles.btn_cancel} onClick={handleCancelClick}>Cancel</button>
+                            <button type="reset" className={styles.btn_cancel} onClick={showLogin}>Cancel</button>
                         </form>
                     </div>
                 </div>

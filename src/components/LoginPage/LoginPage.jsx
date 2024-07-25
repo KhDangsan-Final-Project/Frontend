@@ -2,23 +2,32 @@ import React, { useState } from 'react';
 import Login from './Login/Login';
 import styles from './css/LoginPage.module.css';
 import Register from './Register/Register';
+import PasswordResetRequestPage from './PasswdReset/PasswordResetRequestPage';
 
 export default function LoginPage({ setToken }) {
-    const [showLogin, setShowLogin] = useState(true);
-
-    const showRegister = () => {
-        setShowLogin(false);
+    const [formType, setFormType] = useState('login');
+    
+    const showLogin = () => {
+        setFormType('login');
     };
 
-    const showLoginComponent = () => {
-        setShowLogin(true);
+    const showRegister = () => {
+        setFormType('register');
+    };
+
+    const showPasswordReset = () => {
+        setFormType('passwordReset')
     };
     return (
         <div className={styles.container}>
-            {showLogin ? (
-                <Login setToken={setToken} showRegister={showRegister} />
-            ) : (
-                <Register showLoginComponent={showLoginComponent} />
+            {formType === 'login' && (
+                <Login setToken={setToken} showRegister={showRegister} showPassWordReset={showPasswordReset} />
+            )}
+            {formType === 'register' && (
+                <Register showLogin={showLogin} />
+            )}
+            {formType === 'passwordReset' && (
+                <PasswordResetRequestPage showLogin={showLogin} />
             )}
         </div>
     );
