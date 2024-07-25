@@ -9,7 +9,7 @@ export default function BoardContent() {
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
-
+    const [commentText, setCommentText] = useState('');
     
     const token = localStorage.getItem('token');
     useEffect(() => {
@@ -56,6 +56,37 @@ export default function BoardContent() {
             setError(err);
         }
     }
+
+    async function submitComment(e){
+        e.preventDefault();
+        if (!commentText.trim()){
+            alert('댓글을 입력해주세요.');
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+
+        try{
+            const response = await axios.post(`http://localhost:8090/ms1/comment/insert/${boardNo}`, new URLSearchParams({
+                comment: commentText
+            }), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            
+            if(response.status === 200){
+                alert('댓글 작성 성공');
+                setCommentText('');
+            }else{
+                alert('댓글 작성 실패: '+ response.data);
+            }
+        }catch (err){
+            console.error('error: ', err);
+            alert('댓글 작성 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        }
+    }
     
     
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
@@ -97,8 +128,8 @@ export default function BoardContent() {
                                 <img src='/img/jiwoo.jpg' />
                             </div>
                             <div className={styles.commentInsert}>
-                                <textarea></textarea>
-                                <button type='submit'>등록</button>
+                                <textarea value={commentText} onChange={(e) => setCommentText(e.target.value)}></textarea>
+                                <button type='button' onClick={submitComment}>등록</button>
                             </div>
                         </div>
                         <hr />
