@@ -89,7 +89,6 @@ const Friends = () => {
             if (response.data.status === 'success') {
                 alert('친구 요청이 성공적으로 전송되었습니다');
                 setPendingRequests([...pendingRequests, { userId, friendId }]);
-                // 친구 추가 요청이 성공하면 검색 결과에서 해당 친구를 제거
                 setSearchResults(searchResults.filter(result => result.id !== friendId));
             } else {
                 alert('이미 친구이거나 친구 요청을 보냈습니다.');
@@ -147,7 +146,6 @@ const Friends = () => {
                 data: { userId: userId, friendId: friendId }, // 정확한 userId와 friendId 전달
                 params: { token }
             });
-            console.log('서버 응답:', response.data); // 서버 응답 로그
             if (response.data.status === 'success') {
                 const newToken = localStorage.getItem('token');
                 fetchFriends(newToken);
