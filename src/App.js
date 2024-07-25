@@ -9,9 +9,11 @@ import Sidebar from './components/Menu/Sidebar/Sidebar';
 import BoardPage from './components/BoardPage/BoardPage';
 import AIPage from './components/AIPage/AIPage';
 import MyPage from './components/MyPage/MyPage';
-import FightContent from './components/BattlePage/contents/FightContent';
-import Battle from './components/BattlePage/contents/Battle';
 import Scroll from './components/Menu/Scroll/Scroll';
+import BoardContent from './components/BoardPage/BoardContent/BoardContent';
+import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
+import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
+import BoardList from './components/BoardPage/BoardContent/BoardList';
 // import Chat from './components/BattlePage/contents/Chat';
 // import PasswordResetRequestPage from './components/PasswdReset/PasswordResetPage';
 
@@ -41,13 +43,15 @@ function App() {
         <Route path="/" element={<MainPage setToken={setToken} />} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/library" element={<LibraryPage setToken={setToken} />} />
-        <Route path="/boardmain" element={<BoardPage setToken={setToken} />} />
+        <Route path="/boardmain" element={<BoardPage setToken={setToken} token={token}/>} />
         <Route path="/ai" element={<AIPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
-        <Route path="/fight" element={<FightContent setToken={setToken} />} />
-        <Route path="/battle" element={<Battle setToken={setToken} />} />
         {/* <Route path="/chat" element={<Chat token={token}/>}/> */}
         {/* <Route path="/password-reset-request" element={<PasswordResetRequestPage />} /> */}
+        <Route path="/boardContent/:boardNo" element={<BoardContent/>}/>
+        <Route path="/boardEvent" element={<BoardEvent/>}/>
+        <Route path="/boardNotice" element={<BoardNotice/>}/>
+        <Route path="/boardList" element={<BoardList/>}/>
       </Routes>
       <Scroll />
     </>
