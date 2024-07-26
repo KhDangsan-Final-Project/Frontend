@@ -42,7 +42,7 @@ export default function Login({ setToken, showRegister, showPassWordReset }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8090/ms3/user/select', formData);
+      const response = await axios.post('http://teeput.synology.me:30112/ms3/user/select', formData);
       if (response.data.result) {
         alert(response.data.msg);
         const token = response.data.token;
