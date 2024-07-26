@@ -53,7 +53,7 @@ export default function BoardMain({ showWrite, token }) {
     useEffect(() => {
         async function fetchBoardList() {
             try {
-                const response = await axios.get("http://teeput.synology.me:30112/ms1/board/list");
+                const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list");
 
                 setBoardList(response.data.boards);
             } catch (err) {
