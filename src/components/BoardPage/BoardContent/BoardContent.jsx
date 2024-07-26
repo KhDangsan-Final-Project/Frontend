@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './css/BoardContent.module.css'
 
 export default function BoardContent() {
@@ -17,6 +17,8 @@ export default function BoardContent() {
     const [commentHated, setCommentHated] = useState({});
 
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
+    
     useEffect(() => {
         async function fetchBoard() {
             try {
@@ -48,8 +50,8 @@ export default function BoardContent() {
 
     }, [boardNo, token]);
 
-     //게시물 조회수
-     async function increaseViewCount() {
+    //게시물 조회수
+    async function increaseViewCount() {
         // 로컬 스토리지에서 조회한 게시물 번호를 가져옴
         const viewedPosts = JSON.parse(localStorage.getItem('viewedPosts')) || [];
         if (!viewedPosts.includes(boardNo)) {
@@ -204,6 +206,24 @@ export default function BoardContent() {
         }
     }
 
+     // 게시물 삭제
+     async function deleteBoard() {
+        try {
+            const response = await axios.delete(`http://localhost:8090/ms1/board/delete/${boardNo}`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (response.status === 200) {
+                alert('게시글이 삭제되었습니다.');
+                navigate('/boardList'); // 게시물 목록 페이지로 리디렉션
+            } else {
+                alert('게시글 삭제 실패: ' + response.data);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('게시글 삭제 중 오류가 발생했습니다.');
+        }
+    }
+
 
 
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
@@ -228,6 +248,10 @@ export default function BoardContent() {
                                 <img src='/img/eye.png' />
                                 <span>{board.boardCount}</span>
                             </div>
+                        </div>
+                        <div className={styles.boardUpdate}>
+                            <button className={styles.edit}>수정</button>
+                            <button className={styles.delete} onClick={deleteBoard}>삭제</button>
                         </div>
                     </div>
                     <hr />
