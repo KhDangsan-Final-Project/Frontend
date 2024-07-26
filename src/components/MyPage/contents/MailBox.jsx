@@ -18,7 +18,7 @@ export default function MailBox() {
             setLoading(false);
             return;
         }
-            const response = await axios.get('http://teeput.synology.me:30112/ms3/mail', { params: { token } });
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/mail', { params: { token } });
             if (response.data && response.data.result) {
                 setMails(response.data.result);
             } else {
@@ -32,14 +32,14 @@ export default function MailBox() {
             setSelectedMail(null);
             return;
         }
-            const response = await axios.get('http://teeput.synology.me:30112/ms3/mail/detail', {
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/mail/detail', {
                 params: { mailNo, token }
             });
             setSelectedMail(response.data);
             setSelectedMailId(mailNo);
     };
     const handleDeleteMail = async (mailNo) => {
-            const response = await axios.delete('http://teeput.synology.me:30112/ms3/mail/delete', {
+            const response = await axios.delete('https://teeput.synology.me:30112/ms3/mail/delete', {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { mailNo, token }
             });
