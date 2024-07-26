@@ -1,32 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import Draggable from 'react-draggable';
+import styles from './css/chat.module.css';
 
-// props로 token을 받도록 수정
-const Chat = ({ token }) => {
+const Chat = ({ nickname }) => {
     const [webSocket, setWebSocket] = useState(null);
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
-    const [userInput, setUserInput] = useState('');
+    const chatBoxRef = useRef(null); // chatBox의 참조를 저장할 변수
 
     useEffect(() => {
-        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/ws');
+        // WebSocket 연결 설정
+        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/chat');
         setWebSocket(ws);
 
         ws.onopen = () => {
             console.log('Connected to WebSocket');
-            // 연결 시 토큰 전송
-            ws.send(JSON.stringify({ token: token }));
         };
 
         ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
                 console.log('Received data:', data);
-
-                // 서버에서 받은 nickname 설정
-                if (data.sender) {
-                    setUserInput(data.sender);
-                }
-
                 setMessages(prevMessages => [...prevMessages, data]);
             } catch (error) {
                 console.error('Error parsing JSON:', error);
@@ -46,39 +40,63 @@ const Chat = ({ token }) => {
                 ws.close();
             }
         };
-    }, [token]);
+    }, []);
+
+    useEffect(() => {
+        // chatBoxRef가 존재하고, 메시지가 업데이트되면 스크롤을 맨 아래로 이동
+        if (chatBoxRef.current) {
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     const sendMessage = () => {
         if (webSocket && messageInput.trim() !== '') {
+            // 메시지 객체 생성
             const message = {
-                sender: userInput, // 사용자의 닉네임 설정
-                content: messageInput
+                nickname: nickname, // 사용자의 닉네임 설정
+                content: messageInput, // 페이지에서 입력한 내용
             };
+            
+            // 메시지를 JSON으로 변환하여 서버로 전송
             webSocket.send(JSON.stringify(message));
+            
+            // 입력 필드 초기화
             setMessageInput('');
         }
     };
 
+    // 엔터키를 눌렀을 때 메시지를 전송하는 함수
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // 기본 동작인 줄바꿈 방지
+            sendMessage();
+        }
+    };
+
     return (
-        <div>
-            <h1>WebSocket Chat</h1>
-            {/* token 출력 */}
-            <p>Token: {token}</p>
-            <div>
-                {messages.map((msg, index) => (
-                    <p key={index}><strong>{msg.sender || "unknown"}: </strong>{msg.content || "empty"}</p>
-                ))}
+        <Draggable>
+            <div className={styles.container}>
+                <h1 className={styles.title}>Poke Library CHAT</h1>
+                <div ref={chatBoxRef} className={styles.chatBox}>
+                    {messages.map((msg, index) => (
+                        <p key={index} className={styles.message}>
+                            <strong>{msg.nickname || "unknown"}: </strong>{msg.content || "empty"}
+                        </p>
+                    ))}
+                </div>
+                <div className={styles.inputArea}>
+                    <input
+                        type="text"
+                        value={messageInput}
+                        onChange={(e) => setMessageInput(e.target.value)}
+                        onKeyDown={handleKeyDown} // 엔터키 입력 감지
+                        placeholder="Type your message..."
+                        className={styles.pokemonSearch}
+                    />
+                    <button onClick={sendMessage} className={styles.button}>: Send :</button>
+                </div>
             </div>
-            <div>
-                <input
-                    type="text"
-                    value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
-                    placeholder="Type your message..."
-                />
-                <button onClick={sendMessage}>Send</button>
-            </div>
-        </div>
+        </Draggable>
     );
 };
 

@@ -271,10 +271,10 @@ function Battle({ token }) {
       </div>
       <div>
         <BattleTrainer />
-        <Chat />
+        <Chat nickname={nickname}/>
         <UserInfoFightContent token={token} />
       </div>
-    </div>
+      </div>
   );
 }
 
