@@ -76,6 +76,37 @@
   cursor: pointer;
 }
 
+.boardCommentButton{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.boardCommentButton button span{
+  padding-right: 5px;
+}
+
+
+.boardCommentButton button{
+  width: 50px;
+  height: 30px;
+  margin: 0;
+  padding: 1px;
+  border: none;
+  border-radius: 10px;
+  background-repeat: no-repeat;
+  background-position: 10px;
+  background-size: 20px;
+}
+
+.boardCommentButton button:focus{
+  outline: none;
+
+}
+
+.boardCommentButton button:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
 .heartNone {
   background-image: url('/public/img/heart_none.png');
 }

@@ -4,14 +4,17 @@ import { useParams } from 'react-router-dom';
 import styles from './css/BoardContent.module.css'
 
 export default function BoardContent() {
-    const { boardNo } = useParams();
+    const { boardNo, cno } = useParams();
     const [board, setBoard] = useState(null);
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [commentText, setCommentText] = useState('');
     const [comments, setComments] = useState([]); // 이미 빈 배열로 설정됨
-
+    const [commentLikeCounts, setCommentLikeCounts] = useState({});
+    const [commentHateCounts, setCommentHateCounts] = useState({});
+    const [commentLiked, setCommentLiked] = useState({});
+    const [commentHated, setCommentHated] = useState({});
 
     const token = localStorage.getItem('token');
     useEffect(() => {
@@ -37,27 +40,14 @@ export default function BoardContent() {
                 setError(err);
             }
         }
-        // 댓글 목록을 불러오는 함수
-        async function fetchComments() {
-            try {
-                // 올바른 URL을 확인하고 요청합니다
-                const commentListUrl = `http://localhost:8090/ms1/comments/${boardNo}`;
-                const response = await axios.get(commentListUrl);
-                setComments(response.data || []); // 댓글이 없을 때 빈 배열로 설정
-            } catch (err) {
-                console.error('댓글 목록을 불러오는 중 오류가 발생했습니다.', err);
-            }
-        }
 
         fetchBoard();
 
     }, [boardNo, token]);
 
-
+    //게시물 좋아요
     async function buttonLike() {
-        const token = localStorage.getItem('token');
         try {
-            //좋아요 기능 
             const response = await axios.post(`http://localhost:8090/ms1/boardLike/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -75,14 +65,13 @@ export default function BoardContent() {
         }
     }
 
+    //댓글 등록
     async function submitComment(e) {
         e.preventDefault();
         if (!commentText.trim()) {
             alert('댓글을 입력해주세요.');
             return;
         }
-
-        const token = localStorage.getItem('token');
 
         try {
             const response = await axios.post(`http://localhost:8090/ms1/comment/insert/${boardNo}`, new URLSearchParams({
@@ -97,8 +86,7 @@ export default function BoardContent() {
             if (response.status === 200) {
                 alert('댓글 작성 성공');
                 setCommentText('');
-                const updatedComments = await axios.get(`http://localhost:8090/ms1/board/commentList/${boardNo}`);
-                setComments(updatedComments.data);
+                fetchComments(); // 댓글 목록 업데이트
             } else {
                 alert('댓글 작성 실패: ' + response.data);
             }
@@ -108,6 +96,87 @@ export default function BoardContent() {
         }
     }
 
+    async function fetchComments() {
+        try {
+            const response = await axios.get(`http://localhost:8090/ms1/comments/${boardNo}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setComments(response.data || []);
+
+            const likeStatus = {};
+            const hateStatus = {};
+
+            const likeStatusRequests = response.data.map(comment =>
+                axios.get(`http://localhost:8090/ms1/boardCommentLikeView/${comment.cno}/${boardNo}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                }).then(likeResponse => {
+                    likeStatus[comment.cno] = likeResponse.data.liked;
+                    setCommentLikeCounts(prev => ({ ...prev, [comment.cno]: likeResponse.data.count }));
+                })
+            );
+
+            const hateStatusRequests = response.data.map(comment =>
+                axios.get(`http://localhost:8090/ms1/boardCommentHateView/${comment.cno}/${boardNo}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                }).then(hateResponse => {
+                    hateStatus[comment.cno] = hateResponse.data.hated;
+                    setCommentHateCounts(prev => ({ ...prev, [comment.cno]: hateResponse.data.count }));
+                })
+            );
+
+            await Promise.all([...likeStatusRequests, ...hateStatusRequests]);
+
+            setCommentLiked(likeStatus);
+            setCommentHated(hateStatus);
+        } catch (err) {
+            console.error('댓글 목록을 불러오는 중 오류가 발생했습니다.', err);
+        }
+    }
+    //댓글 좋아요
+    async function buttonCommentLike(cno) {
+        try {
+            const response = await axios.post(`http://localhost:8090/ms1/commentLike/${cno}/${boardNo}`, {}, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            if (response.data.code === 1) {
+                setCommentLiked(prev => ({ ...prev, [cno]: !prev[cno] }));
+                setCommentLikeCounts(prev => ({
+                    ...prev,
+                    [cno]: response.data.count
+                }));
+            } else {
+                console.error("Error: ", response.data.msg);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            setError(err);
+        }
+    }
+
+    //댓글 싫어요
+    async function buttonCommentHate(cno) {
+        try {
+            const response = await axios.post(`http://localhost:8090/ms1/commentHate/${cno}/${boardNo}`, {}, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            if (response.data.code === 1) {
+                setCommentHated(prev => ({ ...prev, [cno]: !prev[cno] }));
+                setCommentHateCounts(prev => ({
+                    ...prev,
+                    [cno]: response.data.count
+                }));
+            } else {
+                console.error("Error: ", response.data.msg);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            setError(err);
+        }
+    }
 
 
 
@@ -165,6 +234,20 @@ export default function BoardContent() {
                                         </div>
                                         <span>{comment.comment}</span>
                                         <span>{comment.cdate}</span>
+                                        <div className={styles.boardCommentButton}>
+                                            <button
+                                                onClick={() => buttonCommentLike(comment.cno)}
+                                                className={`${styles.boardCommentButton} ${commentLiked[comment.cno] ? styles.heartActive : styles.heartNone}`}
+                                            >
+                                                <span>{commentLikeCounts[comment.cno]}</span>
+                                            </button>
+                                            <button
+                                                onClick={() => buttonCommentHate(comment.cno)}
+                                                className={`${styles.boardCommentButton} ${commentHated[comment.cno] ? styles.heartActive : styles.heartNone}`}
+                                            >
+                                                <span>{commentHateCounts[comment.cno]}</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 ))
                             ) : (
