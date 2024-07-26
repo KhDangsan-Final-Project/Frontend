@@ -22,7 +22,6 @@ export default function MainPage({ setToken }) {
   const ranks = useRankData();
   const [loading, setLoading] = useState(true);
   const [additionalLoading, setAdditionalLoading] = useState(true);
-  const [showViewText, setShowViewText] = useState(true);
 
   const visitorCount = useVisitorCount(setLoading);
   const displayedCount = useDisplayedCount(visitorCount, loading);
@@ -41,11 +40,9 @@ export default function MainPage({ setToken }) {
         setAdditionalLoading(false);
         console.log('MainPage loaded');
       }, 10);
-      setTimeout(() => {
-        setShowViewText(false); // 10초 후에 상태 변수 업데이트
-      }, 10000); // 10초 (10000밀리초)
     }
   }, [loading]);
+
 
   if (pokemonLoading || ranks.length === 0 || loading || additionalLoading) {
     return <Loading />;
@@ -55,12 +52,10 @@ export default function MainPage({ setToken }) {
     <div className={styles.background}>
       <SliderText pokemonData={pokemonData} />
       <div className={styles['hide-on-small-screen']}>
-        {showViewText && (
-          <section ref={viewTextRef} className={`${styles.section1} ${viewTextInView ? styles['slide-in'] : ''}`}>
-            <ViewText visitorCount={visitorCount} displayedCount={displayedCount} />
-            <View />
-          </section>
-        )}
+        <section ref={viewTextRef} className={`${styles.section1} ${viewTextInView ? styles['slide-in'] : ''}`}>
+          <ViewText visitorCount={visitorCount} displayedCount={displayedCount} />
+          <View />
+        </section>
       </div>
       <div className={styles.jump} />
       <section ref={ContentInfoRef} className={`${styles.section3} ${ContentInfoView ? styles['slide-in'] : ''}`}>
