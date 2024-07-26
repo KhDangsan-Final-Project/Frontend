@@ -24,7 +24,7 @@ export default function SendMail() {
     }
 
     try {
-      const response = await axios.post('http://teeput.synology.me:30112/ms3/mail/send', newMail, { params: { token } });
+      const response = await axios.post('https://teeput.synology.me:30112/ms3/mail/send', newMail, { params: { token } });
       
       if (response.data.status === 'success') {
         alert('메일이 성공적으로 전송되었습니다.');
