@@ -6,6 +6,7 @@ import FightNavBar from './navFightContent';
 import UserInfoFightContent from './UserInfoFightContent';
 import SettingFightContent from './SettingFightContent';
 import Chat from './Chat';
+import RankFightContent from './RankFightContent';
 
 function FightContent({ token }) {
   const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde';
@@ -111,6 +112,29 @@ function FightContent({ token }) {
     }
   };
 
+  // ------------------------------------------------------------------------------------------------------------
+  // const [rangeValue, setRangeValue] = useState(0);
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     // 페이지 전체 높이
+  //     const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+  //     // 현재 스크롤 위치
+  //     const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  //     // 범위 값 계산 (0에서 100까지)
+  //     const newValue = (scrollTop / pageHeight) * 100;
+  //     setRangeValue(newValue);
+  //   };
+
+  //   // 스크롤 이벤트 리스너 등록
+  //   window.addEventListener('scroll', handleScroll);
+
+  //   // 컴포넌트 언마운트 시 이벤트 리스너 정리
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
+
   return (
     <div className={styles.App}>
       <div>
@@ -125,6 +149,14 @@ function FightContent({ token }) {
           typeBackgroundImages={typeBackgroundImages}
           handleTypeClick={handleTypeClick}
         />
+            {/* <input
+        type="range"
+        className={styles.range}
+        min="0"
+        max="100"
+        value={rangeValue}
+        readOnly
+      /> */}
       </div>
       <div className={styles.container}>
         <div className={styles.cardContainer}>
@@ -186,12 +218,15 @@ function FightContent({ token }) {
         </div>
         <div className={styles.conponents}>
           <UserInfoFightContent token={token} />
+         < RankFightContent/>
           <SettingFightContent onReceiveData={handleReceivedData} token={token} />
           <p>ROOM ID : {JSON.stringify(receivedData)}</p>
         </div>
       </div>
+      <div>
       <Chat nickname={nickname}/>
       <div className={styles.card2}></div>
+      </div>
     </div>
   );
 }

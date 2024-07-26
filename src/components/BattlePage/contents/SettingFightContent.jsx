@@ -12,7 +12,6 @@ export default function SettingFightContent({ onReceiveData, token }) {
 
     websocket.onopen = () => {
       console.log('WebSocket 연결 완료');
-      console.log('받아온 토큰값 : ', token);
       setWs(websocket); // WebSocket 객체를 상태에 저장
     };
 
@@ -87,6 +86,7 @@ export default function SettingFightContent({ onReceiveData, token }) {
           onChange={handleRoomNumberChange} // 입력값 변경 시 상태 업데이트
         />
         <button onClick={handleButtonClick}>결정</button> {/* 방 번호 전송 버튼 */}
+        <p>사용 가능한 방 번호는 밑에 표시됩니다.</p>
       </div>
       {error && <p className={styles.error}>{error}</p>} {/* 에러 메시지 출력 */}
     </div>

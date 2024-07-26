@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import styles from './css/chat.module.css';
 // props로 nickname을 받도록 수정
 const Chat = ({ nickname }) => {
     const [webSocket, setWebSocket] = useState(null);
@@ -59,11 +59,10 @@ const Chat = ({ nickname }) => {
 
     return (
         <div>
-            <h1>WebSocket Chat</h1>
-            <p>All Chat Messages:</p>
+            <h1 className={styles.title}>Poke Library CHAT</h1>
             <div>
                 {messages.map((msg, index) => (
-                    <p key={index}>
+                    <p key={index} className={styles.title}>
                         <strong>{msg.nickname || "unknown"}: </strong>{msg.content || "empty"}
                     </p>
                 ))}
