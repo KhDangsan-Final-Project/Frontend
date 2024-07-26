@@ -66,6 +66,7 @@ export default function SettingFightContent({ onReceiveData, token }) {
           roomId: roomNumber,
           token: token // 토큰 추가
         }));
+        setRoomNumber(''); // 방 번호 전송 후 입력 필드 초기화
         setError(''); // 에러 초기화
       } else {
         setError('방 번호는 숫자만 입력 가능합니다.');
@@ -75,18 +76,28 @@ export default function SettingFightContent({ onReceiveData, token }) {
     }
   };
 
+  // 엔터키를 눌렀을 때 버튼 클릭 이벤트를 트리거하는 함수
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // 기본 동작 방지
+      handleButtonClick(); // 버튼 클릭 함수 호출
+    }
+  };
+
   return (
     <div className={styles.settingContainer}>
-      <h2>:::ROOM ID:::</h2>
+      <h2 className={styles.h2}>:::ROOM ID:::</h2>
       <div className={styles.battleSetting}>
         <input
           type="text"
           placeholder="방 번호를 입력해주세요"
           value={roomNumber}
           onChange={handleRoomNumberChange} // 입력값 변경 시 상태 업데이트
+          onKeyDown={handleKeyDown} // 엔터키 입력 감지
+          className={styles.pokemonSearch}
         />
-        <button onClick={handleButtonClick}>결정</button> {/* 방 번호 전송 버튼 */}
-        <p>사용 가능한 방 번호는 밑에 표시됩니다.</p>
+        <button onClick={handleButtonClick} className={styles.button}>: 결정 :</button> {/* 방 번호 전송 버튼 */}
+        <p className={styles.p}>※사용 가능한 방 번호는 밑에 표시됩니다.</p>
       </div>
       {error && <p className={styles.error}>{error}</p>} {/* 에러 메시지 출력 */}
     </div>

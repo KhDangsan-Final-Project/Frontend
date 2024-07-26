@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import Draggable from 'react-draggable';
 import styles from './css/chat.module.css';
-// props로 nickname을 받도록 수정
+
 const Chat = ({ nickname }) => {
     const [webSocket, setWebSocket] = useState(null);
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
+    const chatBoxRef = useRef(null); // chatBox의 참조를 저장할 변수
 
     useEffect(() => {
         // WebSocket 연결 설정
@@ -19,7 +21,6 @@ const Chat = ({ nickname }) => {
             try {
                 const data = JSON.parse(event.data);
                 console.log('Received data:', data);
-
                 setMessages(prevMessages => [...prevMessages, data]);
             } catch (error) {
                 console.error('Error parsing JSON:', error);
@@ -41,6 +42,13 @@ const Chat = ({ nickname }) => {
         };
     }, []);
 
+    useEffect(() => {
+        // chatBoxRef가 존재하고, 메시지가 업데이트되면 스크롤을 맨 아래로 이동
+        if (chatBoxRef.current) {
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
+    }, [messages]);
+
     const sendMessage = () => {
         if (webSocket && messageInput.trim() !== '') {
             // 메시지 객체 생성
@@ -57,26 +65,38 @@ const Chat = ({ nickname }) => {
         }
     };
 
+    // 엔터키를 눌렀을 때 메시지를 전송하는 함수
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // 기본 동작인 줄바꿈 방지
+            sendMessage();
+        }
+    };
+
     return (
-        <div>
-            <h1 className={styles.title}>Poke Library CHAT</h1>
-            <div>
-                {messages.map((msg, index) => (
-                    <p key={index} className={styles.title}>
-                        <strong>{msg.nickname || "unknown"}: </strong>{msg.content || "empty"}
-                    </p>
-                ))}
+        <Draggable>
+            <div className={styles.container}>
+                <h1 className={styles.title}>Poke Library CHAT</h1>
+                <div ref={chatBoxRef} className={styles.chatBox}>
+                    {messages.map((msg, index) => (
+                        <p key={index} className={styles.message}>
+                            <strong>{msg.nickname || "unknown"}: </strong>{msg.content || "empty"}
+                        </p>
+                    ))}
+                </div>
+                <div className={styles.inputArea}>
+                    <input
+                        type="text"
+                        value={messageInput}
+                        onChange={(e) => setMessageInput(e.target.value)}
+                        onKeyDown={handleKeyDown} // 엔터키 입력 감지
+                        placeholder="Type your message..."
+                        className={styles.pokemonSearch}
+                    />
+                    <button onClick={sendMessage} className={styles.button}>: Send :</button>
+                </div>
             </div>
-            <div>
-                <input
-                    type="text"
-                    value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
-                    placeholder="Type your message..."
-                />
-                <button onClick={sendMessage}>Send</button>
-            </div>
-        </div>
+        </Draggable>
     );
 };
 

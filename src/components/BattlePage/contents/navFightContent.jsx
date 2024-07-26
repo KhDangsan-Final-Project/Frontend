@@ -28,13 +28,14 @@ const FightNavBar = ({ types, typeBackgroundImages, handleTypeClick }) => {
         <div key={type} className={styles.typeContainer}>
           <div className={styles.navTypesAll}>
             <div>
-              <div className={styles.navTypes} style={{ backgroundColor: typeColors[type] }}>
+              {/* <div className={styles.navTypes} style={{ backgroundColor: typeColors[type] }}> */}
+                <div className={styles.navTypes}>
                 <a
                   href="#"
                   onClick={() => handleTypeClick(type)}
                   style={{ backgroundImage: typeBackgroundImages[type] }}
                   className={styles.typeLink}
-                ></a>
+                  ></a>
               </div>
             </div>
             <p className={`${styles.typeName} ${styles[type]} ${styles.customFont}`}>{type}</p>

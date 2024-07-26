@@ -86,7 +86,7 @@ function UserInfoFightContent({ token }) {
 
   return (
     <div className={styles.settingContainer}>
-      <h2>:::info:::</h2>
+      <h2 className={styles.h2}>:::info:::</h2>
       <div className={styles.userInfoContainer}>
         <div className={styles.userImg}>
           {/* Check if userInfo exists before accessing its properties */}
@@ -96,7 +96,7 @@ function UserInfoFightContent({ token }) {
               <div className={getProfileImageClass()}></div>
             </>
           ) : (
-            <p>Loading...</p>  // Show loading state if userInfo is not available
+            <p className={styles.p}>Loading...</p>  // Show loading state if userInfo is not available
           )}
         </div>
         <div className={styles.userNick}>
