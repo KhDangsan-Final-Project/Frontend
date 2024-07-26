@@ -91,7 +91,7 @@ export default function BoardMain({ showWrite, token }) {
                     <article key={rowIndex} >
                         {row.map(board => (
                             <ul key={board.boardNo}>
-                                <h5><Link to="/boardContent"> {board.boardTitle}</Link></h5>
+                                <h5><Link to={`/boardContent/${board.boardNo}`}> {board.boardTitle}</Link></h5>
                                 <li>
                                     <img src='/img/pokeball.png' /><span>{board.id}</span>
                                     &nbsp;
