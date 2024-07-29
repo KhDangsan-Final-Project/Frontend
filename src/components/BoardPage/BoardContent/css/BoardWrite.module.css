@@ -8,17 +8,15 @@
 }
 
 .main_container {
-	position: absolute;
+	position: relative;
 	display: flex;
 	flex-flow: column nowrap;
-	top: 65%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	font-family: 'Lato';
 	width: 1000px;
 	background-color: #f3f3f3;
 	padding: 20px;
 	border-radius: 20px;
+	margin: 0 auto;
 }
 
 .ck-content {

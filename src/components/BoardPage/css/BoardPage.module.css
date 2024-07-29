@@ -12,17 +12,12 @@
         background: inherit;
 }
 
+.jump {
+    height: 200px;
+}
 
 @media (min-width: 320px) {
     .container{
         min-height: 120vh;
     }
-}
-
-.jump {
-    height: 500px;
-}
-
-.jumpUp {
-    height: 120vh;
 }

@@ -11,12 +11,12 @@ import AIPage from './components/AIPage/AIPage';
 import MyPage from './components/MyPage/MyPage';
 import Scroll from './components/Menu/Scroll/Scroll';
 import PasswordResetRequestPage from './components/LoginPage/PasswdReset/PasswordResetRequestPage';
-import BoardContent from './components/BoardPage/BoardContent/BoardContent';
 import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
 import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
-import BoardList from './components/BoardPage/BoardContent/BoardList';
+import BoardList from './components/BoardPage/BoardList';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
+import BoardContent from './components/BoardPage/BoardContent/BoardContent';
 
 function App() {
   const [token, setToken] = useState(null);

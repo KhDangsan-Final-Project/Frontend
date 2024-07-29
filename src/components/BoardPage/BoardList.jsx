@@ -1,12 +1,12 @@
-import styles from "../css/BoardList.module.css"
+import styles from "./css/BoardList.module.css"
 import React, { useEffect, useState } from "react"
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import FooterImg from "../../Menu/Footer/FooterImg";
-import Footer from "../../Menu/Footer/Footer";
+import FooterImg from "../Menu/Footer/FooterImg";
+import Footer from "../Menu/Footer/Footer";
 
 
-export default function BoardEvent() {
+export default function BoardList() {
     const [boardList, setBoardList] = useState([]);
     const [error, setError] = useState(null);
     const [pageNo, setPageNo] = useState(1);
@@ -19,8 +19,7 @@ export default function BoardEvent() {
                 const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list", {
                     params: {
                         pageNo: pageNo,
-                        pageContentEa: pageContentEa,
-                        category: "이벤트"
+                        pageContentEa: pageContentEa
                     }
                 });
                 console.log(response.data.pagging);
@@ -35,12 +34,12 @@ export default function BoardEvent() {
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
 
     const pages = Array.from(
-        { length: (pagging.endPageOfPageGroup - pagging.startPageOfPageGroup + 1) },
+        { length: pagging.endPageOfPageGroup - pagging.startPageOfPageGroup + 1 },
         (_, i) => pagging.startPageOfPageGroup + i
     );
 
     const handlePreviousPageGroup = () => {
-        if (pagging.previousPageGroup) {
+        if (pagging.previousPageGroup && pageNo > 1) {
             setPageNo(pagging.startPageOfPageGroup - 1);
         }
     };
@@ -50,10 +49,11 @@ export default function BoardEvent() {
             setPageNo(pagging.endPageOfPageGroup + 1);
         }
     };
+
     return (
         <div className={styles.bigContainer}>
-            <div className={styles.jump} />
-            <h1 className={styles.title}>이벤트</h1>
+            <div className={styles.jump}/>
+            <h1 className={styles.title}>자유게시판</h1>
             <div className={styles.container}>
                 <table>
                     <thead>
@@ -68,11 +68,11 @@ export default function BoardEvent() {
                     <tbody>
                         {boardList.map(board => (
                             <tr key={board.boardNo}>
-                                    <td>{board.boardNo}</td>
-                                    <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}>{board.boardTitle}</Link></td>
-                                    <td>{board.id}</td>
-                                    <td>{board.boardCount}</td>
-                                    <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
+                                <td>{board.boardNo}</td>
+                                <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}> {board.boardTitle}</Link></td>
+                                <td>{board.id}</td>
+                                <td>{board.boardCount}</td>
+                                <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -94,10 +94,10 @@ export default function BoardEvent() {
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-            <div className={styles.jump} />
-            <FooterImg />
-            <Footer />
+            </div >
+            <div className={styles.jump}/>
+            <FooterImg/>
+            <Footer/>
         </div>
     );
 }

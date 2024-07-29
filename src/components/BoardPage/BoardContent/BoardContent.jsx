@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './css/BoardContent.module.css'
+import FooterImg from '../../Menu/Footer/FooterImg';
+import Footer from '../../Menu/Footer/Footer';
 
 export default function BoardContent() {
     const { boardNo, cno } = useParams();
@@ -230,7 +232,8 @@ export default function BoardContent() {
 
 
     return (
-        <div>
+        <div className={styles.bigContainer}>
+            <div className={styles.jump}/>
             {board ? (
                 <div className={styles.container}>
                     <h6>{board.boardCategory}</h6>
@@ -282,7 +285,7 @@ export default function BoardContent() {
                                             <img src='/img/jiwoo.jpg' alt="profile" />
                                             <span>{comment.id}</span>
                                         </div>
-                                        <span>{comment.comment}</span>
+                                        <span>{comment.comment}</span> <br/>
                                         <span>{comment.cdate}</span>
                                         <div className={styles.boardCommentButton}>
                                             <button
@@ -310,6 +313,9 @@ export default function BoardContent() {
                 <div>게시글이 없습니다.</div> // board가 없을 때 처리
             )}
             <hr />
+            <div className={styles.jump}/>
+            <FooterImg />
+            <Footer />
         </div>
     );
 }
