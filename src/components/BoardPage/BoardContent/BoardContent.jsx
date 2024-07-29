@@ -225,8 +225,13 @@ export default function BoardContent() {
                 alert('게시글 삭제 실패: ' + response.data);
             }
         } catch (err) {
-            console.error('Error:', err);
-            alert('게시글 삭제 중 오류가 발생했습니다.');
+            if (err.response && err.response.status === 403) {
+                // 삭제할 권한이 없을 때의 처리
+                alert('삭제할 권한이 없습니다.');
+            } else {
+                // 기타 오류 처리
+                alert('댓글 삭제 중 오류가 발생했습니다: ' + (err.response ? err.response.data : '서버와의 연결이 끊어졌습니다.'));
+            }
         }
     }
 
@@ -293,6 +298,7 @@ export default function BoardContent() {
                     <hr />
                     <div>
                         <span>{board.boardContent}</span>
+                        
                     </div>
                     <div className={styles.boardLike}>
                         <button onClick={buttonLike} className={`${styles.boardLike} ${liked ? styles.heartActive : styles.heartNone}`}><span>{likeCount}</span></button>
@@ -319,7 +325,8 @@ export default function BoardContent() {
                                             <span>{comment.id}</span>
                                         </div>
                                         <span>{comment.comment}</span> <br/>
-                                        <span>{comment.cdate}</span>
+                                        <span>{comment.cdate}</span><br/>
+                                        <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.cno)}>삭제</button>
                                         <div className={styles.boardCommentButton}>
                                             <button
                                                 onClick={() => buttonCommentLike(comment.cno)}
