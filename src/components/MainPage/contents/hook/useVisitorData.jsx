@@ -11,9 +11,9 @@ export const useVisitorCount = (setLoading) => {
                 const ipAddress = ipData.ip;
                 console.log(ipAddress);
 
-                await axios.post('http://teeput.synology.me:30112/ms1/view/up', { ipAddress });
+                await axios.post('https://teeput.synology.me:30112/ms1/view/up', { ipAddress });
 
-                const { data: count } = await axios.get('http://teeput.synology.me:30112/ms1/view/count');
+                const { data: count } = await axios.get('https://teeput.synology.me:30112/ms1/view/count');
                 setVisitorCount(count);
                 setLoading(false);
             } catch (error) {

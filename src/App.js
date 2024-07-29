@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
@@ -21,6 +21,7 @@ import Battle from './components/BattlePage/contents/Battle';
 
 function App() {
   const [token, setToken] = useState(null);
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -30,9 +31,11 @@ function App() {
     }
   }, []);
 
+
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
+    navigate('/login');
   };
 
   const hideMenuAndSidebar = ['/fight', '/battle', '/encyclopedia'].includes(location.pathname);

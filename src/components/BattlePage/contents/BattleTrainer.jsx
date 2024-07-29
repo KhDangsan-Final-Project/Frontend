@@ -7,7 +7,7 @@ export default function BattleTrainer() {
 
   return (
     <div className={styles.settingContainer}>
-      <h2>:::info:::</h2>
+      <h2 className={styles.h2}>:::info:::</h2>
       <div className={styles.userInfoContainer}>
         <div className={styles.userImg}>
           <div className={styles.trainerRankImg} ></div> {/* 랭크 이미지를 배경으로 설정 */}

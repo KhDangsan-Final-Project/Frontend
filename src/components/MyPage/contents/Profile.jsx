@@ -20,7 +20,7 @@ export default function Profile() {
       setLoading(false);
       return;
     }
-    axios.get('http://teeput.synology.me:30112/ms3/mypage', { params: { token } })
+    axios.get('https://teeput.synology.me:30112/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
           setUserData(response.data);
@@ -34,9 +34,11 @@ export default function Profile() {
         setLoading(false);
       });
   }, []);
+
   if (loading) {
     return <Loading />;
   }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData(prevState => ({
@@ -44,6 +46,7 @@ export default function Profile() {
       [name]: value
     }));
   };
+
   const handlePasswordChange = (e) => {
     const { value } = e.target;
     setUserData(prevState => ({
@@ -52,15 +55,27 @@ export default function Profile() {
     }));
     setPasswordValid(checkPassword(value));
   };
+
   const handlePasswordCheckChange = (e) => {
     const { value } = e.target;
     setPasswordCheck(value);
     setPasswordMatch(value === userData.password);
   };
+
+  const handleEmailChange = (part, value) => {
+    const emailParts = userData.email.split('@');
+    emailParts[part] = value;
+    setUserData(prevState => ({
+      ...prevState,
+      email: emailParts.join('@')
+    }));
+  };
+
   const checkPassword = (password) => {
     let reg = /(?=.*\d)(?=.*[!@#$%^&*~])[A-Za-z\d!@#$%^&*~]{8,32}$/;
     return reg.test(password);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -68,7 +83,7 @@ export default function Profile() {
       return;
     }
     try {
-      const response = await axios.put('http://teeput.synology.me:30112/ms3/mypage/update', userData, {
+      const response = await axios.put('https://teeput.synology.me:30112/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
@@ -80,7 +95,32 @@ export default function Profile() {
     } catch (error) {
       console.error('정보 업데이트 중 오류가 발생했습니다!', error);
     }
+  };  
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.delete(`https://teeput.synology.me:30112/ms3/user/delete`, {
+        params: { id: userData.id, token: token }
+      });
+
+      if (response.data.status === 'success') {
+        alert('회원 탈퇴가 성공적으로 처리되었습니다.');
+        localStorage.removeItem('token'); 
+        navigate('/'); 
+      } else {
+        alert(response.data.message || '회원 탈퇴에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('회원 탈퇴 중 오류가 발생했습니다!', error);
+      alert('회원 탈퇴 중 오류가 발생했습니다!');
+    }
   };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>프로필</h2>
@@ -102,9 +142,10 @@ export default function Profile() {
         <div className={styles.emailSection}>
           <label className={styles.label2}>
             <span>이메일</span>
-            <input type="text" placeholder="이메일을 입력해주세요" className={styles.email} value={userData.email.split('@')[0]} onChange={handleInputChange} />
+            <input 
+              type="text"  placeholder="이메일을 입력해주세요"  className={styles.email}  value={userData.email.split('@')[0]}  onChange={(e) => handleEmailChange(0, e.target.value)}  />
             @
-            <select value={userData.email.split('@')[1]} onChange={(e) => handleInputChange({ target: { name: 'email', value: `${userData.email.split('@')[0]}@${e.target.value}` } })}>
+            <select value={userData.email.split('@')[1]} onChange={(e) => handleEmailChange(1, e.target.value)}>
               <option value="naver.com">naver.com</option>
               <option value="gmail.com">gmail.com</option>
               <option value="daum.net">daum.net</option>
@@ -130,13 +171,21 @@ export default function Profile() {
 
         <label className={styles.label}>
           <span>닉네임</span>
-          <input type="text" placeholder="닉네임" className={styles.info} value={userData.nickname} onChange={handleInputChange} />
+          <input 
+            type="text" 
+            placeholder="닉네임" 
+            className={styles.info} 
+            value={userData.nickname} 
+            name="nickname"
+            onChange={handleInputChange} 
+          />
         </label>
 
         <div className={styles.btn}>
           <button type="submit" className={styles.update_btn}>수정하기</button>
           <button type="button" className={styles.cancel_btn} onClick={() => navigate('/')}>취소</button>
         </div>
+        <a href="#" onClick={handleDeleteAccount} className={styles.delete}>회원을 탈퇴하시겠습니까?</a>
       </form>
     </div>
   );

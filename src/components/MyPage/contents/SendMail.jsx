@@ -24,11 +24,11 @@ export default function SendMail() {
     }
 
     try {
-      const response = await axios.post('http://teeput.synology.me:30112/ms3/mail/send', newMail, { params: { token } });
+      const response = await axios.post('https://teeput.synology.me:30112/ms3/mail/send', newMail, { params: { token } });
       
       if (response.data.status === 'success') {
         alert('메일이 성공적으로 전송되었습니다.');
-        navigate('/mailbox');  
+        navigate(-1);  
       } else {
         console.log(response.data.status);
         alert('메일 전송에 실패했습니다. 아이디를 다시 확인하세요.');
@@ -47,7 +47,7 @@ export default function SendMail() {
       <textarea name="content" placeholder="내용" onChange={handleInputChange} className={styles.textarea}></textarea>
       <div className={styles.btn}>
         <button onClick={handleSendMail} className={styles.sendButton}>보내기</button>
-        <button onClick={() => navigate('/mypage/mailbox')} className={styles.cancelButton}>취소</button>
+        <button onClick={() => navigate(-1)} className={styles.cancelButton}>취소</button>
       </div>
     </div>
   );

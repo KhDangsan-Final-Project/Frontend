@@ -16,7 +16,7 @@ export default function MyPage({ setToken }) {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            axios.get('http://teeput.synology.me:30112/ms3/rankcheck', {
+            axios.get('https://teeput.synology.me:30112/ms3/rankcheck', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -51,7 +51,7 @@ export default function MyPage({ setToken }) {
     };
 
     const showAdminPage = () => {
-        window.open('http://teeput.synology.me:30112/ms4/user/list', '_blank');
+        window.open('https://teeput.synology.me:30112/ms4/user/list', '_blank');
     };
 
     return (
