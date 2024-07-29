@@ -6,7 +6,7 @@ export default function BattleTrainer() {
  
 
   return (
-    <div className={styles.settingContainer}>
+    <div className={styles.trainerSettingContainer}>
       <h2 className={styles.h2}>:::info:::</h2>
       <div className={styles.userInfoContainer}>
         <div className={styles.userImg}>

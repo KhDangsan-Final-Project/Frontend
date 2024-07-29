@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import UserInfoFightContent from './UserInfoFightContent';
 import BattleTrainer from './BattleTrainer';
 import useAI from './hooks/useAI';
+import BattleRule from './BattleRule';
 
 // 타입에 따라 다른 스타일을 적용하는 함수
 const getTypeLogo = (type) => {
@@ -57,7 +58,6 @@ function Battle({ token }) {
   const matchWin = parseInt(queryParams.get('matchWin'), 10);
   const [isHighlighted, setIsHighlighted] = useState(true);
 
-
   const [selectedPokemon, setSelectedPokemon] = useState([]);
   const [enemyPokemon, setEnemyPokemon] = useState([]);
   const [showAttacks, setShowAttacks] = useState(false);
@@ -75,7 +75,7 @@ function Battle({ token }) {
     selectEnemyPokemon,
   } = usePokemonBattle(roomId);
 
-  useAI(selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemon, playerTurn, setPlayerTurn,getCleanDamageValue);
+  useAI(selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemon, playerTurn, setPlayerTurn, getCleanDamageValue);
 
   // 포켓몬 데이터 로드
   useEffect(() => {
@@ -101,8 +101,6 @@ function Battle({ token }) {
     loadPokemonData();
   }, []);
 
-
-
   // 포켓몬 데이터를 로컬 스토리지에 저장
   useEffect(() => {
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemon));
@@ -117,7 +115,7 @@ function Battle({ token }) {
     if (isBattleFinished && enemyPokemon.length === 0) {
 
       if (token) {
-        const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/update');
+        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/update');
 
         ws.onopen = () => {
           console.log('Connected to WebSocket for updating matchWin');
@@ -187,7 +185,6 @@ function Battle({ token }) {
   const renderPokemonCards = (pokemons, isEnemy) => {
     return pokemons.length > 0 ? (
       pokemons.map((pokemon) => (
-        
         !pokemon.isRemoved && (
           <div
             key={pokemon.id}
@@ -216,18 +213,6 @@ function Battle({ token }) {
                   HP: {pokemon.hp}
                 </div>
               </div>
-              {showAttacks && pokemon.attacks && selectedPlayerPokemon && selectedPlayerPokemon.id === pokemon.id && (
-                <div className={styles.pokemonAttacks}>
-                  {pokemon.attacks.map((attack, index) => (
-                    <button key={index} className={styles.attackButton} onClick={() => handleAttackClick(getCleanDamageValue(attack.damage))}>
-                      <div className={styles.attack}>
-                        <p><strong>{attack.name}</strong></p>
-                        <p>피해: {getCleanDamageValue(attack.damage)}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         )
@@ -256,25 +241,43 @@ function Battle({ token }) {
 
   return (
     <div className={styles.App}>
-      <div className={styles.stage}>
-        <div className={styles.enemyContainer}>
-          <div><h2>ALDER's pokemons</h2></div>
-          {renderPokemonCards(enemyPokemon, true)}
-        </div>
-        <div className={styles.body}>
-          <div className={styles.vs}></div>
-        </div>
-        <div className={styles.selectedPokemonContainer}>
-          <div><h2>{nickname} pokemons</h2></div>
-          {renderPokemonCards(selectedPokemon, false)}
+      <div className={styles.backgroundWrapper}>
+        <video autoPlay muted loop className={styles.backgroundVideo}>
+          <source src='/video/background.mp4' type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className={styles.overlay}>
+         <BattleRule/>
+          <BattleTrainer />
+          <div className={styles.stage}>
+            <div className={styles.enemyContainer}>
+              {renderPokemonCards(enemyPokemon, true)}
+            </div>
+            <div className={styles.body}>
+              <div className={styles.vs}></div>
+            </div>
+            <div className={styles.selectedPokemonContainer}>
+              {renderPokemonCards(selectedPokemon, false)}
+            </div>
+          </div>
+          <div className={styles.userPokemonAttackContainer}>
+          {showAttacks && selectedPlayerPokemon && (
+            <div className={styles.pokemonAttacksContainer}>
+              {selectedPlayerPokemon.attacks.map((attack, index) => (
+                <button key={index} className={styles.attackButton} onClick={() => handleAttackClick(getCleanDamageValue(attack.damage))}>
+                  <div className={styles.attack}>
+                    <p><strong>{attack.name}</strong></p>
+                    <p>피해: {getCleanDamageValue(attack.damage)}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          <UserInfoFightContent token={token} />
+          </div>
         </div>
       </div>
-      <div>
-        <BattleTrainer />
-        <Chat nickname={nickname}/>
-        <UserInfoFightContent token={token} />
-      </div>
-      </div>
+    </div>
   );
 }
 
