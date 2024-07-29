@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './css/BoardContent.module.css'
 
 export default function BoardContent() {
-    const { boardNo, cno } = useParams();
+    const { boardNo } = useParams();
     const [board, setBoard] = useState(null);
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
@@ -18,16 +18,16 @@ export default function BoardContent() {
 
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         async function fetchBoard() {
             try {
                 //boardNo에 맞는 게시물 조회
-                const response = await axios.get(`https://teeput.synology.me:30112/ms1/board/${boardNo}`);
+                const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
 
                 //좋아요 상태 및 수 확인
-                const likeResponse = await axios.get(`https://teeput.synology.me:30112/ms1/boardLikeView/${boardNo}`, {
+                const likeResponse = await axios.get(`http://localhost:8090/ms1/boardLikeView/${boardNo}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -56,7 +56,7 @@ export default function BoardContent() {
         const viewedPosts = JSON.parse(localStorage.getItem('viewedPosts')) || [];
         if (!viewedPosts.includes(boardNo)) {
             try {
-                await axios.post(`https://teeput.synology.me:30112/ms1/boardViewCount/${boardNo}`, {}, {
+                await axios.post(`http://localhost:8090/ms1/boardViewCount/${boardNo}`, {}, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -76,7 +76,7 @@ export default function BoardContent() {
     //게시물 좋아요
     async function buttonLike() {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/boardLike/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/boardLike/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -102,7 +102,7 @@ export default function BoardContent() {
         }
 
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/comment/insert/${boardNo}`, new URLSearchParams({
+            const response = await axios.post(`http://localhost:8090/ms1/comment/insert/${boardNo}`, new URLSearchParams({
                 comment: commentText
             }), {
                 headers: {
@@ -126,7 +126,7 @@ export default function BoardContent() {
 
     async function fetchComments() {
         try {
-            const response = await axios.get(`https://teeput.synology.me:30112/ms1/comments/${boardNo}`, {
+            const response = await axios.get(`http://localhost:8090/ms1/comments/${boardNo}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setComments(response.data || []);
@@ -135,7 +135,7 @@ export default function BoardContent() {
             const hateStatus = {};
 
             const likeStatusRequests = response.data.map(comment =>
-                axios.get(`https://teeput.synology.me:30112/ms1/boardCommentLikeView/${comment.cno}/${boardNo}`, {
+                axios.get(`http://localhost:8090/ms1/boardCommentLikeView/${comment.cno}/${boardNo}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }).then(likeResponse => {
                     likeStatus[comment.cno] = likeResponse.data.liked;
@@ -144,7 +144,7 @@ export default function BoardContent() {
             );
 
             const hateStatusRequests = response.data.map(comment =>
-                axios.get(`https://teeput.synology.me:30112/ms1/boardCommentHateView/${comment.cno}/${boardNo}`, {
+                axios.get(`http://localhost:8090/ms1/boardCommentHateView/${comment.cno}/${boardNo}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }).then(hateResponse => {
                     hateStatus[comment.cno] = hateResponse.data.hated;
@@ -163,7 +163,7 @@ export default function BoardContent() {
     //댓글 좋아요
     async function buttonCommentLike(cno) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/commentLike/${cno}/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/commentLike/${cno}/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -186,7 +186,7 @@ export default function BoardContent() {
     //댓글 싫어요
     async function buttonCommentHate(cno) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/commentHate/${cno}/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/commentHate/${cno}/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -206,10 +206,10 @@ export default function BoardContent() {
         }
     }
 
-     // 게시물 삭제
-     async function deleteBoard() {
+    // 게시물 삭제
+    async function deleteBoard() {
         try {
-            const response = await axios.delete(`https://teeput.synology.me:30112/ms1/board/delete/${boardNo}`, {
+            const response = await axios.delete(`http://localhost:8090/ms1/board/delete/${boardNo}`, {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             if (response.status === 200) {
@@ -234,7 +234,7 @@ export default function BoardContent() {
             {board ? (
                 <div className={styles.container}>
                     <h6>{board.boardCategory}</h6>
-                    <h2>{board.BoardContentitle}</h2>
+                    <h2>{board.boardTitle}</h2>
                     <div className={styles.profile_bar}>
                         <div className={styles.profile}>
                             <img src='/img/jiwoo.jpg' />
@@ -250,7 +250,12 @@ export default function BoardContent() {
                             </div>
                         </div>
                         <div className={styles.boardUpdate}>
-                            <button className={styles.edit}  onClick={() => navigate(`/boardEdit/${board.boardNo}`)}>수정</button>
+                            <button
+                                className={styles.edit}
+                                onClick={() => navigate(`/boardEdit/${board.boardNo}`, { state: { boardData: board } })}
+                            >
+                                수정
+                            </button>
                             <button className={styles.delete} onClick={deleteBoard}>삭제</button>
                         </div>
                     </div>
