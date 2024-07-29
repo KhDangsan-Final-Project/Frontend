@@ -76,7 +76,7 @@ export default function BoardEdit() {
     }, []);
 
     useEffect(() => {
-        axios.get(`http://localhost:8090/ms1/board/${boardNo}`)
+        axios.get(`https://teeput.synology.me:30112/ms1/board/${boardNo}`)
             .then(response => {
                 const { boardTitle, boardContent, boardCategory } = response.data;
                 setTitle(boardTitle || '123');
@@ -366,7 +366,7 @@ export default function BoardEdit() {
             formData.append('file', files[i]);
         }
         try {
-            await fetch(`http://localhost:8090/ms1/board/update/${boardNo}`, {
+            await fetch(`https://teeput.synology.me:30112/ms1/board/update/${boardNo}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
