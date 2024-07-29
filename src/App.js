@@ -15,7 +15,7 @@ import BoardContent from './components/BoardPage/BoardContent/BoardContent';
 import BoardEdit from './components/BoardPage/BoardContent/BoardEdit';
 import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
 import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
-import BoardList from './components/BoardPage/BoardContent/BoardList';
+import BoardList from './components/BoardPage/BoardList';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
 

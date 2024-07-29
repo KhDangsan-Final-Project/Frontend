@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 
+
 import {
     ClassicEditor,
     AccessibilityHelp,
@@ -60,6 +61,8 @@ import './css/Ckeditor.css'
 import styles from './css/BoardWrite.module.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import FooterImg from '../../Menu/Footer/FooterImg';
+import Footer from '../../Menu/Footer/Footer';
 
 export default function BoardEdit() {
     const { boardNo } = useParams();
@@ -358,6 +361,7 @@ export default function BoardEdit() {
         formData.append('title', title);
         formData.append('content', plainTextContent);
         formData.append('boardNo', boardNo);
+
         for (let i = 0; i < files.length; i++) {
             formData.append('file', files[i]);
         }
@@ -381,47 +385,53 @@ export default function BoardEdit() {
     }
 
     return (
-        <div className={styles.main_container}>
-            <form onSubmit={handleSubmitContent}>
-                <div className={styles.header}>
-                    <h5>게시물 수정</h5>
-                    <span className={styles.category}>
-                        <select name="category" value={category} onChange={handleCategoryChange}>
-                            <option value="자유게시판">자유게시판</option>
-                            <option value="공지사항">공지사항</option>
-                            <option value="이벤트">이벤트</option>
-                        </select>
-                    </span>
-                </div>
-                <input
-                    type='text'
-                    className={styles.title}
-                    value={title}
-                    onChange={handleTitleChange}
-                    placeholder='제목을 입력해주세요'
-                ></input>
-                <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
-                    <div className={styles.editor_container__editor}>
-                        <div ref={editorRef} value={content} onChange={handleContentChange}>
-                            {isLayoutReady &&
-                                <CKEditor
-                                    editor={ClassicEditor}
-                                    data={content}
-                                    config={editorConfig}
-                                    onChange={handleContentChange} />
-                            }
+        <div className={styles.bigContainer}>
+            <div className={styles.jump} />
+            <div className={styles.main_container}>
+                <form onSubmit={handleSubmitContent}>
+                    <div className={styles.header}>
+                        <h5>게시물 수정</h5>
+                        <span className={styles.category}>
+                            <select name="category" value={category} onChange={handleCategoryChange}>
+                                <option value="자유게시판">자유게시판</option>
+                                <option value="공지사항">공지사항</option>
+                                <option value="이벤트">이벤트</option>
+                            </select>
+                        </span>
+                    </div>
+                    <input
+                        type='text'
+                        className={styles.title}
+                        value={title}
+                        onChange={handleTitleChange}
+                        placeholder='제목을 입력해주세요'
+                    ></input>
+                    <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
+                        <div className={styles.editor_container__editor}>
+                            <div ref={editorRef} value={content} onChange={handleContentChange}>
+                                {isLayoutReady &&
+                                    <CKEditor
+                                        editor={ClassicEditor}
+                                        data={content}
+                                        config={editorConfig}
+                                        onChange={handleContentChange} />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <input type="file" multiple onChange={handleFileChange} className={styles.file} />
-                </div>
-                <div>
-                    <button type="submit" id="submit" disabled={isSubmitDisabled}
-                        className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
-                    <button type="reset" className={styles.button} onClick={cancel}>취소</button>
-                </div>
-            </form>
+                    <div>
+                        <input type="file" multiple onChange={handleFileChange} className={styles.file} />
+                    </div>
+                    <div>
+                        <button type="submit" id="submit" disabled={isSubmitDisabled}
+                            className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
+                        <button type="reset" className={styles.button} onClick={cancel}>취소</button>
+                    </div>
+                </form>
+            </div>
+            <div className={styles.jump} />
+            <FooterImg />
+            <Footer />
         </div>
     );
 }
