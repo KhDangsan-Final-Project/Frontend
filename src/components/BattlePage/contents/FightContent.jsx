@@ -42,7 +42,7 @@ function FightContent({ token }) {
 
   useEffect(() => {
     if (token) {
-      const ws = new WebSocket('ws://teeput.synology.me:30112/ms2/token');
+      const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/token');
 
       ws.onopen = () => {
         console.log('Connected to WebSocket');
