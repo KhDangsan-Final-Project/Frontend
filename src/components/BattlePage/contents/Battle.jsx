@@ -248,7 +248,6 @@ function Battle({ token }) {
         </video>
         <div className={styles.overlay}>
          <BattleRule/>
-          <BattleTrainer />
           <div className={styles.stage}>
             <div className={styles.enemyContainer}>
               {renderPokemonCards(enemyPokemon, true)}
@@ -261,6 +260,8 @@ function Battle({ token }) {
             </div>
           </div>
           <div className={styles.userPokemonAttackContainer}>
+            <BattleTrainer />
+            <UserInfoFightContent token={token} />
           {showAttacks && selectedPlayerPokemon && (
             <div className={styles.pokemonAttacksContainer}>
               {selectedPlayerPokemon.attacks.map((attack, index) => (
@@ -273,7 +274,6 @@ function Battle({ token }) {
               ))}
             </div>
           )}
-          <UserInfoFightContent token={token} />
           </div>
         </div>
       </div>

@@ -140,6 +140,11 @@ function FightContent({ token }) {
             {showChat ? ': 숨기기 :' : ': 채팅 열기 :'}
           </button> */}
           <div className={styles.container}>
+
+<div className={styles.loadingBar}>
+              {!loading && cards.length > 0 && hasMore && (
+                <button onClick={loadMore} className={styles.button}>: 더 불러오기 :</button>
+              )}
             <div className={styles.cardContainer}>
               {cards.length > 0 ? (
                 cards.map(card => (
@@ -165,10 +170,8 @@ function FightContent({ token }) {
                 <p className={styles.p}>카드를 찾을 수 없습니다.</p>
               )}
               {loading && <p className={styles.p}>로딩 중...</p>}
-              {!loading && cards.length > 0 && hasMore && (
-                <button onClick={loadMore} className={styles.button}>: 더 불러오기 :</button>
-              )}
             </div>
+              </div>
             <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
               <h4 style={{ color: 'white' }} className={styles.h4}> : : : 선택된 포켓몬 카드 : : :</h4>
               {selectedCards.length > 0 && (
