@@ -10,6 +10,7 @@ export default function BoardContent() {
     const [board, setBoard] = useState(null);
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
+    const [files, setFiles] = useState({});
     const [likeCount, setLikeCount] = useState(0);
     const [commentText, setCommentText] = useState('');
     const [comments, setComments] = useState([]); // 이미 빈 배열로 설정됨
@@ -17,11 +18,14 @@ export default function BoardContent() {
     const [commentHateCounts, setCommentHateCounts] = useState({});
     const [commentLiked, setCommentLiked] = useState({});
     const [commentHated, setCommentHated] = useState({});
+    const [userId, setUserId] = useState('');
 
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
 
+
     useEffect(() => {
+
         async function fetchBoard() {
             try {
                 //조회수 증가
@@ -30,7 +34,13 @@ export default function BoardContent() {
                 //boardNo에 맞는 게시물 조회
                 const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
-                
+
+                // 현재 로그인한 사용자 ID 가져오기
+                const userResponse = await axios.get('http://localhost:8090/ms1/currentUser', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                setUserId(userResponse.data.id);
+                console.log(userResponse.data.id);
 
                 //좋아요 상태 및 수 확인
                 const likeResponse = await axios.get(`http://localhost:8090/ms1/boardLikeView/${boardNo}`, {
@@ -44,8 +54,8 @@ export default function BoardContent() {
                 //댓글 목록 조회
                 fetchComments();
 
-                //조회수 증가
-                increaseViewCount();
+                // 파일 목록 조회
+                fetchFiles();
 
             } catch (err) {
                 setError(err);
@@ -55,6 +65,18 @@ export default function BoardContent() {
         fetchBoard();
 
     }, [boardNo, token]);
+
+    //파일 조회
+    async function fetchFiles() {
+        try {
+            const response = await axios.get(`http://localhost:8090/ms1/board/fileList/${boardNo}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setFiles(response.data || []);
+        } catch (err) {
+            console.error('파일 목록을 불러오는 중 오류가 발생했습니다.', err);
+        }
+    }
 
     //게시물 조회수
     async function increaseViewCount() {
@@ -266,7 +288,7 @@ export default function BoardContent() {
 
     return (
         <div className={styles.bigContainer}>
-            <div className={styles.jump}/>
+            <div className={styles.jump} />
             {board ? (
                 <div className={styles.container}>
                     <h6>{board.boardCategory}</h6>
@@ -285,6 +307,7 @@ export default function BoardContent() {
                                 <span>{board.boardCount}</span>
                             </div>
                         </div>
+                        {board.id === userId && (
                         <div className={styles.boardUpdate}>
                             <button
                                 className={styles.edit}
@@ -294,11 +317,36 @@ export default function BoardContent() {
                             </button>
                             <button className={styles.delete} onClick={deleteBoard}>삭제</button>
                         </div>
+                        )}
                     </div>
                     <hr />
                     <div>
                         <span>{board.boardContent}</span>
-                        
+                        <div className={styles.filesSection}>
+                            {files.length > 0 ? (
+                                <div className={styles.fileList}>
+                                    {files.map(file => (
+                                        <div key={file.fno} className={styles.fileItem}>
+                                            {file.type === 'image' ? (
+                                                <img src={file.path} alt={file.fileName} className={styles.fileImage} />
+                                            ) : file.type === 'video' ? (
+                                                <video controls className={styles.fileVideo}>
+                                                    <source src={file.path} type={`video/${file.fileName.split('.').pop()}`} />
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            ) : file.type === 'normal' ? (
+                                                <a href={file.path} download>{file.fileName}</a>
+                                            ) : (
+                                                <p>지원하지 않는 파일 형식입니다.</p>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p>첨부된 파일이 없습니다.</p>
+                            )}
+                        </div>
+
                     </div>
                     <div className={styles.boardLike}>
                         <button onClick={buttonLike} className={`${styles.boardLike} ${liked ? styles.heartActive : styles.heartNone}`}><span>{likeCount}</span></button>
@@ -324,9 +372,11 @@ export default function BoardContent() {
                                             <img src='/img/jiwoo.jpg' alt="profile" />
                                             <span>{comment.id}</span>
                                         </div>
-                                        <span>{comment.comment}</span> <br/>
-                                        <span>{comment.cdate}</span><br/>
+                                        <span>{comment.comment}</span> <br />
+                                        <span>{comment.cdate}</span><br />
+                                        {comment.id === userId && (
                                         <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.cno)}>삭제</button>
+                                        )}
                                         <div className={styles.boardCommentButton}>
                                             <button
                                                 onClick={() => buttonCommentLike(comment.cno)}
@@ -353,7 +403,7 @@ export default function BoardContent() {
                 <div>게시글이 없습니다.</div> // board가 없을 때 처리
             )}
             <hr />
-            <div className={styles.jump}/>
+            <div className={styles.jump} />
             <FooterImg />
             <Footer />
         </div>
