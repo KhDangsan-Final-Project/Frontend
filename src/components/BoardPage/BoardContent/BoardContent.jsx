@@ -22,9 +22,13 @@ export default function BoardContent() {
     useEffect(() => {
         async function fetchBoard() {
             try {
+                //조회수 증가
+                await increaseViewCount();
+
                 //boardNo에 맞는 게시물 조회
                 const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
+                
 
                 //좋아요 상태 및 수 확인
                 const likeResponse = await axios.get(`http://localhost:8090/ms1/boardLikeView/${boardNo}`, {
