@@ -250,7 +250,7 @@ export default function BoardContent() {
                             </div>
                         </div>
                         <div className={styles.boardUpdate}>
-                            <button className={styles.edit}>수정</button>
+                            <button className={styles.edit}  onClick={() => navigate(`/boardEdit/${board.boardNo}`)}>수정</button>
                             <button className={styles.delete} onClick={deleteBoard}>삭제</button>
                         </div>
                     </div>

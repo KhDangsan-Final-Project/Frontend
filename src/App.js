@@ -12,6 +12,7 @@ import MyPage from './components/MyPage/MyPage';
 import Scroll from './components/Menu/Scroll/Scroll';
 import PasswordResetRequestPage from './components/LoginPage/PasswdReset/PasswordResetRequestPage';
 import BoardContent from './components/BoardPage/BoardContent/BoardContent';
+import BoardEdit from './components/BoardPage/BoardContent/BoardEdit';
 import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
 import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
 import BoardList from './components/BoardPage/BoardContent/BoardList';
@@ -49,6 +50,7 @@ function App() {
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
         <Route path="/resetPass" element={<PasswordResetRequestPage/>}/>
         <Route path="/boardContent/:boardNo" element={<BoardContent/>}/>
+        <Route path="/boardEdit/:boardNo" element={<BoardEdit />} />
         <Route path="/boardEvent" element={<BoardEvent/>}/>
         <Route path="/boardNotice" element={<BoardNotice/>}/>
         <Route path="/boardList" element={<BoardList/>}/>
