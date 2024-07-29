@@ -112,6 +112,8 @@
   cursor: pointer;
 }
 
+
+
 .boardCommentButton{
   display: flex;
   justify-content: flex-end;
@@ -202,5 +204,16 @@
 
 .commentUser img{
   width: 40px;
+}
+
+.commentDeleteBtn{
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+}
+
+.commentDeleteBtn:hover{
+  text-decoration: underline;
 }
 

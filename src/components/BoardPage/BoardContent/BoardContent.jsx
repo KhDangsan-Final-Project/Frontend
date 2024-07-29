@@ -224,6 +224,30 @@ export default function BoardContent() {
         }
     }
 
+    //댓글 삭제
+    async function deleteComment(cno) {
+        try {
+            const response = await axios.delete(`http://localhost:8090/ms1/boardCommentDelete/${cno}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            if (response.status === 200) {
+                alert('댓글이 삭제되었습니다.');
+                setComments(prevComments => prevComments.filter(comment => comment.cno !== cno));
+            } else {
+                alert('댓글 삭제 실패: ' + response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status === 403) {
+                // 삭제할 권한이 없을 때의 처리
+                alert('삭제할 권한이 없습니다.');
+            } else {
+                // 기타 오류 처리
+                alert('댓글 삭제 중 오류가 발생했습니다: ' + (err.response ? err.response.data : '서버와의 연결이 끊어졌습니다.'));
+            }
+        }
+    }
 
 
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
@@ -288,7 +312,8 @@ export default function BoardContent() {
                                             <span>{comment.id}</span>
                                         </div>
                                         <span>{comment.comment}</span>
-                                        <span>{comment.cdate}</span>
+                                        <span>{comment.cdate}</span><br />
+                                        <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.cno)}>삭제</button>
                                         <div className={styles.boardCommentButton}>
                                             <button
                                                 onClick={() => buttonCommentLike(comment.cno)}
