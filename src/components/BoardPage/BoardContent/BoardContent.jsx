@@ -56,7 +56,6 @@ export default function BoardContent() {
 
                 // 파일 목록 조회
                 fetchFiles();
-
             } catch (err) {
                 setError(err);
             }
@@ -80,25 +79,17 @@ export default function BoardContent() {
 
     //게시물 조회수
     async function increaseViewCount() {
-        // 로컬 스토리지에서 조회한 게시물 번호를 가져옴
-        const viewedPosts = JSON.parse(localStorage.getItem('viewedPosts')) || [];
-        if (!viewedPosts.includes(boardNo)) {
             try {
                 await axios.post(`http://localhost:8090/ms1/boardViewCount/${boardNo}`, {}, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
                 });
-
-                // 조회한 게시물 번호를 로컬 스토리지에 저장
-                viewedPosts.push(boardNo);
-                localStorage.setItem('viewedPosts', JSON.stringify(viewedPosts));
-
             } catch (err) {
                 console.error('Error: ', err);
                 setError(err);
             }
-        }
+        
     }
 
     //게시물 좋아요
