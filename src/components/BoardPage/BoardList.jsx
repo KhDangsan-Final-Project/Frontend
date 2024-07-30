@@ -1,18 +1,18 @@
-import styles from "../css/BoardList.module.css"
+import styles from "./css/BoardList.module.css"
 import React, { useEffect, useState } from "react"
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import FooterImg from "../../Menu/Footer/FooterImg";
-import Footer from "../../Menu/Footer/Footer";
+import FooterImg from "../Menu/Footer/FooterImg";
+import Footer from "../Menu/Footer/Footer";
 
 
-export default function BoardNotice() {
+export default function BoardList() {
     const [boardList, setBoardList] = useState([]);
     const [error, setError] = useState(null);
     const [pageNo, setPageNo] = useState(1);
     const [pageContentEa, setPageContentEa] = useState(15);
     const [pagging, setPagging] = useState({});
-    
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -23,8 +23,7 @@ export default function BoardNotice() {
                 const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list", {
                     params: {
                         pageNo: pageNo,
-                        pageContentEa: pageContentEa,
-                        category: "공지사항"
+                        pageContentEa: pageContentEa
                     }
                 });
                 setBoardList(response.data.boards);
@@ -57,7 +56,7 @@ export default function BoardNotice() {
     return (
         <div className={styles.bigContainer}>
             <div className={styles.jump}/>
-            <h1 className={styles.title}>공지사항</h1>
+            <h1 className={styles.title}>자유게시판</h1>
             <div className={styles.container}>
                 <table>
                     <thead>
@@ -98,10 +97,10 @@ export default function BoardNotice() {
                         </tr>
                     </tfoot>
                 </table>
-            </div>
+            </div >
             <div className={styles.jump}/>
-            <FooterImg />
-            <Footer />
+            <FooterImg/>
+            <Footer/>
         </div>
     );
 }

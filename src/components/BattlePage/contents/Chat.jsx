@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 import styles from './css/chat.module.css';
 
+// ===================================== 임시 폐기 =======================================
+
 const Chat = ({ nickname }) => {
     const [webSocket, setWebSocket] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -10,7 +12,7 @@ const Chat = ({ nickname }) => {
 
     useEffect(() => {
         // WebSocket 연결 설정
-        const ws = new WebSocket('ws://teeput.synology.me:30112/ms2/chat');
+        const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/chat');
         setWebSocket(ws);
 
         ws.onopen = () => {

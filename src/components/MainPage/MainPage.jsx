@@ -38,7 +38,6 @@ export default function MainPage({ setToken }) {
     if (!loading) {
       setTimeout(() => {
         setAdditionalLoading(false);
-        console.log('MainPage loaded');
       }, 10);
     }
   }, [loading]);

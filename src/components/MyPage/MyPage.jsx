@@ -51,7 +51,7 @@ export default function MyPage({ setToken }) {
     };
 
     const showAdminPage = () => {
-        window.open('https://teeput.synology.me:30112/ms4/user/list', '_blank');
+        window.open('https://teeput.synology.me:30117/ms4/login/view', '_blank');
     };
 
     return (

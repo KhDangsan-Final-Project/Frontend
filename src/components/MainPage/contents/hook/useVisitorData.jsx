@@ -9,7 +9,6 @@ export const useVisitorCount = (setLoading) => {
             try {
                 const { data: ipData } = await axios.get('https://api64.ipify.org?format=json');
                 const ipAddress = ipData.ip;
-                console.log(ipAddress);
 
                 await axios.post('https://teeput.synology.me:30112/ms1/view/up', { ipAddress });
 

@@ -1,0 +1,65 @@
+.bigContainer {
+  width: 100%;
+  background: radial-gradient(circle at 20% 40%, rgba(255, 182, 193, 0.6), transparent),
+    radial-gradient(circle at 80% 60%, rgba(173, 216, 230, 0.6), transparent),
+    radial-gradient(circle at 50% 70%, rgba(154, 223, 239, 0.6), transparent);
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.jump {
+  height: 200px;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  border-radius: 20px;
+  padding: 30px 40px;
+  box-shadow: 0 0 10px black;
+  width: 100%;
+  max-width: 1000px;
+  background-color: white;
+  margin: 0 auto;
+}
+
+.container table thead tr th {
+  font-size: 20px;
+  text-align: center;
+}
+
+.container table tbody tr td {
+  padding: 10px 10px;
+  text-align: center;
+}
+
+.page {
+  height: 50px;
+  text-align: center;
+}
+
+.page tr td a {
+  padding: 20px;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: 'Bazzi';
+}
+
+.link {
+  color: black;
+}
+
+.link:hover {
+  text-shadow: 0px 0px 2px black;
+  text-decoration: none;
+}

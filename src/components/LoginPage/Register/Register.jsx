@@ -96,7 +96,7 @@ export default function Register( {showLogin} ) {
         });
 
         try {
-            const response = await fetch("https://localhost:8090/ms3/user/insert", {
+            const response = await fetch("https://teeput.synology.me:30112/ms3/user/insert", {
                 method: 'POST',
                 body: formData,
                 headers: {
