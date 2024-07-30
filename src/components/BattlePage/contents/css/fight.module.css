@@ -1,24 +1,28 @@
 .App {
   text-align: center;
 background-image: url(/public/video/background.mp4);
+min-width: 1136px;
+max-height: 100%;
+overflow: hidden;
 }
 .container{
   display: flex;
   justify-content: center;
   flex-flow: row nowrap;
-
-  max-height: 740px; /* Limit the height */
 }
 
-
-.cardContainer {
-  max-height: 730px; /* Limit the height */
-  max-width: 730px;
-  overflow-y: auto; /* Enable vertical scrolling */
+.loadingBar{
   display: flex;
-  flex-wrap: wrap; /* Ensure cards stay in a single row */
+  flex-flow: column nowrap;
+  align-items: center;
+}
+.cardContainer {
+  max-height: 780px; 
+  max-width: 730px;
+  display: flex;
+ flex-wrap: wrap;
   justify-content: flex-start; /* Start from the left */
-  gap: 20px;
+
   padding: 10px;
   overflow: auto;
 }
@@ -29,7 +33,8 @@ background-image: url(/public/video/background.mp4);
 .cardContainer .card {
   flex: 0 0 auto; /* Allow cards to shrink to fit content */
   padding: 10px;
-  width: 200px; /* Set a fixed width for each card */
+  width: 30%;
+  margin: 0px 5px;
   background-color: transparent;
   box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
     5px 12px 15px -10px rgba(0, 0, 0, 0.5);
@@ -42,7 +47,6 @@ background-image: url(/public/video/background.mp4);
 }
 
 .cardContainer .card h2 {
-  font-size: 18px;
   margin: 10px 0;
 }
 .selectedCardContainer {
@@ -56,7 +60,7 @@ background-image: url(/public/video/background.mp4);
 .selectedCardContainer .card {
   flex: 0 0 auto; /* Allow cards to shrink to fit content */
   padding: 10px;
-  width: 200px; /* Set a fixed width for each card */
+  width: 30%; /* Set a fixed width for each card */
   background-color: transparent;
   box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
     5px 12px 15px -10px rgba(0, 0, 0, 0.5);
@@ -73,10 +77,12 @@ background-image: url(/public/video/background.mp4);
   margin: 10px 0;
 }
 
-.myCardArea {
+/* .myCardArea {
   padding: 0;
-  width: 700px;
-}
+  max-width: 700px;
+  width: 35%;
+overflow-x: hidden;
+} */
 
 /* ========================================================================= */
 
@@ -181,8 +187,8 @@ background-image: url(/public/video/background.mp4);
 
 .typeContainer a {
   display: inline-block;
-  width: 60%; /* 원하는 크기로 조정 */
-  height: 60%; /* 원하는 크기로 조정 */
+  width: 100%; /* 원하는 크기로 조정 */
+  height: 100%; /* 원하는 크기로 조정 */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -190,15 +196,6 @@ background-image: url(/public/video/background.mp4);
   text-indent: -9999px; /* 텍스트 숨기기 */
 }
 
-.typeLink {
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin: 5px;
-}
 
 /* --------------------------------------------------------------------------------- */
 
@@ -207,6 +204,7 @@ display: flex;
 flex-flow: row nowrap;
 justify-content: center;
 align-items: center;
+width: 100%;
 height: 100px;
 border-bottom: 1px solid #FFF ;
 }
@@ -215,7 +213,7 @@ border-bottom: 1px solid #FFF ;
   width: 80px;
 }
 .allTypes{
-  background-image: url(/public/img/mainPokeball.png);
+  background-image: url(/public/img/mainPokeball.jpg);
   width: 60px;
   height: 60px;
   background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
@@ -226,9 +224,9 @@ border-bottom: 1px solid #FFF ;
   align-items: center;
 }
 .navTypes {
-  width: 60px;
-  height: 60px;
-  border-radius:100% ;
+  width: 40px;
+  height: 40px;
+
   margin: 0px 35px;
   margin-bottom: 10px;
   display: flex;
@@ -236,13 +234,6 @@ border-bottom: 1px solid #FFF ;
   align-items: center;
 }
 
-.typeLink {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-}
 .navTypes:hover , .allTypes:hover {
   transform: scale(1.2); /* 1.1배 확대 */
   transition: transform 0.3s ease-in-out; /* 변환 효과 부드럽게 적용 */
@@ -295,8 +286,8 @@ border-bottom: 1px solid #FFF ;
 .navTypesAll{
   display: flex;
   flex-flow: column;
-  justify-content: center;
   align-items: center;
+
 }
 
 /* --------------------------------------------------------------------------------------- */
@@ -308,11 +299,27 @@ border-bottom: 1px solid #FFF ;
 background-color: transparent;
   box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
     5px 12px 15px -10px rgba(0, 0, 0, 0.5);
- 
-height: 300px;
-  width: 400px;
+    background: linear-gradient(to bottom, #0057b35b 0%, rgba(255, 0, 0, 0) 100%);
+height: auto;
+  width: auto;
 }
 .settingContainer > h2{
+  font-family: "Source Code Pro";
+
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.trainerSettingContainer{
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(to bottom, rgba(255, 0, 0, 0.233) 0%, rgba(255, 0, 0, 0) 100%);
+  box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+  5px 12px 15px -10px rgba(0, 0, 0, 0.5);
+  height: 303.49px;
+  width: auto;
+}
+
+.trainerSettingContainer > h2{
   font-family: "Source Code Pro";
 
   text-transform: uppercase;
@@ -379,6 +386,7 @@ background-image: url(/public/img/rank/duskBall.png);
 background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
 background-repeat: no-repeat;
 background-position: center;
+
   width: 40px;
   height: 40px;
   float: right;
@@ -600,10 +608,10 @@ font-weight: 100;
   color: #FFF;
 }
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 .App {
   position: relative;
   height: 100vh;
-  overflow: hidden;
 }
 
 .backgroundWrapper {
@@ -611,7 +619,6 @@ font-weight: 100;
   width: 100%;
   height: 100%;
 }
-
 .backgroundVideo {
   position: absolute;
   top: 0;
@@ -627,14 +634,254 @@ font-weight: 100;
   z-index: 1;
   padding: 20px;
   background: rgba(0, 0, 0, 0.5); /* 검은색 배경에 50% 투명도 추가 */
-  z-index: 1; /* 오버레이가 비디오 위에 표시되도록 */
+  height: 100vh;
 }
 
 .button{
   border: none;
   background-color: transparent;
   color: #FFF;
+  max-width: 120px;
 }
 
 
+@media (max-width:1524px ){
+  .navTypes {
+    width: 30px;
+    height: 30px;
+  
+    margin: 0px 35px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .settingContainer {
+    margin-top: 20px;
+    padding: 20px;
+  background-color: transparent;
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+      5px 12px 15px -10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(to bottom, #0057b35b 0%, rgba(255, 0, 0, 0) 100%);
+  height: 285px;
+    width: 250px;
+  }
+  .trainerSettingContainer {
+    margin-top: 20px;
+    padding: 20px;
+  background-color: transparent;
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+      5px 12px 15px -10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(to bottom, rgba(255, 0, 0, 0.233) 0%, rgba(255, 0, 0, 0) 100%);
+      height: 30%;
+    width: 250px;
+  }
+  .rankContainer {
+    width: 250px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: relative; /* 부모 요소에 상대적 위치를 설정하여 자식 요소의 절대 위치를 기준으로 설정 */
+  }
+  .rankImage {
+    width: 100%; /* 적절한 크기로 설정 */
+    height: 36.67px; /* 적절한 크기로 설정 */
+    background-size: cover;
+    position: relative; /* 툴팁 위치를 요소를 기준으로 설정하기 위해 필요 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 추가 */
+    border-radius: 100%;
+  }
+  .userImageContainer{
+    width: 100px;
+    height: 100px;
+  }
+  .rankImage1,
+.rankImage2,
+.rankImage3,
+.rankImage4,
+.rankImage5,
+.rankImage6 {
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+.trainerRankImg{
+  background-image: url(/public/img/trainerBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.userImg{
 
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  border-radius: 15px;
+  width: 100px;
+  height: 100px;
+}
+.userNick{
+  margin-left: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.nick , .victory{
+  font-family: "Source Code Pro";
+color: #FFF;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 10px;
+}
+
+.h2{
+  color: #FFF;
+  font-size: 15px;
+}
+.p{
+  max-width: 250px;
+  font-size: 10px;
+}
+.h4{
+  font-size: 20px;
+}
+.allTypes{
+  background-image: url(/public/img/mainPokeball.jpg);
+  width: 40px;
+  height: 40px;
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+}
+@media (max-width:1209px ){
+  .navTypes {
+    width: 20px;
+    height: 20px;
+    margin: 0px 35px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .settingContainer {
+    margin-top: 20px;
+    padding: 20px;
+  background-color: transparent;
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+      5px 12px 15px -10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(to bottom, #0057b35b 0%, rgba(255, 0, 0, 0) 100%);
+  height: 30%;
+    width: 250px;
+  }
+  .trainerSettingContainer {
+    margin-top: 20px;
+    padding: 20px;
+  background-color: transparent;
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+      5px 12px 15px -10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(to bottom, rgba(255, 0, 0, 0.233) 0%, rgba(255, 0, 0, 0) 100%);
+      height: 30%;
+    width: 250px;
+  }
+  .rankContainer {
+    width: 250px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: relative; /* 부모 요소에 상대적 위치를 설정하여 자식 요소의 절대 위치를 기준으로 설정 */
+  }
+  .rankImage {
+    width: 100%; /* 적절한 크기로 설정 */
+    height: 36.67px; /* 적절한 크기로 설정 */
+    background-size: cover;
+    position: relative; /* 툴팁 위치를 요소를 기준으로 설정하기 위해 필요 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 추가 */
+    border-radius: 100%;
+  }
+  .userImageContainer{
+    width: 100px;
+    height: 100px;
+  }
+
+.userImg{
+
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 25%,
+    rgb(0, 231, 255, 0.7) 45%,
+    rgb(255, 0, 231, 0.7) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  border-radius: 15px;
+  width: 100px;
+  height: 100px;
+}
+.userNick{
+  margin-left: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.nick , .victory{
+  font-family: "Source Code Pro";
+color: #FFF;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 10px;
+}
+
+.h2{
+  color: #FFF;
+  font-size: 15px;
+}
+.p{
+  max-width: 250px;
+  font-size: 10px;
+}
+.h4{
+  font-size: 16px;
+}
+.typeName{
+  font-size: 12px;
+}
+.navTypes{
+  max-width: 80px;
+}
+.allTypes{
+  background-image: url(/public/img/mainPokeball.jpg);
+  width: 20px;
+  height: 20px;
+  background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+}

@@ -28,7 +28,6 @@ const FightNavBar = ({ types, typeBackgroundImages, handleTypeClick }) => {
         <div key={type} className={styles.typeContainer}>
           <div className={styles.navTypesAll}>
             <div>
-              {/* <div className={styles.navTypes} style={{ backgroundColor: typeColors[type] }}> */}
                 <div className={styles.navTypes}>
                 <a
                   href="#"
