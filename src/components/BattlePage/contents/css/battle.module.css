@@ -11,6 +11,7 @@
   align-items: center;
  margin: 0px 40px;
   max-width: 1200px;
+  min-width: 538px;
   max-height: 100%;
   background-color:rgba(255, 255, 255, 0.12);
     box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4), 5px 12px 15px -10px rgba(0, 0, 0, 0.5);
@@ -94,6 +95,9 @@
   padding: 10px;
   margin-top: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   }
 
 .types {
@@ -104,11 +108,11 @@
 }
 
 .hpBarContainer {
-  width: 20px;
-  height: 10px;
+  width: 118px;
+  height: 20px;
   background-color: #ddd;
   border-radius: 5px;
-  margin-bottom: 5px;
+  margin: 0px 2px;
     overflow: hidden;
     
  
@@ -120,8 +124,9 @@
   border-radius: 5px;
   text-align: center;
   color: white;
-  font-weight: bold;
-  line-height: 10px;
+ font-family: "Source Code Pro";
+  text-transform: uppercase;
+  letter-spacing: 3px;
 }
 /* ------------------------------------------적 포켓몬 카드 스타일링------------------------------------------ */
 .pokemonCard.selected {
@@ -464,8 +469,10 @@
   padding-left: 10px;
   justify-content: flex-start;
 } 
-@media (max-width:1177px){
-
+@media (max-width:900px){
+.stage{
+  min-width: 300px;
+}
   .pokemonCard {
     padding: 1rem;
     margin: 0.5rem;
@@ -491,7 +498,17 @@
     margin-right: 5px;
   }
 }
-@media (max-width:1027px){
+@media (max-width:771px){
+  .enemyContainer {
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    gap: 20px;
+    background: linear-gradient(to bottom, rgba(255, 0, 0, 0.398) 0%, rgba(255, 0, 0, 0) 100%);
+  }
+}
+@media (max-width:500px){
 
   .pokemonCard {
     padding: 1rem;
@@ -518,3 +535,5 @@
     margin-right: 5px;
   }
 }
+
+

@@ -6,6 +6,8 @@ export default function SettingFightContent({ onReceiveData, token }) {
   const [ws, setWs] = useState(null); // WebSocket 상태
   const [error, setError] = useState(''); // 에러 상태
 
+// ===================================== 임시 폐기 =======================================
+
   useEffect(() => {
     // WebSocket 연결 생성
     const websocket = new WebSocket('wss://teeput.synology.me:30112/ms2/roomid');

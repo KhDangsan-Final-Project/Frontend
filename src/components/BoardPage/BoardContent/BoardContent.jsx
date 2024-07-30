@@ -6,6 +6,8 @@ import FooterImg from '../../Menu/Footer/FooterImg';
 import Footer from '../../Menu/Footer/Footer';
 import DOMPurify from 'dompurify';
 
+
+
 export default function BoardContent() {
     const { boardNo } = useParams();
     const [board, setBoard] = useState(null);
@@ -41,11 +43,6 @@ export default function BoardContent() {
                 setBoard(response.data);
 
                 // 현재 로그인한 사용자 ID 가져오기
-                const userResponse = await axios.get('http://localhost:8090/ms1/currentUser', {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                setUserId(userResponse.data.id);
-                console.log(userResponse.data.id);
 
                 //좋아요 상태 및 수 확인
                 const likeResponse = await axios.get(`https://teeput.synology.me:30112/ms1/boardLikeView/${boardNo}`, {

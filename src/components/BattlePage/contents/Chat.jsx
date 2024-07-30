@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 import styles from './css/chat.module.css';
 
+// ===================================== 임시 폐기 =======================================
+
 const Chat = ({ nickname }) => {
     const [webSocket, setWebSocket] = useState(null);
     const [messages, setMessages] = useState([]);

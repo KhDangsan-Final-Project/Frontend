@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styles from './css/fight.module.css';
 import useFightContent from './hooks/useFightContent';
-import FightNavBar from './navFightContent';
+import NavFightContent from './navFightContent'; // 수정된 컴포넌트 경로 확인
 import UserInfoFightContent from './UserInfoFightContent';
-import Chat from './Chat';
 import RankFightContent from './RankFightContent';
 
 function FightContent({ token }) {
@@ -12,16 +12,17 @@ function FightContent({ token }) {
   const PAGE_SIZE = 20;
   const navigate = useNavigate();
   const [receivedData, setReceivedData] = useState(null);
-  const [roomNumber, setRoomNumber] = useState('');
   const [nickname, setNickname] = useState('');
-  const [pokemonList, setPokemonList] = useState([]); // pokemonList 상태 추가
+  const [pokemonList, setPokemonList] = useState([]);
+  const [tcgCards, setTcgCards] = useState([]);
+  const [filteredCards, setFilteredCards] = useState([]);
   const [ws, setWs] = useState(null);
-  const [showChat, setShowChat] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedType, setSelectedType] = useState(''); // Add state for selectedType
+  const [matchWin, setMatchWin] = useState(0);
 
   const {
     cards,
-    searchTerm,
-    selectedType,
     types,
     page,
     loading,
@@ -29,9 +30,7 @@ function FightContent({ token }) {
     selectedCount,
     typeBackgroundImages,
     hasMore,
-    setSearchTerm,
     handleChange,
-    handleTypeClick,
     handleCardClick,
     handleRemoveCard,
     loadMore,
@@ -51,17 +50,14 @@ function FightContent({ token }) {
         console.log('Message from server by FightContent:', event.data);
         try {
           const data = JSON.parse(event.data);
-          console.log("onmessage data:", data);
-          console.log(data.pokemonList);
-          console.log(data.pokemonNum);
-
+          setMatchWin(data.matchWin);
           setNickname(data.nickname);
+          setReceivedData(data);
+          setPokemonList(data.pokemonList || []);
 
-          if (Array.isArray(data.pokemonNum)) {
-            setPokemonList(data.pokemonNum); // pokemonList 상태에 리스트 저장
+          if (data.pokemonList) {
+            fetchTcgCards(data.pokemonList);
           }
-
-          handleReceivedData(data.roomNumber);
         } catch (error) {
           console.error('Error parsing message:', error);
         }
@@ -69,7 +65,6 @@ function FightContent({ token }) {
 
       ws.onerror = function(event) {
         console.error('WebSocket error:', event);
-        console.log('WebSocket readyState:', ws.readyState);
       };
 
       ws.onclose = () => {
@@ -84,9 +79,45 @@ function FightContent({ token }) {
     }
   }, [token]);
 
-  const handleReceivedData = (data) => {
-    setReceivedData(data);
-    setRoomNumber(data);
+  const fetchTcgCards = async (pokemonList) => {
+    try {
+      const requests = pokemonList.map(pokemon =>
+        axios.get(`https://api.pokemontcg.io/v2/cards?q=name:${pokemon.englishName}`)
+      );
+      const responses = await Promise.all(requests);
+      const cards = responses.map(response => response.data.data[0]);
+      const updatedCards = cards.map(card => {
+        const pokemon = pokemonList.find(p => p.englishName === card.name);
+        return {
+          ...card,
+          serverKoreanName: pokemon ? pokemon.koreanName : card.name
+        };
+      });
+      setTcgCards(updatedCards);
+      setFilteredCards(updatedCards);
+    } catch (error) {
+      console.error('Error fetching TCG cards:', error);
+    }
+  };
+
+  const handleSearchChange = (event) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+    filterCards(selectedType, term);
+  };
+
+  const filterCards = (type, searchTerm) => {
+    const filtered = tcgCards.filter(card =>
+      (type === '' || card.types.includes(type)) && 
+      (card.serverKoreanName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      card.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    setFilteredCards(filtered);
+  };
+
+  const handleTypeClick = (type) => {
+    setSelectedType(type);
+    filterCards(type, searchTerm);
   };
 
   const sendBattlePokemon = () => {
@@ -96,24 +127,18 @@ function FightContent({ token }) {
       miniImage: card.images.small
     }));
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemonWithMiniImages));
-
     const randomEnemyPokemon = getRandomEnemyPokemons();
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
-    navigate(`/battle?roomId=${roomNumber}&nickname=${nickname}`);
+    navigate(`/battle?matchWin=${matchWin}&nickname=${nickname}`);
   };
 
   const handleDecisionClick = () => {
-      const confirmMove = window.confirm('이동하시겠습니까?');
-      if (confirmMove) {
-        const battlePokemons = getRandomEnemyPokemons();
-        localStorage.setItem('battlePokemons', JSON.stringify(battlePokemons)); // 배틀 포켓몬 저장
-        sendBattlePokemon();
-      }
-  };
-
-  const toggleChat = () => {
-    console.log('채팅 열기 상태:', showChat);
-    setShowChat(prevShowChat => !prevShowChat);
+    const confirmMove = window.confirm('이동하시겠습니까?');
+    if (confirmMove) {
+      const battlePokemons = getRandomEnemyPokemons();
+      localStorage.setItem('battlePokemons', JSON.stringify(battlePokemons));
+      sendBattlePokemon();
+    }
   };
 
   return (
@@ -128,50 +153,47 @@ function FightContent({ token }) {
             type="text"
             placeholder="포켓몬 검색"
             value={searchTerm}
-            onChange={handleChange}
+            onChange={handleSearchChange}
             className={styles.pokemonSearch}
           />
-          <FightNavBar
+          <NavFightContent
             types={types}
-            typeBackgroundImages={typeBackgroundImages}
             handleTypeClick={handleTypeClick}
+            selectedType={selectedType}
+            typeBackgroundImages={typeBackgroundImages}
           />
-          {/* <button onClick={toggleChat} className={styles.button}>
-            {showChat ? ': 숨기기 :' : ': 채팅 열기 :'}
-          </button> */}
           <div className={styles.container}>
-
-<div className={styles.loadingBar}>
-              {!loading && cards.length > 0 && hasMore && (
+            <div className={styles.loadingBar}>
+              {!loading && filteredCards.length > 0 && hasMore && (
                 <button onClick={loadMore} className={styles.button}>: 더 불러오기 :</button>
               )}
-            <div className={styles.cardContainer}>
-              {cards.length > 0 ? (
-                cards.map(card => (
-                  <div key={card.id} className={styles.card} onClick={() => handleCardClick(card)}>
-                    <img src={card.images.small} alt={card.name} />
-                    <h2 className={styles.h2}>{card.name}</h2>
-                    <p className={styles.p}>타입: {card.types ? card.types.join(', ') : '알 수 없음'}</p>
-                    <p className={styles.p}>HP: {card.hp}</p>
-                    {card.attacks && (
-                      <div className={styles.cardAttack}>
-                        <h3 className={styles.h2}>공격 기술</h3>
-                        {card.attacks.map((attack, index) => (
-                          <div key={index} className={styles.attack}>
-                            <p className={styles.p}><strong>{attack.name}</strong></p>
-                            <p className={styles.p}>피해: {attack.damage}</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <p className={styles.p}>카드를 찾을 수 없습니다.</p>
-              )}
-              {loading && <p className={styles.p}>로딩 중...</p>}
-            </div>
+              <div className={styles.cardContainer}>
+                {filteredCards.length > 0 ? (
+                  filteredCards.map(card => (
+                    <div key={card.id} className={styles.card} onClick={() => handleCardClick(card)}>
+                      <img src={card.images.small} alt={card.serverKoreanName} />
+                      <h2 className={styles.h2}>{card.serverKoreanName}</h2>
+                      <p className={styles.p}>타입: {card.types ? card.types.join(', ') : '알 수 없음'}</p>
+                      <p className={styles.p}>HP: {card.hp}</p>
+                      {card.attacks && (
+                        <div className={styles.cardAttack}>
+                          <h3 className={styles.h2}>공격 기술</h3>
+                          {card.attacks.map((attack, index) => (
+                            <div key={index} className={styles.attack}>
+                              <p className={styles.p}><strong>{attack.name}</strong></p>
+                              <p className={styles.p}>피해: {attack.damage}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className={styles.p}>카드 정보가 없습니다.</p>
+                )}
+                {loading && <p className={styles.p}>로딩 중...</p>}
               </div>
+            </div>
             <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
               <h4 style={{ color: 'white' }} className={styles.h4}> : : : 선택된 포켓몬 카드 : : :</h4>
               {selectedCards.length > 0 && (
@@ -180,8 +202,8 @@ function FightContent({ token }) {
               <div className={styles.selectedCardContainer}>
                 {selectedCards.map(card => (
                   <div key={card.id} className={`${styles.card} ${styles.selectedCard}`}>
-                    <img src={card.images.small} alt={card.name} />
-                    <h2 className={styles.p}>{card.name}</h2>
+                    <img src={card.images.small} alt={card.serverKoreanName} />
+                    <h2 className={styles.p}>{card.serverKoreanName}</h2>
                     <p className={styles.p}>타입: {card.types ? card.types.join(', ') : '알 수 없음'}</p>
                     <p className={styles.p}>HP: {card.hp}</p>
                     {card.attacks && (
@@ -202,12 +224,7 @@ function FightContent({ token }) {
             </div>
             <div className={styles.conponents}>
               <UserInfoFightContent token={token} />
-              <RankFightContent/>
-              {/* <SettingFightContent onReceiveData={handleReceivedData} token={token} />
-              <p className={styles.p}>ROOM ID : {JSON.stringify(receivedData)}</p> */}
-            </div>
-            <div>
-              {showChat && <Chat nickname={nickname} />}
+              <RankFightContent />
             </div>
           </div>
         </div>

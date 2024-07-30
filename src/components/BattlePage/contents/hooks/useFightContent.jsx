@@ -83,12 +83,6 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
   const handleChange = (e) => {
     const inputValue = e.target.value;
     setSearchTerm(inputValue);
-
-    const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(inputValue);
-    if (hasKorean) {
-      alert('한글 입력은 허용되지 않습니다.');
-      setSearchTerm('');
-    }
   };
 
   const handleTypeClick = (type) => {
@@ -116,9 +110,8 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
   const getRandomEnemyPokemons = () => {
     const userAverageHp = getAverageHp(selectedCards);
 
-    // 필터링된 포켓몬 중에서 선택되지 않은 포켓몬만 포함
     const eligiblePokemons = cards
-      .filter(card => !selectedCards.some(selectedCard => selectedCard.id === card.id)) // 선택된 포켓몬 제외
+      .filter(card => !selectedCards.some(selectedCard => selectedCard.id === card.id))
       .filter(card => parseInt(card.hp, 10) <= userAverageHp);
 
     if (eligiblePokemons.length === 0) return [];
@@ -142,7 +135,6 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
       }
     }
 
-    // Ensure we have at least one enemy Pokemon
     if (selectedEnemies.length === 0 && shuffledCards.length > 0) {
       selectedEnemies.push({
         ...shuffledCards[0],

@@ -1,7 +1,6 @@
 .App {
   text-align: center;
 background-image: url(/public/video/background.mp4);
-min-width: 1136px;
 max-height: 100%;
 overflow: hidden;
 }
@@ -50,6 +49,7 @@ overflow: hidden;
   margin: 10px 0;
 }
 .selectedCardContainer {
+  width:623px;
   display: flex;
   flex-wrap: nowrap; /* Ensure cards stay in a single row */
   overflow-x: auto; /* Enable horizontal scrolling */
@@ -774,6 +774,9 @@ color: #FFF;
   justify-content: center;
   align-items: center;
 }
+.selectedCardContainer{
+  width: 400px;
+}
 }
 @media (max-width:1209px ){
   .navTypes {
@@ -792,7 +795,6 @@ color: #FFF;
     box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
       5px 12px 15px -10px rgba(0, 0, 0, 0.5);
       background: linear-gradient(to bottom, #0057b35b 0%, rgba(255, 0, 0, 0) 100%);
-  height: 30%;
     width: 250px;
   }
   .trainerSettingContainer {
@@ -884,4 +886,18 @@ color: #FFF;
   justify-content: center;
   align-items: center;
 }
+.selectedCardContainer{
+  width: 300px;
+}
+}
+@media (max-width:1021px){
+  .nav{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    border-bottom: 1px solid #FFF ;
+    }
 }
