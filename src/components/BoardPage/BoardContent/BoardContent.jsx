@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './css/BoardContent.module.css'
 import FooterImg from '../../Menu/Footer/FooterImg';
 import Footer from '../../Menu/Footer/Footer';
+import DOMPurify from 'dompurify';
 
 export default function BoardContent() {
     const { boardNo } = useParams();
@@ -279,8 +280,8 @@ export default function BoardContent() {
 
 
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
-
-
+    
+    
     return (
         <div className={styles.bigContainer}>
             <div className={styles.jump} />
@@ -316,7 +317,8 @@ export default function BoardContent() {
                     </div>
                     <hr />
                     <div>
-                        <span>{board.boardContent}</span>
+                    <div className={styles.content} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(board.boardContent || '') }}></div>
+
                         <div className={styles.filesSection}>
                             {files.length > 0 ? (
                                 <div className={styles.fileList}>
