@@ -235,3 +235,8 @@
   text-decoration: underline;
 }
 
+.commentDeleteBtn:focus{
+  outline: none;
+  
+}
+

@@ -58,8 +58,11 @@ import {
 import 'ckeditor5/ckeditor5.css';
 import './css/Ckeditor.css'
 import styles from './css/BoardWrite.module.css'
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function BoardWrite({ showBoard }) {
+    const {boardNo} = useParams;
+    const navigate = useNavigate();
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -357,6 +360,7 @@ export default function BoardWrite({ showBoard }) {
                 },
                 credentials: 'include'
             });
+            showBoard();
             const result = await response.json();
             console.log(result);
         } catch (error) {
