@@ -331,11 +331,7 @@ export default function BoardWrite({ showBoard }) {
         setFiles(e.target.files);
     }
 
-    // function stripHtmlTags(html) {
-    //     const doc = new DOMParser().parseFromString(html, 'text/html');
-    //     return doc.body.textContent || "";
-    // }
-
+   
     const writeClick = () => {
         console.log(myEditor.getData());
     }
@@ -343,8 +339,7 @@ export default function BoardWrite({ showBoard }) {
     const token = localStorage.getItem('token');
     async function handleSubmitContent(e) {
         e.preventDefault();
-        // const plainTextContent = stripHtmlTags(content);
-
+        
 
         const formData = new FormData();
         formData.append('category', category);
@@ -355,7 +350,7 @@ export default function BoardWrite({ showBoard }) {
             formData.append('file', files[i]);
         }
         try {
-            const response = await fetch("http://localhost:8090/ms1/board/insert", {
+            const response = await fetch("https://teeput.synology.me:30112/ms1/board/insert", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -406,7 +401,6 @@ export default function BoardWrite({ showBoard }) {
                     </div>
                 </div>
                 <div>
-                    <input type="file" multiple onChange={handleFileChange} className={styles.file} />
                 </div>
                 <div>
                     <button type="submit" id="submit" onClick={writeClick} disabled={isSubmitDisabled}

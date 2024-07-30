@@ -76,19 +76,20 @@ class CustomUploadAdapter {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                fetch('http://localhost:8090/ms1/board/upload', {
+                fetch('https://teeput.synology.me:30112/ms1/board/upload', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
-                .then(result => {
-                    if (result && result.url) {
-                        resolve({ default: result.url });
-                    } else {
-                        reject('Upload failed');
-                    }
-                })
-                .catch(err => reject(err));
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result && result.url) {
+                            console.log("url 길이", result.url);
+                            resolve({ default: result.url });
+                        } else {
+                            reject('Upload failed');
+                        }
+                    })
+                    .catch(err => reject(err));
             }));
     }
 }
@@ -105,7 +106,7 @@ export default function BoardEdit() {
     }, []);
 
     useEffect(() => {
-        axios.get(`http://localhost:8090/ms1/board/${boardNo}`)
+        axios.get(`https://teeput.synology.me:30112/ms1/board/${boardNo}`)
             .then(response => {
                 const { boardTitle, boardContent, boardCategory } = response.data;
                 setTitle(boardTitle || '123');
@@ -377,13 +378,13 @@ export default function BoardEdit() {
         setFiles(e.target.files);
     }
 
-   
+
 
     const token = localStorage.getItem('token');
 
     async function handleSubmitContent(e) {
         e.preventDefault();
-        
+
         const formData = new FormData();
         formData.append('category', category);
         formData.append('title', title);
@@ -394,7 +395,7 @@ export default function BoardEdit() {
             formData.append('file', files[i]);
         }
         try {
-            await fetch(`http://localhost:8090/ms1/board/update/${boardNo}`, {
+            await fetch(`https://teeput.synology.me:30112/ms1/board/update/${boardNo}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -402,9 +403,27 @@ export default function BoardEdit() {
                 },
                 credentials: 'include'
             });
+
             navigate(`/boardContent/${boardNo}`);
         } catch (error) {
             console.error('Error:', error);
+        }
+    }
+    useEffect(() => {
+        fetchFiles();
+    }, [boardNo]);
+
+    //파일 조회
+    async function fetchFiles() {
+        try {
+            const response = await axios.get(`https://teeput.synology.me:30112/ms1/board/fileList/${boardNo}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setFiles(response.data || []);
+            console.log(response.data);
+
+        } catch (err) {
+            console.error('파일 목록을 불러오는 중 오류가 발생했습니다.', err);
         }
     }
 
@@ -415,6 +434,19 @@ export default function BoardEdit() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    async function handleFileDelete(fno) {
+        try {
+            await axios.delete(`https://teeput.synology.me:30112/ms1/deleteFile/${fno}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            // 파일 삭제 후 상태 업데이트
+            setFiles(prevFiles => prevFiles.filter(file => file.fno !== fno));
+        } catch (error) {
+            console.error('파일 삭제 중 오류 발생:', error);
+        }
+    }
 
     return (
         <div className={styles.bigContainer}>
@@ -452,7 +484,23 @@ export default function BoardEdit() {
                         </div>
                     </div>
                     <div>
-                        <input type="file" multiple onChange={handleFileChange} className={styles.file} />
+                        <div>
+                            {files.length > 0 && (
+                                <ul>
+                                    {files.map((file, index) => (
+                                        <li key={index} className={styles.fileName}>
+                                            {file.fileName || 'Unknown File Name'}
+                                            <button
+                                                onClick={() => handleFileDelete(file.fno)} // fno로 수정
+                                                className={styles.deleteButton}
+                                            >
+                                                삭제
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
                     </div>
                     <div>
                         <button type="submit" id="submit" disabled={isSubmitDisabled}

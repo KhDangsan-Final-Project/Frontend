@@ -135,6 +135,12 @@
   cursor: pointer;
 }
 
+.fileItem img,
+.fileItem video,
+.fileItem a{
+  max-width: 900px;
+}
+
 
 
 
