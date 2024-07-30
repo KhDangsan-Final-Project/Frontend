@@ -6,7 +6,7 @@ function UserInfoFightContent({ token }) {
 
   useEffect(() => {
     if (token) {
-      const ws = new WebSocket('ws://192.168.20.54:8090/ms2/token');
+      const ws = new WebSocket('ws://localhost:30115/ms2/token');
 
       ws.onopen = () => {
         console.log('Connected to WebSocket /UserInfoFightContent');
@@ -65,17 +65,17 @@ function UserInfoFightContent({ token }) {
   const getProfileImageClass = () => {
     if (userInfo) {
       switch (userInfo.profile) {
-        case '1':
+        case '/img/user/userImage1.png':
           return styles.userImage1;
-        case '2':
+        case '/img/user/userImage2.png':
           return styles.userImage2;
-        case '3':
+        case '/img/user/userImage3.png':
           return styles.userImage3;
-        case '4':
+        case '/img/user/userImage4.png':
           return styles.userImage4;
-        case '5':
+        case '/img/user/userImage5.png':
           return styles.userImage5;
-        case '6':
+        case '/img/user/userImage6.png':
           return styles.userImage6;
         default:
           return styles.userImageDefault; // 기본 클래스
