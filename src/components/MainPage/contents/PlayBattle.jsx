@@ -14,7 +14,7 @@ export default function PlayBattle() {
         <Link to="/fight" className={styles.link}>지금 포켓몬 카드 전투 시작하기</Link>
       </div>
 
-      <img src='/img/main/section1.webp' className={styles.img} />
+      <img src='/img/main/section1.jpg' className={styles.img} />
     </div>
 
   );

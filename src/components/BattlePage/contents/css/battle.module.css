@@ -1,18 +1,20 @@
 .App {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: #000;
+  background-image: url(/public/video/background.mp4);
+  position: relative;
+ height: 100vh;
+  overflow: hidden;
 }
 
 .stage {
   display: flex;
-flex-direction: column;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  width: 90%;
+ margin: 0px 40px;
   max-width: 1200px;
+  min-width: 538px;
+  max-height: 100%;
+  background-color:rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4), 5px 12px 15px -10px rgba(0, 0, 0, 0.5);
 }
 
 .enemyContainer {
@@ -21,6 +23,7 @@ flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 20px;
+  background: linear-gradient(to bottom, rgba(255, 0, 0, 0.398) 0%, rgba(255, 0, 0, 0) 100%);
 }
 
 .body {
@@ -28,6 +31,7 @@ flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .selectedPokemonContainer {
@@ -36,6 +40,7 @@ flex-direction: column;
   flex-direction: row;
   justify-content: center;
   gap: 20px;
+  background: linear-gradient(to bottom, rgba(255, 0, 0, 0) 0% , #0056b3 100%);
 }
 
 .menu {
@@ -43,7 +48,8 @@ flex-direction: column;
   justify-content: space-around;
   width: 100%;
   max-width: 600px;
-  margin-top: 20px;
+  margin-top: 20px;/* 버튼 및 메뉴 스타일 */
+    padding: 10px;  
 }
 
 .button {
@@ -62,16 +68,21 @@ flex-direction: column;
 /* ------------------------------------------포켓몬 카드 스타일링------------------------------------------ */
 .pokemonCard {
   width: 200px;
-
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
   padding: 10px;
   margin-bottom: 20px;
-  transition: transform 0.2s ease;
+  position: relative;
+  transition: opacity 1s ease-out;
+  margin: 10px;
+  max-width: 300px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color:transparent;
+  box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4), 5px 12px 15px -10px rgba(0, 0, 0, 0.5);
 }
 
 .pokemonCard:hover {
   transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .myCard {
@@ -81,10 +92,13 @@ flex-direction: column;
 }
 
 .pokemonCardInfo {
-
+  padding: 10px;
   margin-top: 10px;
   text-align: center;
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  }
 
 .types {
   display: flex;
@@ -93,25 +107,14 @@ flex-direction: column;
   margin-bottom: 10px;
 }
 
-.typeLogoContainer {
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-}
-
-.typeLogo {
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
 .hpBarContainer {
-  width: 20px;
-  height: 10px;
+  width: 118px;
+  height: 20px;
   background-color: #ddd;
   border-radius: 5px;
-  margin-bottom: 5px;
+  margin: 0px 2px;
+    overflow: hidden;
+    
  
 }
 
@@ -121,8 +124,9 @@ flex-direction: column;
   border-radius: 5px;
   text-align: center;
   color: white;
-  font-weight: bold;
-  line-height: 10px;
+ font-family: "Source Code Pro";
+  text-transform: uppercase;
+  letter-spacing: 3px;
 }
 /* ------------------------------------------적 포켓몬 카드 스타일링------------------------------------------ */
 .pokemonCard.selected {
@@ -139,26 +143,11 @@ flex-direction: column;
   background-image: url('/public/img/vsPokeball.png');
   background-size: contain;
   background-repeat: no-repeat;
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 20px;
 }
-
-.menu button {
-  width: 120px;
-}
-
-.attackButton {
-  margin: 5px;
-  padding: 5px 10px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.attackButton:hover {
-  background-color: #c82333;
-}
-
 .toggleButton {
   margin-left: 10px;
   padding: 5px 10px;
@@ -236,11 +225,7 @@ flex-direction: column;
   display: flex;
   flex-flow: column nowrap;
 }
-.footer{
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: self-end;
-}
+
 .margin{
   width: 400px;
   max-height: 200px;
@@ -251,73 +236,16 @@ flex-direction: column;
 }
 
 /* ---------------------------------------------------------------- */
-
-.textContainer{
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-width: 402.67px;
-border: 1px solid #6890f0;
-box-sizing: border-box;
-
-}
-.chatInput{
-  width: 100%;
-}
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-.stage {
-  display: flex;
-  flex: 1;
-  background-color: #f0f0f0;
-}
-
-.enemyContainer, .selectedPokemonContainer {
-  width: 40%;
-  display: flex;
-  flex-direction: row;
-  /* align-items: center; */
-  padding: 10px;
-}
-
-.enemyContainer {
-display: flex;
-flex-flow: row;
-
-}
-
 /* 포켓몬 카드 스타일 */
-.pokemonCard {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-  width: 100%;
-  max-width: 300px;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
 
-.pokemonCard:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
 
-.pokemonCardInfo {
-  padding: 10px;
-}
 
 .pokemonName {
   font-size: 1.5em;
   margin: 10px 0;
   text-align: center;
+  color: #FFF;
 }
-
-.hpBarContainer {
-  margin: 10px 0;
-}
-
-
 
 /* 공격 기술 스타일 */
 .pokemonAttacks {
@@ -327,14 +255,15 @@ flex-flow: row;
 }
 
 .attackButton {
-  background-color: #007bff;
+  background-color:rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4), 5px 12px 15px -10px rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  padding: 10px;
   margin: 5px 0;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 0.5rem;
 }
 
 .attackButton:hover {
@@ -346,53 +275,7 @@ flex-flow: row;
   flex-direction: column;
   align-items: center;
 }
-
-/* 버튼 및 메뉴 스타일 */
-.menu {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-}
-.vs {
-  font-size: 2em;
-  font-weight: bold;
-  text-align: center;
-  margin: 0 20px;
-}
-
-
-
-/* 유형 로고 스타일 */
-.typeLogoContainer {
-  display: inline-block;
-  margin: 5px;
-}
-
-
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-  .stage {
-    flex-direction: column;
-  }
-
-  .enemyContainer, .selectedPokemonContainer {
-    width: 100%;
-    border-right: none;
-    border-bottom: 2px solid #333;
-  }
-}
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-.body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.vs {
-  font-size: 2rem;
-  margin: 1rem;
-}
 
 .footer {
   display: flex;
@@ -406,14 +289,9 @@ flex-flow: row;
   margin: 0 1rem;
 }
 
-.menu {
-  display: flex;
-  flex-direction: row;
-}
+
 
 .pokemonCard {
-  border: 1px solid #ccc;
-  border-radius: 10px;
   padding: 1rem;
   margin: 0.5rem;
   display: flex;
@@ -424,39 +302,19 @@ flex-flow: row;
 
 
 
-.pokemonCardInfo {
-  margin-top: 0.5rem;
-  text-align: center;
-}
-
-.hpBarContainer {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-top: 0.5rem;
-}
-
 /* ------------------------------------------------------------------------------------------------------------ */
-.attackButton {
-  width: 100%;
-  margin-top: 0.5rem;
-}
+
 
 .attack {
   display: flex;
   justify-content: space-between;
 }
 
-/* battle.module.css */
 .selectedEnemy {
   border: 2px solid red; /* 적 포켓몬이 선택되었음을 강조 */
   background-color: rgba(255, 0, 0, 0.2); /* 배경색을 약간 빨갛게 */
 }
-.pokemonCard {
-  position: relative;
-  transition: opacity 1s ease-out;
-}
+
 
 /* 포켓몬 카드가 사라지는 애니메이션 */
 .fadeOut {
@@ -571,4 +429,111 @@ flex-flow: row;
     transparent 100%
   );
 }
+
+
+/* -------------------------------------------------------------------------------------------------------------------------- */
+
+
+
+.backgroundWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.overlay {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding:0px 20px;
+  background: rgba(0, 0, 0, 0.5); /* 검은색 배경에 50% 투명도 추가 */
+  height: 100%;
+
+}
+
+ .userPokemonAttackContainer{
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  justify-content: flex-start;
+} 
+@media (max-width:900px){
+.stage{
+  min-width: 300px;
+}
+  .pokemonCard {
+    padding: 1rem;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+  }
+  .pokemonName {
+    font-size: 0.9em;
+    margin: 10px 0;
+    text-align: center;
+    color: #FFF;
+  }
+  .typeLogoContainer {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-right: 5px;
+  }
+}
+@media (max-width:771px){
+  .enemyContainer {
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    gap: 20px;
+    background: linear-gradient(to bottom, rgba(255, 0, 0, 0.398) 0%, rgba(255, 0, 0, 0) 100%);
+  }
+}
+@media (max-width:500px){
+
+  .pokemonCard {
+    padding: 1rem;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+  }
+  .pokemonName {
+    font-size: 0.4em;
+    margin: 10px 0;
+    text-align: center;
+    color: #FFF;
+  }
+  .typeLogoContainer {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-right: 5px;
+  }
+}
+
 

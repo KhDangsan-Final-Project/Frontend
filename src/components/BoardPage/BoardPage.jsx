@@ -16,13 +16,14 @@ export default function BoardPage( { setToken, token } ) {
         setActive('main');
     };
     
-   
+    
     return (
         <div className={styles.container}>
+        <div className={styles.jump} />
             {active === 'main' && <BoardMain showWrite={showWrite} token={token} setToken={setToken} />}
             {active === 'write' && <BoardWrite showBoard={showBoard} />}
             
-        <div className={styles.jumpUp}></div>
+        <div className={styles.jump}></div>
         <FooterImg/>
         <Footer/>
         </div>

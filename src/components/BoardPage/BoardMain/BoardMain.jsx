@@ -26,13 +26,14 @@ export default function BoardMain({ showWrite, token }) {
     const [groupedBoards, setGroupedBoards] = useState([]);
     const [error, setError] = useState(null);
     
-    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const write = () => {
         showWrite();
     };
     
     useEffect(() => {
-        console.log('BoardMain token:', token);
         if (token) {
             setIsLoggedIn(true);
         } else {
@@ -71,7 +72,7 @@ export default function BoardMain({ showWrite, token }) {
 
     return (
         <div className={styles.container}>
-            <h2>Board</h2>
+            <h2>게시판</h2>
             <div className={styles.button}>
                 <Link to={'/boardNotice'} className={styles.notice}>공지사항</Link>
                 <Link to={'/boardEvent'} className={styles.event}>이벤트</Link>
