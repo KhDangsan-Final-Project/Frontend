@@ -27,7 +27,6 @@ export default function BoardNotice() {
                         category: "공지사항"
                     }
                 });
-                console.log(response.data.pagging);
                 setBoardList(response.data.boards);
                 setPagging(response.data.pagging);
             } catch (err) {

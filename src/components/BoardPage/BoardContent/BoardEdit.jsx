@@ -83,7 +83,6 @@ class CustomUploadAdapter {
                     .then(response => response.json())
                     .then(result => {
                         if (result && result.url) {
-                            console.log("url 길이", result.url);
                             resolve({ default: result.url });
                         } else {
                             reject('Upload failed');
@@ -420,7 +419,6 @@ export default function BoardEdit() {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setFiles(response.data || []);
-            console.log(response.data);
 
         } catch (err) {
             console.error('파일 목록을 불러오는 중 오류가 발생했습니다.', err);

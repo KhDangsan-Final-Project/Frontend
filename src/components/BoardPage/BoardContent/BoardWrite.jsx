@@ -333,7 +333,6 @@ export default function BoardWrite({ showBoard }) {
 
    
     const writeClick = () => {
-        console.log(myEditor.getData());
     }
 
     const token = localStorage.getItem('token');
@@ -360,7 +359,6 @@ export default function BoardWrite({ showBoard }) {
             });
             showBoard();
             const result = await response.json();
-            console.log(result);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -393,7 +391,6 @@ export default function BoardWrite({ showBoard }) {
                                     config={editorConfig}
                                     onChange={handleContentChange} 
                                     onReady={(editor) =>{
-                                        console.log(editor);
                                         setMyEditor(editor)
                                 }}/>
                             }
