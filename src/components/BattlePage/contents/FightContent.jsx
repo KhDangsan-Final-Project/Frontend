@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/fight.module.css';
 import useFightContent from './hooks/useFightContent';
-import FightNavBar from './navFightContent';
+import NavFightContent from './navFightContent'; // 수정된 컴포넌트 경로 확인
 import UserInfoFightContent from './UserInfoFightContent';
 import RankFightContent from './RankFightContent';
 
@@ -12,17 +12,17 @@ function FightContent({ token }) {
   const PAGE_SIZE = 20;
   const navigate = useNavigate();
   const [receivedData, setReceivedData] = useState(null);
-  const [roomNumber, setRoomNumber] = useState('');
   const [nickname, setNickname] = useState('');
   const [pokemonList, setPokemonList] = useState([]);
   const [tcgCards, setTcgCards] = useState([]);
   const [filteredCards, setFilteredCards] = useState([]);
   const [ws, setWs] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedType, setSelectedType] = useState(''); // Add state for selectedType
+  const [matchWin, setMatchWin] = useState(0);
 
   const {
     cards,
-    selectedType,
     types,
     page,
     loading,
@@ -31,7 +31,6 @@ function FightContent({ token }) {
     typeBackgroundImages,
     hasMore,
     handleChange,
-    handleTypeClick,
     handleCardClick,
     handleRemoveCard,
     loadMore,
@@ -51,12 +50,11 @@ function FightContent({ token }) {
         console.log('Message from server by FightContent:', event.data);
         try {
           const data = JSON.parse(event.data);
-
+          setMatchWin(data.matchWin);
           setNickname(data.nickname);
           setReceivedData(data);
-          setRoomNumber(data.roomNumber);
           setPokemonList(data.pokemonList || []);
-          
+
           if (data.pokemonList) {
             fetchTcgCards(data.pokemonList);
           }
@@ -83,27 +81,18 @@ function FightContent({ token }) {
 
   const fetchTcgCards = async (pokemonList) => {
     try {
-      // Create requests to fetch TCG cards for each Pokémon in the list
       const requests = pokemonList.map(pokemon =>
         axios.get(`https://api.pokemontcg.io/v2/cards?q=name:${pokemon.englishName}`)
       );
-
-      // Await responses for all requests
       const responses = await Promise.all(requests);
-      
-      // Extract card data from responses
       const cards = responses.map(response => response.data.data[0]);
-
-      // Update card data with Korean names
       const updatedCards = cards.map(card => {
         const pokemon = pokemonList.find(p => p.englishName === card.name);
         return {
           ...card,
-          serverKoreanName: pokemon ? pokemon.koreanName : card.name // Use 'serverKoreanName'
+          serverKoreanName: pokemon ? pokemon.koreanName : card.name
         };
       });
-
-      // Update state with TCG cards and filtered cards
       setTcgCards(updatedCards);
       setFilteredCards(updatedCards);
     } catch (error) {
@@ -114,13 +103,21 @@ function FightContent({ token }) {
   const handleSearchChange = (event) => {
     const term = event.target.value;
     setSearchTerm(term);
+    filterCards(selectedType, term);
+  };
 
-    // Filter cards based on search term
+  const filterCards = (type, searchTerm) => {
     const filtered = tcgCards.filter(card =>
-      card.serverKoreanName.toLowerCase().includes(term.toLowerCase()) || // Filter by Korean name
-      card.name.toLowerCase().includes(term.toLowerCase()) // Filter by English name
+      (type === '' || card.types.includes(type)) && 
+      (card.serverKoreanName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      card.name.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredCards(filtered);
+  };
+
+  const handleTypeClick = (type) => {
+    setSelectedType(type);
+    filterCards(type, searchTerm);
   };
 
   const sendBattlePokemon = () => {
@@ -130,10 +127,9 @@ function FightContent({ token }) {
       miniImage: card.images.small
     }));
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemonWithMiniImages));
-
     const randomEnemyPokemon = getRandomEnemyPokemons();
     localStorage.setItem('enemyPokemon', JSON.stringify(randomEnemyPokemon));
-    navigate(`/battle?roomId=${roomNumber}&nickname=${nickname}`);
+    navigate(`/battle?matchWin=${matchWin}&nickname=${nickname}`);
   };
 
   const handleDecisionClick = () => {
@@ -157,13 +153,14 @@ function FightContent({ token }) {
             type="text"
             placeholder="포켓몬 검색"
             value={searchTerm}
-            onChange={handleSearchChange} // Use the new search handler
+            onChange={handleSearchChange}
             className={styles.pokemonSearch}
           />
-          <FightNavBar
+          <NavFightContent
             types={types}
-            typeBackgroundImages={typeBackgroundImages}
             handleTypeClick={handleTypeClick}
+            selectedType={selectedType}
+            typeBackgroundImages={typeBackgroundImages}
           />
           <div className={styles.container}>
             <div className={styles.loadingBar}>
@@ -175,7 +172,7 @@ function FightContent({ token }) {
                   filteredCards.map(card => (
                     <div key={card.id} className={styles.card} onClick={() => handleCardClick(card)}>
                       <img src={card.images.small} alt={card.serverKoreanName} />
-                      <h2 className={styles.h2}>{card.serverKoreanName}</h2> {/* Use 'serverKoreanName' */}
+                      <h2 className={styles.h2}>{card.serverKoreanName}</h2>
                       <p className={styles.p}>타입: {card.types ? card.types.join(', ') : '알 수 없음'}</p>
                       <p className={styles.p}>HP: {card.hp}</p>
                       {card.attacks && (
@@ -192,7 +189,7 @@ function FightContent({ token }) {
                     </div>
                   ))
                 ) : (
-                  <p className={styles.p}>카드를 찾을 수 없습니다.</p>
+                  <p className={styles.p}>카드 정보가 없습니다.</p>
                 )}
                 {loading && <p className={styles.p}>로딩 중...</p>}
               </div>
@@ -206,7 +203,7 @@ function FightContent({ token }) {
                 {selectedCards.map(card => (
                   <div key={card.id} className={`${styles.card} ${styles.selectedCard}`}>
                     <img src={card.images.small} alt={card.serverKoreanName} />
-                    <h2 className={styles.p}>{card.serverKoreanName}</h2> {/* Use 'serverKoreanName' */}
+                    <h2 className={styles.p}>{card.serverKoreanName}</h2>
                     <p className={styles.p}>타입: {card.types ? card.types.join(', ') : '알 수 없음'}</p>
                     <p className={styles.p}>HP: {card.hp}</p>
                     {card.attacks && (

@@ -104,7 +104,7 @@ function Battle({ token }) {
   useEffect(() => {
     if (isBattleFinished && enemyPokemon.length === 0) {
       if (token) {
-        const ws = new WebSocket('ws://192.168.20.54:8090/ms2/update');
+        const ws = new WebSocket('ws://localhost:30115/ms2/update');
 
         ws.onopen = () => {
           console.log('Connected to WebSocket for updating matchWin');

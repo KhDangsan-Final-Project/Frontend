@@ -1,9 +1,8 @@
 .App {
   text-align: center;
 background-image: url(/public/video/background.mp4);
-min-width: 1136px;
 max-height: 100%;
-/* overflow: hidden; */
+overflow: hidden;
 }
 .container{
   display: flex;
@@ -775,6 +774,9 @@ color: #FFF;
   justify-content: center;
   align-items: center;
 }
+.selectedCardContainer{
+  width: 400px;
+}
 }
 @media (max-width:1209px ){
   .navTypes {
@@ -884,4 +886,18 @@ color: #FFF;
   justify-content: center;
   align-items: center;
 }
+.selectedCardContainer{
+  width: 300px;
+}
+}
+@media (max-width:1021px){
+  .nav{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    border-bottom: 1px solid #FFF ;
+    }
 }
