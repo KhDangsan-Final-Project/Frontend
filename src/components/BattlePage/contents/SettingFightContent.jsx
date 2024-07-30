@@ -1,86 +1,105 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './css/fight.module.css';
 
-function SettingFightContent({ token }) {
-  const [userInfo, setUserInfo] = useState(null);
+export default function SettingFightContent({ onReceiveData, token }) {
+  const [roomNumber, setRoomNumber] = useState(''); // 방 번호 상태
+  const [ws, setWs] = useState(null); // WebSocket 상태
+  const [error, setError] = useState(''); // 에러 상태
 
   useEffect(() => {
-    if (token) {
-      const ws = new WebSocket('ws://192.168.20.54:8090/ms2/token');
+    // WebSocket 연결 생성
+    const websocket = new WebSocket('ws://teeput.synology.me:30112/ms2/roomid');
 
-      ws.onopen = () => {
-        console.log('Connected to WebSocket /SettingFightContent');
-        ws.send(JSON.stringify({ token }));  // JSON 형식으로 토큰 전송
-      };
+    websocket.onopen = () => {
+      console.log('WebSocket 연결 완료');
+      setWs(websocket); // WebSocket 객체를 상태에 저장
+    };
 
-      ws.onmessage = function(event) {
-        console.log('Message from server:', event.data);
+    websocket.onmessage = (event) => {
+      console.log('서버로부터의 메시지:', event.data);
+  
+      try {
+        // 메시지를 JSON으로 파싱
+        const data = JSON.parse(event.data);
 
-        try {
-          const data = JSON.parse(event.data);
-          console.log(data);
-          setUserInfo({
-            id: data.id,
-            nickname: data.nickname,
-            grantNo: data.grantNo  // grantNo 값을 포함하도록 수정
-          });
-        } catch (error) {
-          console.error('Error parsing message:', error);
+        // 메시지 타입에 따라 처리
+        if (data.type === 'ROOM_CREATED' || data.type === 'ROOM_JOINED') {
+          onReceiveData(data.roomId); // 방 번호를 부모 컴포넌트로 전송
+        } else if (data.type === 'ROOM_NOT_FOUND') {
+          setError('방 번호가 잘못되었거나 방이 존재하지 않습니다.');
+        } else if (data.error) {
+          setError(`서버 오류: ${data.error}`);
         }
-      };
-
-      ws.onclose = () => {
-        console.log('Disconnected from WebSocket /SettingFightContent');
-      };
-
-      return () => {
-        ws.close();
-      };
-    }
-  }, [token]);
-
-  const getRankImageClass = () => {
-    if (userInfo) {
-      switch (userInfo.grantNo) {
-        case 1:
-          return styles.rankImage1;
-        case 2:
-          return styles.rankImage2;
-        case 3:
-          return styles.rankImage3;
-        case 4:
-          return styles.rankImage4;
-        case 5:
-          return styles.rankImage5;
-        case 6:
-          return styles.rankImage6;
+      } catch (error) {
+        console.error('메시지 파싱 오류:', error);
+        setError('서버 응답 처리 중 오류가 발생했습니다.');
       }
+    };
+
+    websocket.onerror = (error) => {
+      console.error('WebSocket 오류:', error);
+      setError('WebSocket 오류가 발생했습니다.');
+    };
+
+    websocket.onclose = () => {
+      console.log('WebSocket 연결 종료');
+    };
+
+    // 컴포넌트 언마운트 시 WebSocket 연결 종료
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
+  }, [onReceiveData, token]);
+
+  const handleRoomNumberChange = (e) => {
+    setRoomNumber(e.target.value); // 방 번호 상태 업데이트
+  };
+
+  const handleButtonClick = () => {
+    if (roomNumber && ws) {
+      if (/^\d+$/.test(roomNumber)) { // 방 번호가 숫자로만 이루어져 있는지 확인
+        // 방 번호와 토큰 값을 서버로 전송
+        ws.send(JSON.stringify({ 
+          type: 'CREATE_OR_JOIN_ROOM', 
+          roomId: roomNumber,
+          token: token // 토큰 추가
+        }));
+        setRoomNumber(''); // 방 번호 전송 후 입력 필드 초기화
+        setError(''); // 에러 초기화
+      } else {
+        setError('방 번호는 숫자만 입력 가능합니다.');
+      }
+    } else {
+      setError('방 번호를 입력해주세요.');
     }
-    return styles.rankImageDefault; // 기본 클래스
+  };
+
+  // 엔터키를 눌렀을 때 버튼 클릭 이벤트를 트리거하는 함수
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // 기본 동작 방지
+      handleButtonClick(); // 버튼 클릭 함수 호출
+    }
   };
 
   return (
     <div className={styles.settingContainer}>
-      <h2>:::info:::</h2>
-      <div className={styles.userInfoContainer}>
-        <div className={styles.userImg}>
-          <div className={getRankImageClass()}></div> {/* 랭크 이미지를 배경으로 설정 */}
-        </div>
-        <div className={styles.userNick}>
-          <p className={styles.ptag}>"</p>
-          {userInfo ? (
-            <>
-              <p className={styles.nick}>Nickname:<br/> {userInfo.nickname}</p>
-              <p className={styles.ptag}>"</p>
-              <p className={styles.victory}>ID:<br/> {userInfo.id}</p>
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
+      <h2 className={styles.h2}>:::ROOM ID:::</h2>
+      <div className={styles.battleSetting}>
+        <input
+          type="text"
+          placeholder="방 번호를 입력해주세요"
+          value={roomNumber}
+          onChange={handleRoomNumberChange} // 입력값 변경 시 상태 업데이트
+          onKeyDown={handleKeyDown} // 엔터키 입력 감지
+          className={styles.pokemonSearch}
+        />
+        <button onClick={handleButtonClick} className={styles.button}>: 결정 :</button> {/* 방 번호 전송 버튼 */}
+        <p className={styles.p}>※사용 가능한 방 번호는 밑에 표시됩니다.</p>
       </div>
+      {error && <p className={styles.error}>{error}</p>} {/* 에러 메시지 출력 */}
     </div>
   );
 }
-
-export default SettingFightContent;

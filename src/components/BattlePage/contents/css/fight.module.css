@@ -1,9 +1,10 @@
 .App {
   text-align: center;
-background-image: url(/public/img/backgroundImg.jpg);
+background-image: url(/public/video/background.mp4);
 }
 .container{
   display: flex;
+  justify-content: center;
   flex-flow: row nowrap;
 
   max-height: 740px; /* Limit the height */
@@ -11,7 +12,7 @@ background-image: url(/public/img/backgroundImg.jpg);
 
 
 .cardContainer {
-  max-height: 740px; /* Limit the height */
+  max-height: 730px; /* Limit the height */
   max-width: 730px;
   overflow-y: auto; /* Enable vertical scrolling */
   display: flex;
@@ -19,15 +20,19 @@ background-image: url(/public/img/backgroundImg.jpg);
   justify-content: flex-start; /* Start from the left */
   gap: 20px;
   padding: 10px;
+  overflow: auto;
 }
-
+.cardContainer::-webkit-scrollbar {
+  width: 0; /* 스크롤바 너비를 0으로 설정하여 숨기기 */
+  background: transparent; /* 스크롤바 배경을 투명하게 설정 */
+}
 .cardContainer .card {
   flex: 0 0 auto; /* Allow cards to shrink to fit content */
-  border: 1px solid #ddd;
-  border-radius: 8px;
   padding: 10px;
   width: 200px; /* Set a fixed width for each card */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+    5px 12px 15px -10px rgba(0, 0, 0, 0.5);
 }
 
 .cardContainer .card img {
@@ -40,12 +45,6 @@ background-image: url(/public/img/backgroundImg.jpg);
   font-size: 18px;
   margin: 10px 0;
 }
-
-.cardContainer .card p {
-  color: #555;
-}
-
-
 .selectedCardContainer {
   display: flex;
   flex-wrap: nowrap; /* Ensure cards stay in a single row */
@@ -56,11 +55,11 @@ background-image: url(/public/img/backgroundImg.jpg);
 
 .selectedCardContainer .card {
   flex: 0 0 auto; /* Allow cards to shrink to fit content */
-  border: 1px solid #ddd;
-  border-radius: 8px;
   padding: 10px;
   width: 200px; /* Set a fixed width for each card */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
+    5px 12px 15px -10px rgba(0, 0, 0, 0.5);
 }
 
 .selectedCardContainer .card img {
@@ -74,19 +73,9 @@ background-image: url(/public/img/backgroundImg.jpg);
   margin: 10px 0;
 }
 
-.selectedCardContainer .card p {
-  color: #555;
-}
-
-/* ================================================================================ */
-/* .selectedCardContainer {
-  border: 1px solid crimson;
-} */
-
 .myCardArea {
-  /* border: 1px solid skyblue; */
   padding: 0;
-  width: 708px;
+  width: 700px;
 }
 
 /* ========================================================================= */
@@ -192,8 +181,8 @@ background-image: url(/public/img/backgroundImg.jpg);
 
 .typeContainer a {
   display: inline-block;
-  width: 50px; /* 원하는 크기로 조정 */
-  height: 50px; /* 원하는 크기로 조정 */
+  width: 60%; /* 원하는 크기로 조정 */
+  height: 60%; /* 원하는 크기로 조정 */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -214,29 +203,34 @@ background-image: url(/public/img/backgroundImg.jpg);
 /* --------------------------------------------------------------------------------- */
 
 .nav{
-/* border: 2px solid palegreen; */
 display: flex;
 flex-flow: row nowrap;
 justify-content: center;
 align-items: center;
+height: 100px;
+border-bottom: 1px solid #FFF ;
 }
 .typeColor{
   background-color: #5185C5;
   width: 80px;
 }
 .allTypes{
-  background-image: url(/public/img/pokeball.png);
-  width: 96px;
-  height: 96px;
+  background-image: url(/public/img/mainPokeball.png);
+  width: 60px;
+  height: 60px;
   background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
   background-repeat: no-repeat;
   background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .navTypes {
-  width: 83px;
-  height: 83px;
+  width: 60px;
+  height: 60px;
   border-radius:100% ;
   margin: 0px 35px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -311,7 +305,7 @@ align-items: center;
 .settingContainer {
   margin-top: 20px;
   padding: 20px;
-  
+background-color: transparent;
   box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.4),
     5px 12px 15px -10px rgba(0, 0, 0, 0.5);
  
@@ -343,6 +337,7 @@ height: 300px;
   width: 180px;
   height: 180px;
 }
+/* ---------------------------------------------------------------------------------------------------------------------------------- */
 .rankImage1{
 background-image: url(/public/img/rank/pokeBall.png);
 background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
@@ -415,6 +410,7 @@ background-position: center;
   margin-right: 5px;
 
 }
+/* ----------------------------------------------------------------------------------------------- */
 .userNick{
   margin-left: 10px;
   display: flex;
@@ -424,7 +420,7 @@ background-position: center;
 }
 .nick , .victory{
   font-family: "Source Code Pro";
-
+color: #FFF;
   text-transform: uppercase;
   letter-spacing: 3px;
 }
@@ -435,8 +431,11 @@ margin: 0;
   letter-spacing: 0px;
   font-weight: 400;
   font-size: 33px;
+  color: #FFF;
 }
-
+.h2, .p{
+  color: #FFF;
+}
 /* ---------------------------------------------------------------------------------------- */
 .card,
 .selectedCard {
@@ -449,3 +448,193 @@ margin: 0;
   display: flex;
   flex-flow: column nowrap;
 }
+/* ---------------------------------------------------------------------------------------------------------------------- */
+.userImage1,
+.userImage2,
+.userImage3,
+.userImage4,
+.userImage5,
+.userImage6,
+.trainer {
+  background-size: contain; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  width: 100%; 
+  height: 100%; 
+}
+
+.userImage1 {
+  background-image: url('/public/img/user/userImage1.png');
+}
+
+.userImage2 {
+  background-image: url('/public/img/user/userImage2.png');
+}
+
+.userImage3 {
+  background-image: url('/public/img/user/userImage3.png');
+}
+
+.userImage4 {
+  background-image: url('/public/img/user/userImage4.png');
+}
+
+.userImage5 {
+  background-image: url('/public/img/user/userImage5.png');
+}
+
+.userImage6 {
+  background-image: url('/public/img/user/userImage6.png');
+}
+
+.trainer{
+  background-image: url(/public/img/trainer.png);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------- */
+.trainerRankImg{
+  background-image: url(/public/img/trainerBall.png);
+background-size: contain; /* contain, auto, 100% 100% 등으로 변경 가능 */
+background-repeat: no-repeat;
+background-position: center;
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+/* -------------------------------------------------------------------------------------------------------------------------- */
+.range{
+  width: 100%;
+}
+.range {
+  -webkit-appearance: none; /* 웹킷 브라우저에서 기본 스타일 제거 */
+  width: 100%; /* 슬라이더 너비 */
+  height: 8px; /* 슬라이더 트랙의 두께 */
+  background: #ddd; /* 슬라이더 트랙 배경 색상 */
+  border-radius: 5px; /* 슬라이더 트랙의 둥근 모서리 */
+  outline: none; /* 슬라이더 포커스 시 외곽선 제거 */
+  cursor: pointer; /* 커서 모양 변경 */
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* 웹킷 브라우저에서 기본 핸들 스타일 제거 */
+  width: 24px; /* 핸들의 너비 */
+  height: 24px; /* 핸들의 높이 */
+  background: url('/public/img/pokemonImage.png') no-repeat center; /* 핸들의 배경 이미지 */
+  background-size: cover; /* 이미지 크기 조절 */
+  border-radius: 50%; /* 핸들을 둥글게 */
+  cursor: pointer; /* 커서 모양 변경 */
+}
+/* ---------------------------------------------------------------------------------------------------------- */
+
+.rankContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: relative; /* 부모 요소에 상대적 위치를 설정하여 자식 요소의 절대 위치를 기준으로 설정 */
+}
+
+.rankImage {
+  width: 50px; /* 적절한 크기로 설정 */
+  height: 50px; /* 적절한 크기로 설정 */
+  background-size: cover;
+  position: relative; /* 툴팁 위치를 요소를 기준으로 설정하기 위해 필요 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 추가 */
+  border-radius: 100%;
+}
+
+
+
+/* 호버 상태 스타일 */
+.rankImage:hover {
+  transform: scale(1.1); /* 요소를 10% 확대 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 효과 추가 */
+  border-radius: 100%;
+}
+
+/* 툴팁 스타일 */
+.tooltip {
+  position: absolute;
+  bottom: 125%; /* 툴팁이 요소 위에 위치하도록 설정 */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+
+}
+
+.rankImage:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+
+}
+
+
+.pokemonSearch{
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #FFF;
+  outline: none; 
+  color: #FFF;
+  margin-bottom: 8px;
+font-family: "Source Code Pro";
+font-weight: 100;
+  letter-spacing: 3px;
+}
+.pokemonSearch:focus{
+  outline: none;
+}
+.pokemonSearch::placeholder{
+  color: #FFF;
+}
+/* ------------------------------------------------------------------------------------------------------------------ */
+.App {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.backgroundWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5); /* 검은색 배경에 50% 투명도 추가 */
+  z-index: 1; /* 오버레이가 비디오 위에 표시되도록 */
+}
+
+.button{
+  border: none;
+  background-color: transparent;
+  color: #FFF;
+}
+
+
+

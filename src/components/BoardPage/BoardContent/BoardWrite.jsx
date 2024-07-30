@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 
 import {
@@ -56,18 +56,16 @@ import {
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
-
+import './css/Ckeditor.css'
 import styles from './css/BoardWrite.module.css'
 
-export default function BoardWrite({showBoard}) {
+export default function BoardWrite({ showBoard }) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
 
     useEffect(() => {
         setIsLayoutReady(true);
-
-        return () => setIsLayoutReady(false);
     }, []);
 
     const editorConfig = {
@@ -299,30 +297,108 @@ export default function BoardWrite({showBoard}) {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         }
     };
-    const [myEditor, setMyEditor] = useState();
-    const writeClick = () => {
-        console.log(myEditor.getData());
-    }
-    function cancel(){
+    const [category, setCategory] = useState("자유게시판");
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [files, setFiles] = useState([]);
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+    useEffect(() => {
+        setIsSubmitDisabled(!title || !content);
+    }, [title, content]);
+
+
+    function cancel() {
         showBoard();
     }
+
+    function handleCategoryChange(e) {
+        setCategory(e.target.value);
+    }
+
+    function handleTitleChange(e) {
+        setTitle(e.target.value);
+    }
+
+    const handleContentChange = (event, editor) => {
+        const data = editor.getData();
+        setContent(data);
+    };
+
+    function handleFileChange(e) {
+        setFiles(e.target.files);
+    }
+
+    function stripHtmlTags(html) {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
+    }
+
+    const token = localStorage.getItem('token');
+    async function handleSubmitContent(e) {
+        e.preventDefault();
+        const plainTextContent = stripHtmlTags(content);
+
+
+        const formData = new FormData();
+        formData.append('category', category);
+        formData.append('title', title);
+        formData.append('content', plainTextContent);
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file', files[i]);
+        }
+        try {
+            const response = await fetch("https://teeput.synology.me:30112/ms1/board/insert", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                credentials: 'include'
+            });
+            const result = await response.json();
+            console.log(result);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
     return (
-        <div>
-            <div className={styles.main_container}>
+        <div className={styles.main_container}>
+            <form onSubmit={handleSubmitContent}>
+                <div className={styles.header}>
+                    <h5>글쓰기</h5>
+                    <span className={styles.category}>
+                        <select name="category" value={category} onChange={handleCategoryChange}>
+                            <option value="자유게시판">자유게시판</option>
+                            <option value="공지사항">공지사항</option>
+                            <option value="이벤트">이벤트</option>
+                        </select>
+                    </span>
+                </div>
+                <input type='text' className={styles.title} value={title} onChange={handleTitleChange} placeholder='제목을 입력해주세요' />
                 <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
                     <div className={styles.editor_container__editor}>
-                        <div ref={editorRef}>{isLayoutReady && <CKEditor editor={ClassicEditor} config={editorConfig} onReady={(editor) => {
-                            editor.setData(' ');
-                            console.log(editor.getData());
-                            setMyEditor(editor);
-                        }} />}</div>
+                        <div ref={editorRef} value={content} onChange={handleContentChange}>
+                            {isLayoutReady &&
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={content}
+                                    config={editorConfig}
+                                    onChange={handleContentChange} />
+                            }
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <button className={styles.button} onClick={writeClick}>글쓰기</button>
-                    <button className={styles.button} type='button' onClick={cancel}>취소</button>
+                    <input type="file" multiple onChange={handleFileChange} className={styles.file} />
                 </div>
-            </div>
+                <div>
+                    <button type="submit" id="submit" disabled={isSubmitDisabled}
+                        className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
+                    <button type="reset" className={styles.button} onClick={cancel}>취소</button>
+                </div>
+            </form>
         </div>
     );
 }

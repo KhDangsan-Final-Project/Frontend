@@ -9,7 +9,7 @@ const Friends = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [userNickname, setUserNickname] = useState('');
+    const [userId, setUserId] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -18,18 +18,35 @@ const Friends = () => {
             setLoading(false);
             return;
         }
-        const nickname = extractUserNicknameFromToken(token);
-        setUserNickname(nickname);
-        fetchFriends(token);
-        fetchFriendRequests(token);
+        fetchUserId(token);
     }, []);
+
+    useEffect(() => {
+        if (userId) {
+            const token = localStorage.getItem('token');
+            fetchFriends(token);
+            fetchFriendRequests(token);
+        }
+    }, [userId]);
+
+    const fetchUserId = async (token) => {
+        try {
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/mypage', { params: { token } });
+            setUserId(response.data.id);
+        } catch (error) {
+            console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
+            setLoading(false);
+        }
+    };
 
     const fetchFriends = async (token) => {
         try {
-            const response = await axios.get('http://teeput.synology.me:30112/ms3/friend', { params: { token } });
-            setFriends(response.data);
-        } catch (error) {
-            console.error('친구 목록을 가져오는 중 오류가 발생했습니다:', error);
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/friend', { params: { token } });
+            const fetchedFriends = response.data
+                .filter(friend => friend.status === 'accepted') 
+                .map(friend => (friend.userId === userId ? friend.friendId : friend.userId));
+            const uniqueFriends = Array.from(new Set(fetchedFriends));
+            setFriends(uniqueFriends);
         } finally {
             setLoading(false);
         }
@@ -37,7 +54,7 @@ const Friends = () => {
 
     const fetchFriendRequests = async (token) => {
         try {
-            const response = await axios.get('http://teeput.synology.me:30112/ms3/friend/request', { params: { token } });
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/friend/request', { params: { token } });
             setReceivedRequests(response.data);
         } catch (error) {
             console.error('친구 요청을 가져오는 중 오류가 발생했습니다:', error);
@@ -47,14 +64,14 @@ const Friends = () => {
     const handleSearch = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://teeput.synology.me:30112/ms3/friend/search', {
-                params: { query: searchQuery, token, userNickname },
-            });
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/friend/search', {
+                params: { query: searchQuery, token: token }, });
+            console.log('검색 결과:', response.data); // 응답 데이터 구조 확인
             const filteredResults = response.data.filter(result => {
-                return result.nickname !== userNickname && // 자신을 제외
-                       !friends.some(friend => friend.friendNickname === result.nickname || friend.userNickname === result.nickname) && // 이미 친구 상태를 제외
-                       !pendingRequests.some(request => request.friendNickname === result.nickname) && // 이미 요청 보낸 친구 제외
-                       !receivedRequests.some(request => request.userNickname === result.nickname); // 받은 요청 제외
+                return result.id !== userId && // 자신을 제외
+                       !friends.some(friend => friend === result.id) && // 이미 친구 상태를 제외
+                       !pendingRequests.some(request => request.friendId === result.id) && // 이미 요청 보낸 친구 제외
+                       !receivedRequests.some(request => request.userId === result.id); // 받은 요청 제외
             });
             setSearchResults(filteredResults);
         } catch (error) {
@@ -62,63 +79,36 @@ const Friends = () => {
         }
     };
 
-    const handleAddFriend = async (friendNickname) => {
+    const handleAddFriend = async (friendId) => {
         const token = localStorage.getItem('token');
-        if (pendingRequests.some(request => request.friendNickname === friendNickname) || 
-            receivedRequests.some(request => request.userNickname === userNickname && request.friendNickname === friendNickname)) {
-            alert('이미 친구 요청을 보냈거나 받은 요청이 있습니다.');
-            return;
-        }
-        if (friends.some(friend => 
-            (friend.friendNickname === friendNickname && friend.userNickname === userNickname) || 
-            (friend.friendNickname === userNickname && friend.userNickname === friendNickname))) {
-            alert('이미 친구 상태입니다.');
-            return;
-        }
         try {
-            const response = await axios.post('http://teeput.synology.me:30112/ms3/friend/add', {
-                userNickname,
-                friendNickname,
-                status: 'pending'
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
+            const response = await axios.post('https://teeput.synology.me:30112/ms3/friend/add', { userId, friendId, status: 'pending' }, {
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { token }
             });
             if (response.data.status === 'success') {
                 alert('친구 요청이 성공적으로 전송되었습니다');
-                setPendingRequests([...pendingRequests, { userNickname, friendNickname }]);
-            } else if (response.data.status === 'duplicate') {
-                alert('이미 친구 요청을 보냈습니다');
-            } else if (response.data.status === 'already_friends') {
-                alert('이미 친구 상태입니다.');
+                setPendingRequests([...pendingRequests, { userId, friendId }]);
+                setSearchResults(searchResults.filter(result => result.id !== friendId));
             } else {
-                alert('친구 요청 전송에 실패했습니다');
+                alert('이미 친구이거나 친구 요청을 보냈습니다.');
             }
         } catch (error) {
-            console.error('친구 요청을 보내는 중 오류가 발생했습니다:', error);
+            console.error('친구 추가 중 오류가 발생했습니다:', error);
         }
     };
 
-    const handleAcceptRequest = async (friendNickname) => {
+    const handleAcceptRequest = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.put('http://teeput.synology.me:30112/ms3/friend/accept', {
-                userNickname: friendNickname,
-                friendNickname: extractUserNicknameFromToken(token),
-                status: 'accepted'
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
+            const response = await axios.put('https://teeput.synology.me:30112/ms3/friend/accept', { userId: friendId, status: 'accepted' }, {
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { token }
             });
             if (response.data.status === 'success') {
-                fetchFriends(token);
-                fetchFriendRequests(token);
+                const newToken = localStorage.getItem('token');
+                fetchFriends(newToken);
+                fetchFriendRequests(newToken);
                 alert('친구 요청이 성공적으로 수락되었습니다');
             } else {
                 alert('친구 요청 수락에 실패했습니다');
@@ -128,22 +118,17 @@ const Friends = () => {
         }
     };
 
-    const handleRejectRequest = async (friendNickname) => {
+    const handleRejectRequest = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.delete('http://teeput.synology.me:30112/ms3/friend/reject', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    userNickname: friendNickname,
-                    friendNickname: extractUserNicknameFromToken(token),
-                },
+            const response = await axios.delete('https://teeput.synology.me:30112/ms3/friend/reject', {
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+                data: { userId: friendId },
                 params: { token }
             });
             if (response.data.status === 'success') {
-                fetchFriendRequests(token);
+                const newToken = localStorage.getItem('token');
+                fetchFriendRequests(newToken);
                 alert('친구 요청이 성공적으로 거절되었습니다');
             } else {
                 alert('친구 요청 거절에 실패했습니다');
@@ -153,50 +138,27 @@ const Friends = () => {
         }
     };
 
-    const handleDeleteFriend = async (friendNickname) => {
+    const handleDeleteFriend = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.delete('http://teeput.synology.me:30112/ms3/friend/delete', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    friendNickname,
-                    token
-                },
+            const response = await axios.delete('https://teeput.synology.me:30112/ms3/friend/delete', {
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+                data: { userId: userId, friendId: friendId }, // 정확한 userId와 friendId 전달
                 params: { token }
             });
             if (response.data.status === 'success') {
-                fetchFriends(token);
+                const newToken = localStorage.getItem('token');
+                fetchFriends(newToken);
                 alert('친구가 성공적으로 삭제되었습니다');
             } else {
                 alert('친구 삭제에 실패했습니다');
-            }        
+            }
         } catch (error) {
             console.error('친구를 삭제하는 중 오류가 발생했습니다:', error);
         }
     };
 
-    const extractUserNicknameFromToken = (token) => {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            const decodedToken = JSON.parse(jsonPayload);
-            return decodedToken.nickname; // 닉네임 반환
-        } catch (error) {
-            console.error('토큰을 디코딩하는 중 오류가 발생했습니다:', error);
-            return null;
-        }
-    };
-
-    if (loading) {
-        return <div className={styles.loading}>로딩 중...</div>;
-    }
-
+    if (loading) { return <div className={styles.loading}>로딩 중...</div>; }
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>내 친구</h2>
@@ -204,10 +166,10 @@ const Friends = () => {
                 <div className={styles.section}>
                     <h2 className={styles.heading}>친구 목록</h2>
                     <ul className={styles.list}>
-                        {friends.map(friend => (
-                            <li key={friend.friendNickname} className={styles.listItem}>
-                                {friend.userNickname === userNickname ? friend.friendNickname : friend.userNickname}
-                                <button onClick={() => handleDeleteFriend(friend.userNickname === userNickname ? friend.friendNickname : friend.userNickname)} className={styles.button}>삭제</button>
+                        {friends.map(friendId => (
+                            <li key={friendId} className={styles.listItem}>
+                                {friendId}
+                                <button onClick={() => handleDeleteFriend(friendId)} className={styles.button}>삭제</button>
                             </li>
                         ))}
                     </ul>
@@ -215,37 +177,32 @@ const Friends = () => {
                 <div className={styles.section}>
                     <h2 className={styles.heading}>친구 검색</h2>
                     <div className={styles.searchContainer}>
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className={styles.searchInput}
-                        />
-                        <button onClick={handleSearch} className={styles.searchButton}>검색</button>
+                        <input type="text" onChange={(e) => setSearchQuery(e.target.value)} className={styles.searchInput} />
+                        <button onClick={handleSearch} className={styles.button}>검색</button>
                     </div>
                     <ul className={styles.results}>
                         {searchResults.length > 0 ? (
                             searchResults.map(result => (
-                                <li key={result.nickname} className={styles.resultItem}>
+                                <li key={result.id} className={styles.resultItem}>
                                     <div className={styles.resultInfo}>
-                                        {result.nickname}
+                                        {result.id} ({result.nickname})
                                     </div>
-                                    <button onClick={() => handleAddFriend(result.nickname)} className={styles.button}>친구 추가</button>
+                                    <button onClick={() => handleAddFriend(result.id)} className={styles.button}>친구 추가</button>
                                 </li>
                             ))
-                        ) : (
-                            <li>검색 결과가 없습니다</li>
-                        )}
+                        ) : ( <li>검색 결과가 없습니다</li> )}
                     </ul>
                 </div>
                 <div className={styles.section}>
                     <h2 className={styles.heading}>받은 친구 요청</h2>
                     <ul className={styles.list}>
                         {receivedRequests.map(request => (
-                            <li key={request.userNickname} className={styles.listItem}>
-                                {request.userNickname}
-                                <button onClick={() => handleAcceptRequest(request.userNickname)} className={styles.button}>수락</button>
-                                <button onClick={() => handleRejectRequest(request.userNickname)} className={styles.button}>거절</button>
+                            <li key={request.userId} className={styles.listItem}>
+                                {request.userId}
+                                <div className={styles.request_btn}>
+                                  <button onClick={() => handleAcceptRequest(request.userId)} className={styles.button}>수락</button>
+                                  <button onClick={() => handleRejectRequest(request.userId)} className={styles.button}>거절</button>
+                                </div>
                             </li>
                         ))}
                     </ul>

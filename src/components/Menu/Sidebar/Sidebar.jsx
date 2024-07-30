@@ -35,7 +35,6 @@ export default function Sidebar( {token, logout} ) {
             <li>
             <Link to="#" onClick={() => { handLinkClick(); logout(); }}>
                 로그아웃
-                로그아웃
             </Link>
         </li>
           ) : (
