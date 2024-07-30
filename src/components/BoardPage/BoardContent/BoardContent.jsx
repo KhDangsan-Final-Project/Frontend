@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './css/BoardContent.module.css'
 import FooterImg from '../../Menu/Footer/FooterImg';
 import Footer from '../../Menu/Footer/Footer';
+import DOMPurify from 'dompurify';
 
 export default function BoardContent() {
     const { boardNo } = useParams();
@@ -22,6 +23,10 @@ export default function BoardContent() {
 
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
 
     useEffect(() => {
@@ -56,7 +61,6 @@ export default function BoardContent() {
 
                 // 파일 목록 조회
                 fetchFiles();
-
             } catch (err) {
                 setError(err);
             }
@@ -80,25 +84,17 @@ export default function BoardContent() {
 
     //게시물 조회수
     async function increaseViewCount() {
-        // 로컬 스토리지에서 조회한 게시물 번호를 가져옴
-        const viewedPosts = JSON.parse(localStorage.getItem('viewedPosts')) || [];
-        if (!viewedPosts.includes(boardNo)) {
             try {
                 await axios.post(`https://teeput.synology.me:30112/ms1/boardViewCount/${boardNo}`, {}, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
                 });
-
-                // 조회한 게시물 번호를 로컬 스토리지에 저장
-                viewedPosts.push(boardNo);
-                localStorage.setItem('viewedPosts', JSON.stringify(viewedPosts));
-
             } catch (err) {
                 console.error('Error: ', err);
                 setError(err);
             }
-        }
+        
     }
 
     //게시물 좋아요
@@ -284,8 +280,8 @@ export default function BoardContent() {
 
 
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
-
-
+    
+    
     return (
         <div className={styles.bigContainer}>
             <div className={styles.jump} />
@@ -321,7 +317,8 @@ export default function BoardContent() {
                     </div>
                     <hr />
                     <div>
-                        <span>{board.boardContent}</span>
+                    <div className={styles.content} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(board.boardContent || '') }}></div>
+
                         <div className={styles.filesSection}>
                             {files.length > 0 ? (
                                 <div className={styles.fileList}>
@@ -343,7 +340,7 @@ export default function BoardContent() {
                                     ))}
                                 </div>
                             ) : (
-                                <p>첨부된 파일이 없습니다.</p>
+                                <></>
                             )}
                         </div>
 
@@ -400,7 +397,7 @@ export default function BoardContent() {
                     </div>
                 </div>
             ) : (
-                <div>게시글이 없습니다.</div> // board가 없을 때 처리
+                <div><p className={styles.loading}>게시글 로딩중...</p></div>
             )}
             <hr />
             <div className={styles.jump} />

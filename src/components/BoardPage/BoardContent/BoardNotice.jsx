@@ -12,6 +12,10 @@ export default function BoardNotice() {
     const [pageNo, setPageNo] = useState(1);
     const [pageContentEa, setPageContentEa] = useState(15);
     const [pagging, setPagging] = useState({});
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         async function fetchBoardList() {

@@ -58,11 +58,10 @@ import {
 import 'ckeditor5/ckeditor5.css';
 import './css/Ckeditor.css'
 import styles from './css/BoardWrite.module.css'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export default function BoardWrite({ showBoard }) {
     const {boardNo} = useParams;
-    const navigate = useNavigate();
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -70,7 +69,6 @@ export default function BoardWrite({ showBoard }) {
     useEffect(() => {
         setIsLayoutReady(true);
     }, []);
-
     const editorConfig = {
         toolbar: {
             items: [
@@ -305,6 +303,7 @@ export default function BoardWrite({ showBoard }) {
     const [content, setContent] = useState('');
     const [files, setFiles] = useState([]);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+    const [myEditor, setMyEditor] = useState();
 
     useEffect(() => {
         setIsSubmitDisabled(!title || !content);
@@ -332,22 +331,26 @@ export default function BoardWrite({ showBoard }) {
         setFiles(e.target.files);
     }
 
-    function stripHtmlTags(html) {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
+    // function stripHtmlTags(html) {
+    //     const doc = new DOMParser().parseFromString(html, 'text/html');
+    //     return doc.body.textContent || "";
+    // }
+
+    const writeClick = () => {
+        console.log(myEditor.getData());
     }
 
     const token = localStorage.getItem('token');
     async function handleSubmitContent(e) {
         e.preventDefault();
-        const plainTextContent = stripHtmlTags(content);
+        // const plainTextContent = stripHtmlTags(content);
 
 
         const formData = new FormData();
         formData.append('category', category);
         formData.append('title', title);
-        formData.append('content', plainTextContent);
-
+        formData.append('content', content);
+        
         for (let i = 0; i < files.length; i++) {
             formData.append('file', files[i]);
         }
@@ -367,6 +370,10 @@ export default function BoardWrite({ showBoard }) {
             console.error('Error:', error);
         }
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <div className={styles.main_container}>
             <form onSubmit={handleSubmitContent}>
@@ -389,7 +396,11 @@ export default function BoardWrite({ showBoard }) {
                                     editor={ClassicEditor}
                                     data={content}
                                     config={editorConfig}
-                                    onChange={handleContentChange} />
+                                    onChange={handleContentChange} 
+                                    onReady={(editor) =>{
+                                        console.log(editor);
+                                        setMyEditor(editor)
+                                }}/>
                             }
                         </div>
                     </div>
@@ -398,7 +409,7 @@ export default function BoardWrite({ showBoard }) {
                     <input type="file" multiple onChange={handleFileChange} className={styles.file} />
                 </div>
                 <div>
-                    <button type="submit" id="submit" disabled={isSubmitDisabled}
+                    <button type="submit" id="submit" onClick={writeClick} disabled={isSubmitDisabled}
                         className={`${styles.button} ${isSubmitDisabled ? styles['button-disabled'] : ''}`}>글쓰기</button>
                     <button type="reset" className={styles.button} onClick={cancel}>취소</button>
                 </div>

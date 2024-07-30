@@ -64,6 +64,35 @@ import axios from 'axios';
 import FooterImg from '../../Menu/Footer/FooterImg';
 import Footer from '../../Menu/Footer/Footer';
 
+// CustomUploadAdapter 정의
+class CustomUploadAdapter {
+    constructor(loader) {
+        this.loader = loader;
+    }
+
+    upload() {
+        return this.loader.file
+            .then(file => new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch('http://localhost:8090/ms1/board/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result && result.url) {
+                        resolve({ default: result.url });
+                    } else {
+                        reject('Upload failed');
+                    }
+                })
+                .catch(err => reject(err));
+            }));
+    }
+}
+
 export default function BoardEdit() {
     const { boardNo } = useParams();
     const navigate = useNavigate();
@@ -246,7 +275,11 @@ export default function BoardEdit() {
             ]
         },
         image: {
-            toolbar: ['imageTextAlternative']
+            toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:alignLeft', 'imageStyle:alignRight'],
+            upload: {
+                types: ['jpeg', 'png', 'gif', 'bmp', 'webp'],
+                adapter: CustomUploadAdapter // 커스텀 업로드 어댑터를 사용하여 단축된 URL 제공
+            }
         },
         initialData:
             {},
@@ -344,22 +377,17 @@ export default function BoardEdit() {
         setFiles(e.target.files);
     }
 
-    function stripHtmlTags(html) {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
-    }
+   
 
     const token = localStorage.getItem('token');
 
     async function handleSubmitContent(e) {
         e.preventDefault();
-        const plainTextContent = stripHtmlTags(content);
-
-
+        
         const formData = new FormData();
         formData.append('category', category);
         formData.append('title', title);
-        formData.append('content', plainTextContent);
+        formData.append('content', content);
         formData.append('boardNo', boardNo);
 
         for (let i = 0; i < files.length; i++) {
@@ -383,6 +411,10 @@ export default function BoardEdit() {
     function cancel() {
         navigate(-1); // 이전 페이지로 이동
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className={styles.bigContainer}>
