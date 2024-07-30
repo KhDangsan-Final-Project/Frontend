@@ -26,7 +26,6 @@ export default function BoardList() {
                         pageContentEa: pageContentEa
                     }
                 });
-                console.log(response.data.pagging);
                 setBoardList(response.data.boards);
                 setPagging(response.data.pagging);
             } catch (err) {

@@ -27,7 +27,6 @@ export default function BoardEvent() {
                         category: "이벤트"
                     }
                 });
-                console.log(response.data.pagging);
                 setBoardList(response.data.boards);
                 setPagging(response.data.pagging);
             } catch (err) {

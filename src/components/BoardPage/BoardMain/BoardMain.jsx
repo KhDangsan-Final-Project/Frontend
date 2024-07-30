@@ -34,7 +34,6 @@ export default function BoardMain({ showWrite, token }) {
     };
     
     useEffect(() => {
-        console.log('BoardMain token:', token);
         if (token) {
             setIsLoggedIn(true);
         } else {

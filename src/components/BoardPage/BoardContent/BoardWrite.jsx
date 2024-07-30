@@ -56,8 +56,14 @@ export default function BoardWrite({ showBoard }) {
         setFiles(e.target.files);
     }
 
+   
+    const writeClick = () => {
+    }
+
+    const token = localStorage.getItem('token');
     async function handleSubmitContent(e) {
         e.preventDefault();
+        
 
         const formData = new FormData();
         formData.append('category', category);
@@ -71,20 +77,15 @@ export default function BoardWrite({ showBoard }) {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch("http://localhost:30114/ms1/board/insert", {
+            const response = await fetch("https://teeput.synology.me:30112/ms1/board/insert", {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
             });
-
-            if (response.ok) {
-                showBoard();
-            } else {
-                const result = await response.json();
-                console.error(result);
-            }
+            showBoard();
+            const result = await response.json();
         } catch (error) {
             console.error('Error:', error);
         }
@@ -108,19 +109,23 @@ export default function BoardWrite({ showBoard }) {
                     </span>
                 </div>
                 <input type='text' className={styles.title} value={title} onChange={handleTitleChange} placeholder='제목을 입력해주세요' />
-                <div className={styles.editor_container}>
-                    {isLayoutReady && (
-                        <CKEditor
-                            editor={ClassicEditor}
-                            data={content}
-                            config={editorConfig}
-                            onChange={handleContentChange}
-                            onReady={editor => setMyEditor(editor)}
-                        />
-                    )}
+                <div className={`${styles.editor_container} editor-container_classic-editor editor-container_include-style`} ref={editorContainerRef}>
+                    <div className={styles.editor_container__editor}>
+                        <div ref={editorRef} value={content} onChange={handleContentChange}>
+                            {isLayoutReady &&
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={content}
+                                    config={editorConfig}
+                                    onChange={handleContentChange} 
+                                    onReady={(editor) =>{
+                                        setMyEditor(editor)
+                                }}/>
+                            }
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <input type="file" multiple onChange={handleFileChange} className={styles.file} />
                 </div>
                 <div>
                     <button type="submit" id="submit" disabled={isSubmitDisabled}

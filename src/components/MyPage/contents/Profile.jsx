@@ -125,7 +125,7 @@ export default function Profile() {
     <div className={styles.container}>
       <h2 className={styles.title}>프로필</h2>
       <div className={styles.profileSection}>
-        <img src="../img/jiwoo.jpg" alt="프로필 이미지" />
+        <img src={userData.profile} alt="프로필 이미지" />
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
