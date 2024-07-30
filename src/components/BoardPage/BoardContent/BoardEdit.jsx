@@ -384,6 +384,10 @@ export default function BoardEdit() {
         navigate(-1); // 이전 페이지로 이동
     }
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div className={styles.bigContainer}>
             <div className={styles.jump} />

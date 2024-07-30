@@ -23,6 +23,10 @@ export default function BoardContent() {
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
 
     useEffect(() => {
 
@@ -334,7 +338,7 @@ export default function BoardContent() {
                                     ))}
                                 </div>
                             ) : (
-                                <p>첨부된 파일이 없습니다.</p>
+                                <></>
                             )}
                         </div>
 
@@ -391,7 +395,7 @@ export default function BoardContent() {
                     </div>
                 </div>
             ) : (
-                <div>게시글이 없습니다.</div> // board가 없을 때 처리
+                <div><p className={styles.loading}>게시글 로딩중...</p></div>
             )}
             <hr />
             <div className={styles.jump} />

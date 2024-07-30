@@ -26,7 +26,9 @@ export default function BoardMain({ showWrite, token }) {
     const [groupedBoards, setGroupedBoards] = useState([]);
     const [error, setError] = useState(null);
     
-    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const write = () => {
         showWrite();
     };
