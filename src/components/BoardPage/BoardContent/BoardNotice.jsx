@@ -12,7 +12,7 @@ export default function BoardNotice() {
     const [pageNo, setPageNo] = useState(1);
     const [pageContentEa, setPageContentEa] = useState(15);
     const [pagging, setPagging] = useState({});
-    
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -56,7 +56,7 @@ export default function BoardNotice() {
 
     return (
         <div className={styles.bigContainer}>
-            <div className={styles.jump}/>
+            <div className={styles.jump} />
             <h1 className={styles.title}>공지사항</h1>
             <div className={styles.container}>
                 <table>
@@ -68,16 +68,24 @@ export default function BoardNotice() {
                             <th>조회수</th>
                             <th>작성일</th>
                         </tr>
+                        <tr>
+                            <th colSpan="5"><hr className={styles.hrHeadLine} /></th>
+                        </tr>
                     </thead>
                     <tbody>
                         {boardList.map(board => (
-                            <tr key={board.boardNo}>
-                                <td>{board.boardNo}</td>
-                                <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}> {board.boardTitle}</Link></td>
-                                <td>{board.id}</td>
-                                <td>{board.boardCount}</td>
-                                <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
-                            </tr>
+                            <React.Fragment key={board.boardNo}>
+                                <tr>
+                                    <td>{board.boardNo}</td>
+                                    <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}> {board.boardTitle}</Link></td>
+                                    <td>{board.id}</td>
+                                    <td>{board.boardCount}</td>
+                                    <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="5"><hr className={styles.hrLine} /></td>
+                                </tr>
+                            </React.Fragment>
                         ))}
                     </tbody>
                     <tfoot className={styles.page}>
@@ -99,7 +107,7 @@ export default function BoardNotice() {
                     </tfoot>
                 </table>
             </div>
-            <div className={styles.jump}/>
+            <div className={styles.jump} />
             <FooterImg />
             <Footer />
         </div>

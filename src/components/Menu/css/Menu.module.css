@@ -24,15 +24,51 @@
     width: 100%;
 }
 
+.container ul li:hover a {
+    animation: color-change 1.5s infinite;
+}
+@keyframes color-change {
+    0% { color: #ff6347; text-shadow: 0 0 50px #ff6347; } /* 토마토 */
+    10% { color: #ff8c00; text-shadow: 0 0 50px #ff8c00; } /* 다크 오렌지 */
+    40% { color: #20b2aa; text-shadow: 0 0 50px #20b2aa; } /* 라이트 시안 */
+    50% { color: #1e90ff; text-shadow: 0 0 50px #1e90ff; } /* 다저 블루 */
+    60% { color: #9370db; text-shadow: 0 0 50px #9370db; } /* 미디엄 퍼플 */
+    70% { color: #ff1493; text-shadow: 0 0 50px #ff1493; } /* 딸기 */
+    80% { color: #ff4500; text-shadow: 0 0 50px #ff4500; } /* 오렌지 레드 */
+    90% { color: #8a2be2; text-shadow: 0 0 50px #8a2be2; } /* 블루 바이올렛 */
+    100% { color: #ff6347; text-shadow: 0 0 50px #ff6347; } /* 토마토 (애니메이션이 다시 시작됨) */
+}
 .container ul li a{
     color: white;
     text-shadow: 0 0 4px black;
+    text-decoration: none;
 }
 
-.menuimg{
+
+
+.menuimg {
     width: 172px;
     height: auto;
     cursor: url(https://raw.githubusercontent.com/nostalgic-css/NES.css/develop/assets/cursor.png) 14 0, pointer !important;
+    transition: filter 2s ease-in-out;
+}
+
+.menuimg:hover {
+    animation: shadow-change 2s infinite;
+}
+
+@keyframes shadow-change {
+    0% { filter: drop-shadow(0 0 50px #ff6347); }
+    10% { filter: drop-shadow(0 0 50px #ff8c00); }
+    20% { filter: drop-shadow(0 0 50px #ffd700); }
+    30% { filter: drop-shadow(0 0 50px #adff2f); }
+    40% { filter: drop-shadow(0 0 50px #20b2aa); }
+    50% { filter: drop-shadow(0 0 50px #1e90ff); }
+    60% { filter: drop-shadow(0 0 50px #9370db); }
+    70% { filter: drop-shadow(0 0 50px #ff1493); }
+    80% { filter: drop-shadow(0 0 50px #ff4500); }
+    90% { filter: drop-shadow(0 0 50px #8a2be2); }
+    100% { filter: drop-shadow(0 0 50px #ff6347); }
 }
 
 @media (max-width: 904px) {
