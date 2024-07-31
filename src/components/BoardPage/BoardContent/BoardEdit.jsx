@@ -76,7 +76,7 @@ class CustomUploadAdapter {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                fetch('https://teeput.synology.me:30112/ms1/board/upload', {
+                fetch('http://localhost:8090/ms1/board/upload', {
                     method: 'POST',
                     body: formData
                 })
@@ -105,7 +105,7 @@ export default function BoardEdit() {
     }, []);
 
     useEffect(() => {
-        axios.get(`https://teeput.synology.me:30112/ms1/board/${boardNo}`)
+        axios.get(`http://localhost:8090/ms1/board/${boardNo}`)
             .then(response => {
                 const { boardTitle, boardContent, boardCategory } = response.data;
                 setTitle(boardTitle || '123');
@@ -394,7 +394,7 @@ export default function BoardEdit() {
             formData.append('file', files[i]);
         }
         try {
-            await fetch(`https://teeput.synology.me:30112/ms1/board/update/${boardNo}`, {
+            await fetch(`http://localhost:8090/ms1/board/update/${boardNo}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -415,7 +415,7 @@ export default function BoardEdit() {
     //파일 조회
     async function fetchFiles() {
         try {
-            const response = await axios.get(`https://teeput.synology.me:30112/ms1/board/fileList/${boardNo}`, {
+            const response = await axios.get(`http://localhost:8090/ms1/board/fileList/${boardNo}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setFiles(response.data || []);
@@ -435,7 +435,7 @@ export default function BoardEdit() {
 
     async function handleFileDelete(fno) {
         try {
-            await axios.delete(`https://teeput.synology.me:30112/ms1/deleteFile/${fno}`, {
+            await axios.delete(`http://localhost:8090/ms1/deleteFile/${fno}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
