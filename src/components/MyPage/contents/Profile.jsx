@@ -79,7 +79,12 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+    if (!userData.password || !passwordCheck) {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
     if (!passwordValid || !passwordMatch) {
+      alert('비밀번호 확인을 해주세요.');
       return;
     }
     try {
@@ -171,14 +176,7 @@ export default function Profile() {
 
         <label className={styles.label}>
           <span>닉네임</span>
-          <input 
-            type="text" 
-            placeholder="닉네임" 
-            className={styles.info} 
-            value={userData.nickname} 
-            name="nickname"
-            onChange={handleInputChange} 
-          />
+          <input  type="text"  placeholder="닉네임"  className={styles.info}  value={userData.nickname}  name="nickname" onChange={handleInputChange} />
         </label>
 
         <div className={styles.btn}>

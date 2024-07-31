@@ -20,7 +20,7 @@ export default function BoardList() {
     useEffect(() => {
         async function fetchBoardList() {
             try {
-                const response = await axios.get("http://localhost:8090/ms1/board/list", {
+                const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list", {
                     params: {
                         pageNo: pageNo,
                         pageContentEa: pageContentEa
@@ -55,7 +55,7 @@ export default function BoardList() {
 
     return (
         <div className={styles.bigContainer}>
-            <div className={styles.jump}/>
+            <div className={styles.jump} />
             <h1 className={styles.title}>자유게시판</h1>
             <div className={styles.container}>
                 <table>
@@ -67,16 +67,24 @@ export default function BoardList() {
                             <th>조회수</th>
                             <th>작성일</th>
                         </tr>
+                        <tr>
+                            <th colSpan="5"><hr className={styles.hrHeadLine} /></th>
+                        </tr>
                     </thead>
                     <tbody>
                         {boardList.map(board => (
-                            <tr key={board.boardNo}>
-                                <td>{board.boardNo}</td>
-                                <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}> {board.boardTitle}</Link></td>
-                                <td>{board.id}</td>
-                                <td>{board.boardCount}</td>
-                                <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
-                            </tr>
+                            <React.Fragment key={board.boardNo}>
+                                <tr>
+                                    <td>{board.boardNo}</td>
+                                    <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}> {board.boardTitle}</Link></td>
+                                    <td>{board.id}</td>
+                                    <td>{board.boardCount}</td>
+                                    <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="5"><hr className={styles.hrLine} /></td>
+                                </tr>
+                            </React.Fragment>
                         ))}
                     </tbody>
                     <tfoot className={styles.page}>
@@ -98,9 +106,9 @@ export default function BoardList() {
                     </tfoot>
                 </table>
             </div >
-            <div className={styles.jump}/>
-            <FooterImg/>
-            <Footer/>
+            <div className={styles.jump} />
+            <FooterImg />
+            <Footer />
         </div>
     );
 }
