@@ -51,7 +51,7 @@ export default function MyPage({ setToken }) {
     };
 
     const showAdminPage = () => {
-        window.open('https://teeput.synology.me:30117/ms4/login/view', '_blank');
+        window.open('https://teeput.synology.me:30112/ms4/user/list', '_blank');
     };
 
     return (
@@ -62,7 +62,7 @@ export default function MyPage({ setToken }) {
                 <button type='button' onClick={showProfile}>프로필</button>
                 <button type='button' onClick={showMyDex}>내 도감</button>
                 <button type='button' onClick={showMyFriends}>내 친구</button>
-                <button type='button' onClick={showMailbox}>메일함</button>
+                <button type='button' onClick={showMailbox}>쪽지함</button>
                 <button type='button' onClick={showAttendance}>출석체크</button>
                 {grantNo === 0 && (
                     <button type='button' onClick={showAdminPage}>관리자</button>

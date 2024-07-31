@@ -74,15 +74,16 @@
 }
 
 .button {
-  width: 70px;
+  width: 80px;
   margin: 0 auto;
   margin-top: 10px;
-  background-color: #007bff;
+  background-color: #ff4b5c;
   color: white;
   border: none; 
   padding: 5px;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
 .sendMail {

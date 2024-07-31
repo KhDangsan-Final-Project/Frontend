@@ -47,9 +47,9 @@ export default function MailBox() {
                 setMails(mails.filter(mail => mail.mailNo !== mailNo));
                 setSelectedMailId(null);
                 setSelectedMail(null);
-                alert('메일이 성공적으로 삭제되었습니다');
+                alert('쪽지가 성공적으로 삭제되었습니다');
             } else {
-                alert('메일 삭제에 실패했습니다');
+                alert('쪽지 삭제에 실패했습니다');
             }
       
     };
@@ -70,9 +70,9 @@ export default function MailBox() {
     }
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>메일함</h2>
+            <h2 className={styles.title}>쪽지함</h2>
             <div className={styles.buttonContainer}>
-                <button onClick={() => setShowCompose(true)} className={styles.sendMail}>메일 쓰기</button>
+                <button onClick={() => setShowCompose(true)} className={styles.sendMail}>쪽지 쓰기</button>
             </div>
             <div className={styles.sectionsContainer}>
                 <div className={styles.header}>
@@ -100,7 +100,7 @@ export default function MailBox() {
                                         </div>
                                     )}
                                 </li>
-                            ))) : ( <p>메일이 없습니다.</p> )}
+                            ))) : ( <p>받은 쪽지가 없습니다.</p> )}
                     </ul>
                 </div>
             </div>
