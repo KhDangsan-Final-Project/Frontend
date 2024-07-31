@@ -40,7 +40,6 @@ export default function BoardContent() {
                 //boardNo에 맞는 게시물 조회
                 const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
-                console.log(response.data);
                 // 현재 로그인한 사용자 ID 가져오기
                 const userResponse = await axios.get('http://localhost:8090/ms1/currentUser', {
                     headers: { 'Authorization': 'Bearer ' + token }
@@ -284,37 +283,37 @@ export default function BoardContent() {
     // 게시물 신고
     async function boardReport(boardNo) {
         try {
-           const response = await axios.post(`http://localhost:8090/ms1/boardReport/${boardNo}`, null, {
-               headers: { 'Authorization': 'Bearer ' + token }
-           });
-           if (response.status === 200) {
-               alert('해당 게시글을 신고하셨습니다.');
-           } else {
-               alert('게시글 신고 실패: ' + response.data);
-           }
-       } catch (err) {
-           console.error('Error:', err);
-           alert('오류 발생: ' + err.message);
-       }
-   }
-   
-   //댓글 신고
-   async function boardCommentReport(boardNo, cno){
-       try {
-           const response = await axios.post(`http://localhost:8090/ms1/boardCommentReport/${cno}/${boardNo}`, null, {
-               headers: { 'Authorization': 'Bearer ' + token }
-           });
-           if (response.status === 200) {
-               alert('해당 댓글을 신고하셨습니다.');
-           } else {
-               alert('댓글 신고 실패: ' + response.data);
-           }
-       } catch (err) {
-           console.error('Error:', err);
-           alert('오류 발생: ' + err.message);
-       }
-   }
-   //유저 프로필 조회
+            const response = await axios.post(`http://localhost:8090/ms1/boardReport/${boardNo}`, null, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (response.status === 200) {
+                alert('해당 게시글을 신고하셨습니다.');
+            } else {
+                alert('게시글 신고 실패: ' + response.data);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('오류 발생: ' + err.message);
+        }
+    }
+
+    //댓글 신고
+    async function boardCommentReport(boardNo, cno) {
+        try {
+            const response = await axios.post(`http://localhost:8090/ms1/boardCommentReport/${cno}/${boardNo}`, null, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (response.status === 200) {
+                alert('해당 댓글을 신고하셨습니다.');
+            } else {
+                alert('댓글 신고 실패: ' + response.data);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('오류 발생: ' + err.message);
+        }
+    }
+    //유저 프로필 조회
 
 
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
@@ -329,7 +328,7 @@ export default function BoardContent() {
                     <h2>{board.boardTitle}</h2>
                     <div className={styles.profile_bar}>
                         <div className={styles.profile}>
-                        <img src={board.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
+                            <img src={board.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
                         </div>
                         <div className={styles.userInfo}>
                             <div className={styles.userName}>
@@ -384,15 +383,15 @@ export default function BoardContent() {
 
                     </div>
                     <div className={styles.boardLike}>
-                        <button onClick={() => {boardReport(boardNo)}}>신고</button>
                         <button onClick={buttonLike} className={`${styles.boardLike} ${liked ? styles.heartActive : styles.heartNone}`}><span>{likeCount}</span></button>
+                        <button onClick={() => { boardReport(boardNo) }}>신고</button>
                     </div>
                     <hr />
                     <div className={styles.commentArea}>
-                        <h6>댓글</h6>
+                        <h5>댓글</h5>
                         <div className={styles.comment_wrap}>
                             <div className={styles.commentProfile}>
-                            <img src={userProfile || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
+                                <img src={userProfile || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
                             </div>
                             <div className={styles.commentInsert}>
                                 <textarea value={commentText} onChange={(e) => setCommentText(e.target.value)}></textarea>
@@ -405,17 +404,16 @@ export default function BoardContent() {
                                 comments.map(comment => (
                                     <div key={comment.cno} className={styles.comment}>
                                         <div className={styles.commentUser}>
-                                        <img src={comment.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
-                        
+                                            <img src={comment.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
+
                                             <span>{comment.id}</span>
                                         </div>
                                         <span>{comment.comment}</span> <br />
-                                        <span>{comment.cdate}</span><br />
+                                        <span>{comment.cdate}</span>
                                         {comment.id === userId && (
                                             <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.cno)}>삭제</button>
                                         )}
                                         <div className={styles.boardCommentButton}>
-                                        <button onClick={() => {boardCommentReport(boardNo,comment.cno)}}>신고</button>
                                             <button
                                                 onClick={() => buttonCommentLike(comment.cno)}
                                                 className={`${styles.boardCommentButton} ${commentLiked[comment.cno] ? styles.heartActive : styles.heartNone}`}
@@ -424,10 +422,11 @@ export default function BoardContent() {
                                             </button>
                                             <button
                                                 onClick={() => buttonCommentHate(comment.cno)}
-                                                className={`${styles.boardCommentButton} ${commentHated[comment.cno] ? styles.heartActive : styles.heartNone}`}
+                                                className={`${styles.boardCommentButton} ${commentHated[comment.cno] ? styles.poopActive : styles.poopNone}`}
                                             >
                                                 <span>{commentHateCounts[comment.cno]}</span>
                                             </button>
+                                            <button onClick={() => { boardCommentReport(boardNo, comment.cno) }}>신고</button>
                                         </div>
                                     </div>
                                 ))
