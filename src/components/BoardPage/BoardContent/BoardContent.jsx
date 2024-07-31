@@ -6,8 +6,6 @@ import FooterImg from '../../Menu/Footer/FooterImg';
 import Footer from '../../Menu/Footer/Footer';
 import DOMPurify from 'dompurify';
 
-
-
 export default function BoardContent() {
     const { boardNo } = useParams();
     const [board, setBoard] = useState(null);
@@ -22,6 +20,7 @@ export default function BoardContent() {
     const [commentLiked, setCommentLiked] = useState({});
     const [commentHated, setCommentHated] = useState({});
     const [userId, setUserId] = useState('');
+    const [userProfile, setUserProfile] = useState('');
 
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
@@ -39,17 +38,18 @@ export default function BoardContent() {
                 await increaseViewCount();
 
                 //boardNo에 맞는 게시물 조회
-                const response = await axios.get(`https://teeput.synology.me:30112/ms1/board/${boardNo}`);
+                const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
-
+                console.log(response.data);
                 // 현재 로그인한 사용자 ID 가져오기
-                const userResponse = await axios.get('https://teeput.synology.me:30112/ms1/currentUser', {
+                const userResponse = await axios.get('http://localhost:8090/ms1/currentUser', {
                     headers: { 'Authorization': 'Bearer ' + token }
                 });
                 setUserId(userResponse.data.id);
+                setUserProfile(userResponse.data.profile);
 
                 //좋아요 상태 및 수 확인
-                const likeResponse = await axios.get(`https://teeput.synology.me:30112/ms1/boardLikeView/${boardNo}`, {
+                const likeResponse = await axios.get(`http://localhost:8090/ms1/boardLikeView/${boardNo}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -74,7 +74,7 @@ export default function BoardContent() {
     //파일 조회
     async function fetchFiles() {
         try {
-            const response = await axios.get(`https://teeput.synology.me:30112/ms1/board/fileList/${boardNo}`, {
+            const response = await axios.get(`http://localhost:8090/ms1/board/fileList/${boardNo}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setFiles(response.data || []);
@@ -87,7 +87,7 @@ export default function BoardContent() {
     //게시물 조회수
     async function increaseViewCount() {
         try {
-            await axios.post(`https://teeput.synology.me:30112/ms1/boardViewCount/${boardNo}`, {}, {
+            await axios.post(`http://localhost:8090/ms1/boardViewCount/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -102,7 +102,7 @@ export default function BoardContent() {
     //게시물 좋아요
     async function buttonLike() {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/boardLike/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/boardLike/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -128,7 +128,7 @@ export default function BoardContent() {
         }
 
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/comment/insert/${boardNo}`, new URLSearchParams({
+            const response = await axios.post(`http://localhost:8090/ms1/comment/insert/${boardNo}`, new URLSearchParams({
                 comment: commentText
             }), {
                 headers: {
@@ -153,7 +153,7 @@ export default function BoardContent() {
     //댓글목록조회
     async function fetchComments() {
         try {
-            const response = await axios.get(`https://teeput.synology.me:30112/ms1/comments/${boardNo}`, {
+            const response = await axios.get(`http://localhost:8090/ms1/comments/${boardNo}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setComments(response.data || []);
@@ -162,7 +162,7 @@ export default function BoardContent() {
             const hateStatus = {};
 
             const likeStatusRequests = response.data.map(comment =>
-                axios.get(`https://teeput.synology.me:30112/ms1/boardCommentLikeView/${comment.cno}/${boardNo}`, {
+                axios.get(`http://localhost:8090/ms1/boardCommentLikeView/${comment.cno}/${boardNo}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }).then(likeResponse => {
                     likeStatus[comment.cno] = likeResponse.data.liked;
@@ -171,7 +171,7 @@ export default function BoardContent() {
             );
 
             const hateStatusRequests = response.data.map(comment =>
-                axios.get(`https://teeput.synology.me:30112/ms1/boardCommentHateView/${comment.cno}/${boardNo}`, {
+                axios.get(`http://localhost:8090/ms1/boardCommentHateView/${comment.cno}/${boardNo}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }).then(hateResponse => {
                     hateStatus[comment.cno] = hateResponse.data.hated;
@@ -190,7 +190,7 @@ export default function BoardContent() {
     //댓글 좋아요
     async function buttonCommentLike(cno) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/commentLike/${cno}/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/commentLike/${cno}/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -213,7 +213,7 @@ export default function BoardContent() {
     //댓글 싫어요
     async function buttonCommentHate(cno) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/commentHate/${cno}/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/commentHate/${cno}/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -236,7 +236,7 @@ export default function BoardContent() {
     // 게시물 삭제
     async function deleteBoard() {
         try {
-            const response = await axios.delete(`https://teeput.synology.me:30112/ms1/board/delete/${boardNo}`, {
+            const response = await axios.delete(`http://localhost:8090/ms1/board/delete/${boardNo}`, {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             if (response.status === 200) {
@@ -259,7 +259,7 @@ export default function BoardContent() {
     //댓글 삭제
     async function deleteComment(cno) {
         try {
-            const response = await axios.delete(`https://teeput.synology.me:30112/ms1/boardCommentDelete/${cno}`, {
+            const response = await axios.delete(`http://localhost:8090/ms1/boardCommentDelete/${cno}`, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -284,7 +284,7 @@ export default function BoardContent() {
     // 게시물 신고
     async function boardReport(boardNo) {
         try {
-           const response = await axios.post(`https://teeput.synology.me:30112/ms1/boardReport/${boardNo}`, null, {
+           const response = await axios.post(`http://localhost:8090/ms1/boardReport/${boardNo}`, null, {
                headers: { 'Authorization': 'Bearer ' + token }
            });
            if (response.status === 200) {
@@ -301,7 +301,7 @@ export default function BoardContent() {
    //댓글 신고
    async function boardCommentReport(boardNo, cno){
        try {
-           const response = await axios.post(`https://teeput.synology.me:30112/ms1/boardCommentReport/${cno}/${boardNo}`, null, {
+           const response = await axios.post(`http://localhost:8090/ms1/boardCommentReport/${cno}/${boardNo}`, null, {
                headers: { 'Authorization': 'Bearer ' + token }
            });
            if (response.status === 200) {
@@ -314,6 +314,7 @@ export default function BoardContent() {
            alert('오류 발생: ' + err.message);
        }
    }
+   //유저 프로필 조회
 
 
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
@@ -328,7 +329,7 @@ export default function BoardContent() {
                     <h2>{board.boardTitle}</h2>
                     <div className={styles.profile_bar}>
                         <div className={styles.profile}>
-                            <img src='/img/jiwoo.jpg' />
+                        <img src={board.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
                         </div>
                         <div className={styles.userInfo}>
                             <div className={styles.userName}>
@@ -344,8 +345,7 @@ export default function BoardContent() {
                             <div className={styles.boardUpdate}>
                                 <button
                                     className={styles.edit}
-                                    onClick={() => navigate(`/boardedit/${board.boardNo}`, { state: { boardData: board } })}
-                                >
+                                    onClick={() => navigate(`/boardedit/${board.boardNo}`, { state: { boardData: board } })}>
                                     수정
                                 </button>
                                 <button className={styles.delete} onClick={deleteBoard}>삭제</button>
@@ -392,7 +392,7 @@ export default function BoardContent() {
                         <h6>댓글</h6>
                         <div className={styles.comment_wrap}>
                             <div className={styles.commentProfile}>
-                                <img src='/img/jiwoo.jpg' />
+                            <img src={userProfile || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
                             </div>
                             <div className={styles.commentInsert}>
                                 <textarea value={commentText} onChange={(e) => setCommentText(e.target.value)}></textarea>
@@ -405,7 +405,8 @@ export default function BoardContent() {
                                 comments.map(comment => (
                                     <div key={comment.cno} className={styles.comment}>
                                         <div className={styles.commentUser}>
-                                            <img src='/img/jiwoo.jpg' alt="profile" />
+                                        <img src={comment.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
+                        
                                             <span>{comment.id}</span>
                                         </div>
                                         <span>{comment.comment}</span> <br />
