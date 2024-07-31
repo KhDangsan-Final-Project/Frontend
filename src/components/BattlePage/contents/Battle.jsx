@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './css/battle.module.css';
 import usePokemonBattle from './hooks/useBattle';
-import Chat from './Chat';
 import { useLocation, useNavigate } from 'react-router-dom';
 import UserInfoFightContent from './UserInfoFightContent';
 import BattleTrainer from './BattleTrainer';
 import useAI from './hooks/useAI';
 
-// 타입에 따라 다른 스타일을 적용하는 함수
-const getTypeLogo = (type) => {
-  return `/img/types/${type}.png`;
-};
+const getTypeLogo = (type) => `/img/types/${type}.png`;
 
-// 타입에 따라 다른 스타일을 적용하는 함수
 const getTypeLogoContainerClass = (type) => {
   switch (type) {
     case 'Dragon':
@@ -42,7 +37,6 @@ const getTypeLogoContainerClass = (type) => {
   }
 };
 
-// 공격 데미지에서 숫자만 추출하는 함수
 const getCleanDamageValue = (damage) => {
   const cleanDamage = damage.replace(/[^0-9]/g, '');
   return cleanDamage ? parseInt(cleanDamage, 10) : 0;
@@ -56,7 +50,6 @@ function Battle({ token }) {
   const nickname = queryParams.get('nickname');
   const matchWin = parseInt(queryParams.get('matchWin'), 10);
   const [isHighlighted, setIsHighlighted] = useState(true);
-
 
   const [selectedPokemon, setSelectedPokemon] = useState([]);
   const [enemyPokemon, setEnemyPokemon] = useState([]);
@@ -75,9 +68,8 @@ function Battle({ token }) {
     selectEnemyPokemon,
   } = usePokemonBattle(roomId);
 
-  useAI(selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemon, playerTurn, setPlayerTurn,getCleanDamageValue);
+  useAI(selectedPokemon, enemyPokemon, setSelectedPokemon, setEnemyPokemon, playerTurn, setPlayerTurn, getCleanDamageValue);
 
-  // 포켓몬 데이터 로드
   useEffect(() => {
     const loadPokemonData = () => {
       const selectedPokemonData = localStorage.getItem('selectedPokemon');
@@ -101,9 +93,6 @@ function Battle({ token }) {
     loadPokemonData();
   }, []);
 
-
-
-  // 포켓몬 데이터를 로컬 스토리지에 저장
   useEffect(() => {
     localStorage.setItem('selectedPokemon', JSON.stringify(selectedPokemon));
   }, [selectedPokemon]);
@@ -112,12 +101,10 @@ function Battle({ token }) {
     localStorage.setItem('enemyPokemon', JSON.stringify(enemyPokemon));
   }, [enemyPokemon]);
 
-  // 전투 종료 시 처리
   useEffect(() => {
     if (isBattleFinished && enemyPokemon.length === 0) {
-
       if (token) {
-        const ws = new WebSocket('ws://teeput.synology.me:30112/ms2/update');
+        const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/update');
 
         ws.onopen = () => {
           console.log('Connected to WebSocket for updating matchWin');
@@ -187,7 +174,6 @@ function Battle({ token }) {
   const renderPokemonCards = (pokemons, isEnemy) => {
     return pokemons.length > 0 ? (
       pokemons.map((pokemon) => (
-        
         !pokemon.isRemoved && (
           <div
             key={pokemon.id}
@@ -216,18 +202,6 @@ function Battle({ token }) {
                   HP: {pokemon.hp}
                 </div>
               </div>
-              {showAttacks && pokemon.attacks && selectedPlayerPokemon && selectedPlayerPokemon.id === pokemon.id && (
-                <div className={styles.pokemonAttacks}>
-                  {pokemon.attacks.map((attack, index) => (
-                    <button key={index} className={styles.attackButton} onClick={() => handleAttackClick(getCleanDamageValue(attack.damage))}>
-                      <div className={styles.attack}>
-                        <p><strong>{attack.name}</strong></p>
-                        <p>피해: {getCleanDamageValue(attack.damage)}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         )
@@ -237,14 +211,12 @@ function Battle({ token }) {
     );
   };
 
-  // 적 포켓몬이 모두 사라졌을 때 전투 종료
   useEffect(() => {
     if (enemyPokemon.length === 0) {
       setIsBattleFinished(true);
     }
   }, [enemyPokemon]);
 
-  // 플레이어의 포켓몬이 모두 사라졌을 때 처리
   useEffect(() => {
     if (enemyPokemon.length > 0 && selectedPokemon.length === 0) {
       alert(`${nickname} 에게는 더 이상 \n싸울 수 있는 포켓몬이 없다!`);
@@ -256,25 +228,42 @@ function Battle({ token }) {
 
   return (
     <div className={styles.App}>
-      <div className={styles.stage}>
-        <div className={styles.enemyContainer}>
-          <div><h2>ALDER's pokemons</h2></div>
-          {renderPokemonCards(enemyPokemon, true)}
-        </div>
-        <div className={styles.body}>
-          <div className={styles.vs}></div>
-        </div>
-        <div className={styles.selectedPokemonContainer}>
-          <div><h2>{nickname} pokemons</h2></div>
-          {renderPokemonCards(selectedPokemon, false)}
+      <div className={styles.backgroundWrapper}>
+        <video autoPlay muted loop className={styles.backgroundVideo}>
+          <source src='/video/background.mp4' type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className={styles.overlay}>
+          <div className={styles.stage}>
+            <div className={styles.enemyContainer}>
+              {renderPokemonCards(enemyPokemon, true)}
+            </div>
+            <div className={styles.body}>
+              <div className={styles.vs}></div>
+            </div>
+            <div className={styles.selectedPokemonContainer}>
+              {renderPokemonCards(selectedPokemon, false)}
+            </div>
+          </div>
+          <div className={styles.userPokemonAttackContainer}>
+            <BattleTrainer />
+            <UserInfoFightContent token={token} />
+            {showAttacks && selectedPlayerPokemon && (
+              <div className={styles.pokemonAttacksContainer}>
+                {selectedPlayerPokemon.attacks.map((attack, index) => (
+                  <button key={index} className={styles.attackButton} onClick={() => handleAttackClick(getCleanDamageValue(attack.damage))}>
+                    <div className={styles.attack}>
+                      <p><strong>{attack.name}</strong></p>
+                      <p>피해: {getCleanDamageValue(attack.damage)}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      <div>
-        <BattleTrainer />
-        <Chat nickname={nickname}/>
-        <UserInfoFightContent token={token} />
-      </div>
-      </div>
+    </div>
   );
 }
 

@@ -66,7 +66,14 @@ const Friends = () => {
             const token = localStorage.getItem('token');
             const response = await axios.get('http://localhost:8090/ms3/friend/search', {
                 params: { query: searchQuery, token: token }, });
-            setSearchResults(response.data);
+            
+            // 검색 결과에서 이미 친구이거나 친구 요청을 보낸 사용자를 제외
+            const filteredResults = response.data.filter(result => {
+                // result.id가 friends 또는 receivedRequests에 포함되지 않는 경우만 포함
+                return !friends.includes(result.id) && !receivedRequests.some(request => request.userId === result.id);
+            });
+
+            setSearchResults(filteredResults);
         } catch (error) {
             console.error('검색 중 오류가 발생했습니다:', error);
             alert('검색 중 오류가 발생했습니다. 다시 시도해 주세요.');
@@ -77,15 +84,14 @@ const Friends = () => {
     const handleAddFriend = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.post('http://localhost:8090/ms3/friend/add', { userId, friendId, status: 'pending' }, {
+            const response = await axios.post('http://localhost:8090/ms3/friend/add', { 
+                userId, friendId, status: 'pending' }, {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, params: { token } });
             if (response.data.status === 'success') {
                 alert('친구 요청이 성공적으로 전송되었습니다');
                 setPendingRequests([...pendingRequests, { userId, friendId }]);
                 setSearchResults(searchResults.filter(result => result.id !== friendId));
-            } else {
-                alert('이미 친구이거나 친구 요청을 보냈습니다.');
-            }
+            } 
         } catch (error) {
             console.error('친구 추가 중 오류가 발생했습니다:', error);
         }

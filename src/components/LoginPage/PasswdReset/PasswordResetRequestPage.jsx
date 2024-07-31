@@ -19,7 +19,7 @@ export default function PasswordResetRequestPage( {showLogin}) {
     e.preventDefault();
     const fullEmail = `${email}@${domain}`;
     try {
-      const response = await axios.post('https://localhost:9997/ms3/password-reset-request', { email: fullEmail });
+      const response = await axios.post('https://teeput.synology.me:30112/ms3/password-reset-request', { email: fullEmail });
       setMessage(response.data.message);
     } catch (error) {
       setMessage('비밀번호 재설정 요청 중 오류 발생');

@@ -12,6 +12,10 @@ export default function BoardList() {
     const [pagging, setPagging] = useState({});
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         async function fetchBoardList() {
             try {
                 const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list", {
@@ -20,7 +24,6 @@ export default function BoardList() {
                         pageContentEa: pageContentEa
                     }
                 });
-                console.log(response.data.pagging);
                 setBoardList(response.data.boards);
                 setPagging(response.data.pagging);
             } catch (err) {

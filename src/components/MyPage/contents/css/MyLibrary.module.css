@@ -5,10 +5,10 @@
 }
 
 .title {
-  font-size: 32px;
-  margin: 50px 0;
+  font-size: 2em;
   text-align: center;
   color: #333;
+  font-family: 'Bazzi';
 }
 
 .subcontainer {
