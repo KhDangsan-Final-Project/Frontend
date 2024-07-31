@@ -18,7 +18,7 @@ export default function MailBox() {
             setLoading(false);
             return;
         }
-            const response = await axios.get('https://teeput.synology.me:30112/ms3/mail', { params: { token } });
+            const response = await axios.get('http://localhost:8090/ms3/mail', { params: { token } });
             if (response.data && response.data.result) {
                 setMails(response.data.result);
             } else {
@@ -32,14 +32,14 @@ export default function MailBox() {
             setSelectedMail(null);
             return;
         }
-            const response = await axios.get('https://teeput.synology.me:30112/ms3/mail/detail', {
+            const response = await axios.get('http://localhost:8090/ms3/mail/detail', {
                 params: { mailNo, token }
             });
             setSelectedMail(response.data);
             setSelectedMailId(mailNo);
     };
     const handleDeleteMail = async (mailNo) => {
-            const response = await axios.delete('https://teeput.synology.me:30112/ms3/mail/delete', {
+            const response = await axios.delete('http://localhost:8090/ms3/mail/delete', {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { mailNo, token }
             });
@@ -47,9 +47,9 @@ export default function MailBox() {
                 setMails(mails.filter(mail => mail.mailNo !== mailNo));
                 setSelectedMailId(null);
                 setSelectedMail(null);
-                alert('메일이 성공적으로 삭제되었습니다');
+                alert('쪽지가 성공적으로 삭제되었습니다');
             } else {
-                alert('메일 삭제에 실패했습니다');
+                alert('쪽지 삭제에 실패했습니다');
             }
       
     };
@@ -70,9 +70,9 @@ export default function MailBox() {
     }
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>메일함</h2>
+            <h2 className={styles.title}>쪽지함</h2>
             <div className={styles.buttonContainer}>
-                <button onClick={() => setShowCompose(true)} className={styles.sendMail}>메일 쓰기</button>
+                <button onClick={() => setShowCompose(true)} className={styles.sendMail}>쪽지 쓰기</button>
             </div>
             <div className={styles.sectionsContainer}>
                 <div className={styles.header}>
@@ -100,7 +100,7 @@ export default function MailBox() {
                                         </div>
                                     )}
                                 </li>
-                            ))) : ( <p>메일이 없습니다.</p> )}
+                            ))) : ( <p>받은 쪽지가 없습니다.</p> )}
                     </ul>
                 </div>
             </div>

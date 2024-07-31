@@ -20,7 +20,7 @@ export default function Profile() {
       setLoading(false);
       return;
     }
-    axios.get('https://teeput.synology.me:30112/ms3/mypage', { params: { token } })
+    axios.get('http://localhost:8090/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
           setUserData(response.data);
@@ -83,7 +83,7 @@ export default function Profile() {
       return;
     }
     try {
-      const response = await axios.put('https://teeput.synology.me:30112/ms3/mypage/update', userData, {
+      const response = await axios.put('http://localhost:8090/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
@@ -104,7 +104,7 @@ export default function Profile() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.delete(`https://teeput.synology.me:30112/ms3/user/delete`, {
+      const response = await axios.delete(`http://localhost:8090/ms3/user/delete`, {
         params: { id: userData.id, token: token }
       });
 
@@ -125,7 +125,7 @@ export default function Profile() {
     <div className={styles.container}>
       <h2 className={styles.title}>프로필</h2>
       <div className={styles.profileSection}>
-        <img src="../img/jiwoo.jpg" alt="프로필 이미지" />
+        <img src={userData.profile} alt="프로필 이미지" />
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
