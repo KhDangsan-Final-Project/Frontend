@@ -23,7 +23,7 @@ export default function MyLibrary() {
 
   const fetchPokemonLibrary = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8090/ms3/library', {
+      const response = await axios.get('https://teeput.synology.me:30112/ms3/library', {
         params: { token },
       });
       if (response.data.status === 'success') {

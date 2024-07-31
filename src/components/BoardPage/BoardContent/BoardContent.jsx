@@ -6,8 +6,6 @@ import FooterImg from '../../Menu/Footer/FooterImg';
 import Footer from '../../Menu/Footer/Footer';
 import DOMPurify from 'dompurify';
 
-
-
 export default function BoardContent() {
     const { boardNo } = useParams();
     const [board, setBoard] = useState(null);

@@ -20,7 +20,7 @@ export default function Profile() {
       setLoading(false);
       return;
     }
-    axios.get('http://localhost:8090/ms3/mypage', { params: { token } })
+    axios.get('https://teeput.synology.me:30112/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
           setUserData(response.data);
@@ -83,7 +83,7 @@ export default function Profile() {
       return;
     }
     try {
-      const response = await axios.put('http://localhost:8090/ms3/mypage/update', userData, {
+      const response = await axios.put('https://teeput.synology.me:30112/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
@@ -104,7 +104,7 @@ export default function Profile() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.delete(`http://localhost:8090/ms3/user/delete`, {
+      const response = await axios.delete(`https://teeput.synology.me:30112/ms3/user/delete`, {
         params: { id: userData.id, token: token }
       });
 

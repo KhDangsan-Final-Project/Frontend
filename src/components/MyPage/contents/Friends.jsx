@@ -31,7 +31,7 @@ const Friends = () => {
 
     const fetchUserId = async (token) => {
         try {
-            const response = await axios.get('http://localhost:8090/ms3/mypage', { params: { token } });
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/mypage', { params: { token } });
             setUserId(response.data.id);
         } catch (error) {
             console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
@@ -41,7 +41,7 @@ const Friends = () => {
 
     const fetchFriends = async (token) => {
         try {
-            const response = await axios.get('http://localhost:8090/ms3/friend', { params: { token } });
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/friend', { params: { token } });
             const fetchedFriends = response.data
                 .filter(friend => friend.status === 'accepted') 
                 .map(friend => (friend.userId === userId ? friend.friendId : friend.userId));
@@ -54,7 +54,7 @@ const Friends = () => {
 
     const fetchFriendRequests = async (token) => {
         try {
-            const response = await axios.get('http://localhost:8090/ms3/friend/request', { params: { token } });
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/friend/request', { params: { token } });
             setReceivedRequests(response.data);
         } catch (error) {
             console.error('친구 요청을 가져오는 중 오류가 발생했습니다:', error);
@@ -64,7 +64,7 @@ const Friends = () => {
     const handleSearch = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:8090/ms3/friend/search', {
+            const response = await axios.get('https://teeput.synology.me:30112/ms3/friend/search', {
                 params: { query: searchQuery, token: token }, });
             
             // 검색 결과에서 이미 친구이거나 친구 요청을 보낸 사용자를 제외
@@ -84,7 +84,7 @@ const Friends = () => {
     const handleAddFriend = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.post('http://localhost:8090/ms3/friend/add', { 
+            const response = await axios.post('https://teeput.synology.me:30112/ms3/friend/add', { 
                 userId, friendId, status: 'pending' }, {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, params: { token } });
             if (response.data.status === 'success') {
@@ -100,7 +100,7 @@ const Friends = () => {
     const handleAcceptRequest = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.put('http://localhost:8090/ms3/friend/accept', { 
+            const response = await axios.put('https://teeput.synology.me:30112/ms3/friend/accept', { 
                 userId: friendId, 
                 status: 'accepted' }, {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, params: { token } });
@@ -120,7 +120,7 @@ const Friends = () => {
     const handleRejectRequest = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.delete('http://localhost:8090/ms3/friend/reject', {
+            const response = await axios.delete('https://teeput.synology.me:30112/ms3/friend/reject', {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, 
                 data: { userId: friendId }, 
                 params: { token } });
@@ -139,7 +139,7 @@ const Friends = () => {
     const handleDeleteFriend = async (friendId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.delete('http://localhost:8090/ms3/friend/delete', {
+            const response = await axios.delete('https://teeput.synology.me:30112/ms3/friend/delete', {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 data: { userId: userId, friendId: friendId },
                 params: { token } });
