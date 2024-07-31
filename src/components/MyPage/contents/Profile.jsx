@@ -83,7 +83,6 @@ export default function Profile() {
       alert('비밀번호를 입력해주세요.');
       return;
     }
-  
     if (!passwordValid || !passwordMatch) {
       alert('비밀번호 확인을 해주세요.');
       return;
