@@ -67,7 +67,7 @@
 
   .pagination {
     display: flex;
-    flex-flow: row column;
+    flex-flow: row nowrap;
     justify-content: center;
     padding-top: 100px;
     padding-bottom: 100px;

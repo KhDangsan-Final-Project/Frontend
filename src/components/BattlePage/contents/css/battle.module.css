@@ -1,14 +1,9 @@
-/* ------------------------------------------전체 스타일링 ------------------------------------------*/
-
 .App {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-
-
-
-  background-image: url(/public/img/backgroundImg.jpg);
+  background-color: #000;
 }
 
 .stage {
@@ -33,7 +28,6 @@ flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .selectedPokemonContainer {
@@ -273,10 +267,7 @@ box-sizing: border-box;
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 .stage {
   display: flex;
-  /* justify-content: space-around; */
-  /* align-items: center; */
   flex: 1;
-  padding: 20px;
   background-color: #f0f0f0;
 }
 
@@ -391,16 +382,7 @@ flex-flow: row;
     border-bottom: 2px solid #333;
   }
 }
-
-
-
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-/* battle.module.css */
-
-
-
-
-
 .body {
   display: flex;
   flex-direction: column;
@@ -589,3 +571,4 @@ flex-flow: row;
     transparent 100%
   );
 }
+

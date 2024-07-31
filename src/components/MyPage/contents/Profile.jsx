@@ -104,7 +104,7 @@ export default function Profile() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.delete('https://teeput.synology.me:30112/ms3/user/delete', {
+      const response = await axios.delete(`https://teeput.synology.me:30112/ms3/user/delete`, {
         params: { id: userData.id, token: token }
       });
 
