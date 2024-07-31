@@ -51,11 +51,12 @@
     border-radius: 10px;
     margin: 0 3%;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .featureItemIndex {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     width: 75%;
 }
 
@@ -69,6 +70,7 @@
     box-shadow: 0px 0px 5px black;
 }
 
+
 .featureTitle, .featureDescription {
     text-shadow: 0px 0px 3px black;
     font-family: 'Bazzi';
@@ -81,4 +83,17 @@
 
 .featureDescription {
     font-size: 1rem;
+}
+
+@media (min-width: 1500px) {
+    .featureTitle, .featureDescription {
+        text-shadow: 0px 0px 5px black;
+        font-family: 'Bazzi';
+    }
+    .featureTitle {
+        font-size: 2rem;
+    }
+    .featureDescription {
+        font-size: 1.3rem;
+    }
 }

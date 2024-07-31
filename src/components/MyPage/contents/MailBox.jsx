@@ -39,6 +39,9 @@ export default function MailBox() {
             setSelectedMailId(mailNo);
     };
     const handleDeleteMail = async (mailNo) => {
+            if (!window.confirm("해당 쪽지를 삭제하시겠습니까?")) {
+                return; 
+            }
             const response = await axios.delete('http://localhost:8090/ms3/mail/delete', {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { mailNo, token }

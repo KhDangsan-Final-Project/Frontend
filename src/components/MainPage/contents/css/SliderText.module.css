@@ -91,6 +91,13 @@
   height: 240px;
 }
 
+@media (min-width: 1500px) {
+  .pokemonImage {
+    width: 450px;
+    height: 450px;
+  }
+}
+
 .header {
   font-size: 100px;
   margin-top: 20px;
