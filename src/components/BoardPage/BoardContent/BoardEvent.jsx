@@ -20,7 +20,7 @@ export default function BoardEvent() {
     useEffect(() => {
         async function fetchBoardList() {
             try {
-                const response = await axios.get("http://localhost:8090/ms1/board/list", {
+                const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list", {
                     params: {
                         pageNo: pageNo,
                         pageContentEa: pageContentEa,
@@ -67,16 +67,24 @@ export default function BoardEvent() {
                             <th>조회수</th>
                             <th>작성일</th>
                         </tr>
+                        <tr>
+                            <th colSpan="5"><hr className={styles.hrHeadLine} /></th>
+                        </tr>
                     </thead>
                     <tbody>
                         {boardList.map(board => (
-                            <tr key={board.boardNo}>
+                            <React.Fragment key={board.boardNo}>
+                                <tr>
                                     <td>{board.boardNo}</td>
                                     <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}>{board.boardTitle}</Link></td>
                                     <td>{board.id}</td>
                                     <td>{board.boardCount}</td>
                                     <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
-                            </tr>
+                                </tr>
+                                <tr>
+                                    <td colSpan="5"><hr className={styles.hrLine} /></td>
+                                </tr>
+                            </React.Fragment>
                         ))}
                     </tbody>
                     <tfoot className={styles.page}>
