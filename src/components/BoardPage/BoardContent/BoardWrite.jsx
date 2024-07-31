@@ -304,6 +304,25 @@ export default function BoardWrite({ showBoard }) {
     const [files, setFiles] = useState([]);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [myEditor, setMyEditor] = useState();
+    const [grantNo, setGrantNo] = useState(null);
+
+    useEffect(() => {
+        async function fetchGrantNo() {
+            try {
+                const response = await fetch("http://localhost:8090/ms1/currentUser", {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+                const data = await response.json();
+                setGrantNo(data.grantNo);
+            } catch (error) {
+                console.error('Error fetching grantNo:', error);
+            }
+        }
+        fetchGrantNo();
+    }, []);
 
     useEffect(() => {
         setIsSubmitDisabled(!title || !content);
@@ -349,7 +368,7 @@ export default function BoardWrite({ showBoard }) {
             formData.append('file', files[i]);
         }
         try {
-            const response = await fetch("https://teeput.synology.me:30112/ms1/board/insert", {
+            const response = await fetch("http://localhost:8090/ms1/board/insert", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -373,10 +392,16 @@ export default function BoardWrite({ showBoard }) {
                 <div className={styles.header}>
                     <h5>글쓰기</h5>
                     <span className={styles.category}>
-                        <select name="category" value={category} onChange={handleCategoryChange}>
-                            <option value="자유게시판">자유게시판</option>
-                            <option value="공지사항">공지사항</option>
-                            <option value="이벤트">이벤트</option>
+                    <select name="category" value={category} onChange={handleCategoryChange} disabled={grantNo !== 0}>
+                            {grantNo === 0 ? (
+                                <>
+                                    <option value="자유게시판">자유게시판</option>
+                                    <option value="공지사항">공지사항</option>
+                                    <option value="이벤트">이벤트</option>
+                                </>
+                            ) : (
+                                <option value="자유게시판">자유게시판</option>
+                            )}
                         </select>
                     </span>
                 </div>
