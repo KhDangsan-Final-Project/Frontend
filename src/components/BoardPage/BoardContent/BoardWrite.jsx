@@ -309,7 +309,7 @@ export default function BoardWrite({ showBoard }) {
     useEffect(() => {
         async function fetchGrantNo() {
             try {
-                const response = await fetch("http://localhost:8090/ms1/currentUser", {
+                const response = await fetch("https://teeput.synology.me:30112/ms1/currentUser", {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -368,7 +368,7 @@ export default function BoardWrite({ showBoard }) {
             formData.append('file', files[i]);
         }
         try {
-            const response = await fetch("http://localhost:8090/ms1/board/insert", {
+            const response = await fetch("https://teeput.synology.me:30112/ms1/board/insert", {
                 method: 'POST',
                 body: formData,
                 headers: {
