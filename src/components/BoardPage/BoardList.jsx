@@ -6,21 +6,34 @@ import FooterImg from "../Menu/Footer/FooterImg";
 import Footer from "../Menu/Footer/Footer";
 
 
-export default function BoardList() {
+export default function BoardList({token}) {
     const [boardList, setBoardList] = useState([]);
     const [error, setError] = useState(null);
     const [pageNo, setPageNo] = useState(1);
     const [pageContentEa, setPageContentEa] = useState(15);
     const [pagging, setPagging] = useState({});
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     useEffect(() => {
+        if (token) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      }, [token]);
+
+      const alertMsg = () =>{
+        alert("로그인 후 조회 가능합니다.");
+      };
+
+    useEffect(() => {
         async function fetchBoardList() {
             try {
-                const response = await axios.get("http://localhost:8090/ms1/board/list", {
+                const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list", {
                     params: {
                         pageNo: pageNo,
                         pageContentEa: pageContentEa
@@ -76,7 +89,11 @@ export default function BoardList() {
                             <React.Fragment key={board.boardNo}>
                                 <tr>
                                     <td>{board.boardNo}</td>
+                                    {isLoggedIn ? (
                                     <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}> {board.boardTitle}</Link></td>
+                                ) : (
+                                    <td><Link to="/login" onClick={alertMsg} className={styles.link}>{board.boardTitle}</Link></td>
+                                )}
                                     <td>{board.id}</td>
                                     <td>{board.boardCount}</td>
                                     <td>{new Date(board.boardWrite).toLocaleDateString()}</td>
