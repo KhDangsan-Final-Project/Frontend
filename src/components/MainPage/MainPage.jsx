@@ -23,7 +23,7 @@ export default function MainPage({ setToken }) {
   const [loading, setLoading] = useState(true);
   const [additionalLoading, setAdditionalLoading] = useState(true);
 
-  const visitorCount = useVisitorCount(setLoading);
+  const { visitorCount, error: visitorError } = useVisitorCount(setLoading);
   const displayedCount = useDisplayedCount(visitorCount, loading);
 
   const [viewTextRef, viewTextInView] = useInView({ triggerOnce: true });
@@ -42,7 +42,6 @@ export default function MainPage({ setToken }) {
     }
   }, [loading]);
 
-
   if (pokemonLoading || ranks.length === 0 || loading || additionalLoading) {
     return <Loading />;
   }
@@ -50,12 +49,14 @@ export default function MainPage({ setToken }) {
   return (
     <div className={styles.background}>
       <SliderText pokemonData={pokemonData} />
-      <div className={styles['hide-on-small-screen']}>
-        <section ref={viewTextRef} className={`${styles.section1} ${viewTextInView ? styles['slide-in'] : ''}`}>
-          <ViewText visitorCount={visitorCount} displayedCount={displayedCount} />
-          <View />
-        </section>
-      </div>
+      {!visitorError && (
+        <div className={styles['hide-on-small-screen']}>
+          <section ref={viewTextRef} className={`${styles.section1} ${viewTextInView ? styles['slide-in'] : ''}`}>
+            <ViewText visitorCount={visitorCount} displayedCount={displayedCount} />
+            <View />
+          </section>
+        </div>
+      )}
       <div className={styles.jump} />
       <section ref={ContentInfoRef} className={`${styles.section3} ${ContentInfoView ? styles['slide-in'] : ''}`}>
         <ContentInfo />

@@ -8,8 +8,8 @@ export default function AIUpload() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [responseData, setResponseData] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
-  const navigate = useNavigate(); // useNavigate 훅 추가
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
   
@@ -32,9 +32,15 @@ export default function AIUpload() {
       return;
     }
 
+    if (!token) {
+      alert('로그인을 하셔야 합니다.');
+      navigate('/login');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('image', file);
-    setLoading(true); // 로딩 시작
+    setLoading(true);
 
     try {
       const response = await axios.post('https://teeput.synology.me:30112/ms1/detect', formData, {
@@ -55,12 +61,12 @@ export default function AIUpload() {
       setSuccess(false);
       setResponseData('이미지 업로드 중 오류가 발생했습니다.');
     } finally {
-      setLoading(false); // 로딩 종료
+      setLoading(false);
     }
   };
 
   const handleResultClick = (name) => {
-    navigate(`/library?search=${name}`); // 해당 이름으로 검색 페이지로 이동
+    navigate(`/library?search=${name}`);
   };
   
   return (
@@ -81,14 +87,14 @@ export default function AIUpload() {
           <input type="file" id="file" className={styles.upload} onChange={handleFileChange} />
           {!loading && <button type="submit" className={styles.subBtn}>AI 카드 찾기</button>}
         </form>
-        {loading && <p className={styles.loadingMessage}>기다려주세요...</p>} {/* 로딩 상태 메시지 추가 */}
+        {loading && <p className={styles.loadingMessage}>기다려주세요...</p>}
         {success && <h1 className={styles.successTitle}>AI 인식에 성공했습니다!</h1>}
         {responseData && (
           <div className={styles.result}>
             {responseData.detectedResult ? (
-              responseData.detectedResult.map((result, index) => (
-                <p key={index} onClick={() => handleResultClick(result)} className={styles.resultTxt}>{result}</p>
-              ))
+              <p onClick={() => handleResultClick(responseData.detectedResult[0])} className={styles.resultTxt}>
+                {responseData.detectedResult[0]}
+              </p>
             ) : (
               <p>{responseData.msg}</p>
             )}
