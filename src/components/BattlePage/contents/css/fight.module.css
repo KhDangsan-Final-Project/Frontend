@@ -1,8 +1,10 @@
 .App {
   text-align: center;
-background-image: url(/public/video/background.mp4);
 max-height: 100%;
 overflow: hidden;
+background-image: url(/public/img/background.png);
+background-size: cover;
+background-repeat: no-repeat;
 }
 .container{
   display: flex;
@@ -633,7 +635,7 @@ font-weight: 100;
   position: relative;
   z-index: 1;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.5); /* 검은색 배경에 50% 투명도 추가 */
+  background: #0000005b;
   height: 100vh;
 }
 
