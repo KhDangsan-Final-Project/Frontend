@@ -207,7 +207,7 @@ function Battle({ token }) {
         )
       ))
     ) : (
-      <p>{isEnemy ? '적 포켓몬이 없습니다.' : '선택된 포켓몬이 없습니다.'}</p>
+      <p></p>
     );
   };
 
@@ -229,10 +229,6 @@ function Battle({ token }) {
   return (
     <div className={styles.App}>
       <div className={styles.backgroundWrapper}>
-        <video autoPlay muted loop className={styles.backgroundVideo}>
-          <source src='/video/background.mp4' type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
         <div className={styles.overlay}>
           <div className={styles.stage}>
             <div className={styles.enemyContainer}>

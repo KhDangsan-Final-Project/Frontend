@@ -1,8 +1,10 @@
 .App {
-  background-image: url(/public/video/background.mp4);
   position: relative;
  height: 100vh;
   overflow: hidden;
+  background-image: url(/public/img/background.png);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .stage {
@@ -458,7 +460,7 @@
   position: relative;
   z-index: 1;
   padding:0px 20px;
-  background: rgba(0, 0, 0, 0.5); /* 검은색 배경에 50% 투명도 추가 */
+  background: #0000005b;
   height: 100%;
 
 }
@@ -535,5 +537,3 @@
     margin-right: 5px;
   }
 }
-
-
