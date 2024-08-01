@@ -6,16 +6,30 @@ import FooterImg from "../../Menu/Footer/FooterImg";
 import Footer from "../../Menu/Footer/Footer";
 
 
-export default function BoardNotice() {
+export default function BoardNotice({token}) {
     const [boardList, setBoardList] = useState([]);
     const [error, setError] = useState(null);
     const [pageNo, setPageNo] = useState(1);
     const [pageContentEa, setPageContentEa] = useState(15);
     const [pagging, setPagging] = useState({});
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        if (token) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      }, [token]);
+
+      const alertMsg = () =>{
+        alert("로그인 후 조회 가능합니다.");
+      };
+
 
     useEffect(() => {
         async function fetchBoardList() {
@@ -77,7 +91,11 @@ export default function BoardNotice() {
                             <React.Fragment key={board.boardNo}>
                                 <tr>
                                     <td>{board.boardNo}</td>
+                                    {isLoggedIn ? (
                                     <td><Link to={`/boardContent/${board.boardNo}`} className={styles.link}> {board.boardTitle}</Link></td>
+                                ) : (
+                                    <td><Link to="/login" onClick={alertMsg} className={styles.link}>{board.boardTitle}</Link></td>
+                                )}
                                     <td>{board.id}</td>
                                     <td>{board.boardCount}</td>
                                     <td>{new Date(board.boardWrite).toLocaleDateString()}</td>

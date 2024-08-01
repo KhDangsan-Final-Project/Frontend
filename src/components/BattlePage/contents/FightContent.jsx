@@ -3,9 +3,48 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './css/fight.module.css';
 import useFightContent from './hooks/useFightContent';
-import NavFightContent from './navFightContent'; // 수정된 컴포넌트 경로 확인
+import NavFightContent from './navFightContent';
 import UserInfoFightContent from './UserInfoFightContent';
 import RankFightContent from './RankFightContent';
+
+// TCG 카드 하나만 가져오는 함수
+const fetchTcgCard = async (pokemonName) => {
+  const url = `https://api.pokemontcg.io/v2/cards?q=name:${pokemonName}`;
+  try {
+    const response = await axios.get(url);
+    if (response.status === 200 && response.data.data.length > 0) {
+      return response.data.data[0]; // 첫 번째 카드 데이터만 반환
+    }
+    throw new Error(`Card not found for ${pokemonName}`);
+  } catch (error) {
+    console.error(`Error fetching TCG card for ${pokemonName}:`, error);
+    return null;
+  }
+};
+
+// 여러 포켓몬의 카드를 가져오는 함수
+const fetchTcgCards = async (pokemonList) => {
+  if (pokemonList.length === 0) return [];
+
+  try {
+    const requests = pokemonList.map(pokemon =>
+      fetchTcgCard(pokemon.englishName)
+    );
+    const results = await Promise.all(requests);
+    const cards = results.filter(card => card !== null); // 유효한 카드만 필터링
+    const updatedCards = cards.map(card => {
+      const pokemon = pokemonList.find(p => p.englishName === card.name);
+      return {
+        ...card,
+        serverKoreanName: pokemon ? pokemon.koreanName : card.name
+      };
+    });
+    return updatedCards;
+  } catch (error) {
+    console.error('Error fetching TCG cards:', error);
+    return [];
+  }
+};
 
 function FightContent({ token }) {
   const API_KEY = '80664291-49e4-45b1-a1eb-cf4f0c440dde';
@@ -18,13 +57,13 @@ function FightContent({ token }) {
   const [filteredCards, setFilteredCards] = useState([]);
   const [ws, setWs] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedType, setSelectedType] = useState(''); // Add state for selectedType
+  const [selectedType, setSelectedType] = useState('');
   const [matchWin, setMatchWin] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const {
     cards,
     types,
-    page,
     loading,
     selectedCards,
     selectedCount,
@@ -46,7 +85,7 @@ function FightContent({ token }) {
         ws.send(JSON.stringify({ token }));
       };
 
-      ws.onmessage = function(event) {
+      ws.onmessage = async function(event) {
         console.log('Message from server by FightContent:', event.data);
         try {
           const data = JSON.parse(event.data);
@@ -56,7 +95,9 @@ function FightContent({ token }) {
           setPokemonList(data.pokemonList || []);
 
           if (data.pokemonList) {
-            fetchTcgCards(data.pokemonList);
+            const cards = await fetchTcgCards(data.pokemonList);
+            setTcgCards(cards);
+            setFilteredCards(cards.slice(0, PAGE_SIZE)); // 첫 페이지 데이터
           }
         } catch (error) {
           console.error('Error parsing message:', error);
@@ -79,27 +120,6 @@ function FightContent({ token }) {
     }
   }, [token]);
 
-  const fetchTcgCards = async (pokemonList) => {
-    try {
-      const requests = pokemonList.map(pokemon =>
-        axios.get(`https://api.pokemontcg.io/v2/cards?q=name:${pokemon.englishName}`)
-      );
-      const responses = await Promise.all(requests);
-      const cards = responses.map(response => response.data.data[0]);
-      const updatedCards = cards.map(card => {
-        const pokemon = pokemonList.find(p => p.englishName === card.name);
-        return {
-          ...card,
-          serverKoreanName: pokemon ? pokemon.koreanName : card.name
-        };
-      });
-      setTcgCards(updatedCards);
-      setFilteredCards(updatedCards);
-    } catch (error) {
-      console.error('Error fetching TCG cards:', error);
-    }
-  };
-
   const handleSearchChange = (event) => {
     const term = event.target.value;
     setSearchTerm(term);
@@ -112,7 +132,7 @@ function FightContent({ token }) {
       (card.serverKoreanName.toLowerCase().includes(searchTerm.toLowerCase()) || 
       card.name.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-    setFilteredCards(filtered);
+    setFilteredCards(filtered.slice(0, PAGE_SIZE * currentPage)); // 현재 페이지 데이터
   };
 
   const handleTypeClick = (type) => {
@@ -141,13 +161,14 @@ function FightContent({ token }) {
     }
   };
 
+  const handleLoadMore = async () => {
+    setCurrentPage(prevPage => prevPage + 1);
+    filterCards(selectedType, searchTerm);
+  };
+
   return (
     <div className={styles.App}>
       <div className={styles.backgroundWrapper}>
-        <video autoPlay muted loop className={styles.backgroundVideo}>
-          <source src='/video/background.mp4' type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
         <div className={styles.overlay}>
           <input
             type="text"
@@ -165,10 +186,12 @@ function FightContent({ token }) {
           <div className={styles.container}>
             <div className={styles.loadingBar}>
               {!loading && filteredCards.length > 0 && hasMore && (
-                <button onClick={loadMore} className={styles.button}>: 더 불러오기 :</button>
+                <button onClick={handleLoadMore} className={styles.button}>: 더 불러오기 :</button>
               )}
               <div className={styles.cardContainer}>
-                {filteredCards.length > 0 ? (
+                {loading ? (
+                  <p className={styles.p}>로딩 중...</p>
+                ) : filteredCards.length > 0 ? (
                   filteredCards.map(card => (
                     <div key={card.id} className={styles.card} onClick={() => handleCardClick(card)}>
                       <img src={card.images.small} alt={card.serverKoreanName} />
@@ -189,9 +212,8 @@ function FightContent({ token }) {
                     </div>
                   ))
                 ) : (
-                  <p className={styles.p}>카드 정보가 없습니다.</p>
+                  !loading && <p className={styles.p}>카드 정보가 없습니다.</p>
                 )}
-                {loading && <p className={styles.p}>로딩 중...</p>}
               </div>
             </div>
             <div className={`${styles.selectedCards} ${styles.myCardArea}`}>
