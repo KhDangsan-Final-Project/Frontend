@@ -76,3 +76,31 @@
   text-align: center;
   font-weight: bold;
 }
+
+@media (max-width:680px) {
+  .fupload {
+    width: 450px;
+    height: 450px;
+  }
+}
+
+@media (max-width:530px) {
+  .fupload {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@media (max-width:420px) {
+  .fupload {
+    width: 340px;
+    height: 340px;
+  }
+}
+
+@media (max-width:420px) {
+  .fupload {
+    width: 280px;
+    height: 280px;
+  }
+}
