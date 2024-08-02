@@ -9,7 +9,6 @@ import BoardPage from './components/BoardPage/BoardPage';
 import AIPage from './components/AIPage/AIPage';
 import MyPage from './components/MyPage/MyPage';
 import Scroll from './components/Menu/Scroll/Scroll';
-import PasswordResetRequestPage from './components/LoginPage/PasswdReset/PasswordResetRequestPage';
 import BoardContent from './components/BoardPage/BoardContent/BoardContent';
 import BoardEdit from './components/BoardPage/BoardContent/BoardEdit';
 import BoardEvent from './components/BoardPage/BoardContent/BoardEvent';
@@ -17,6 +16,7 @@ import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
 import BoardList from './components/BoardPage/BoardList';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
+import PasswordResetRequestPage from './components/LoginPage/PasswdResetRequestPage/PasswordResetRequestPage';
 
 function App() {
   const [token, setToken] = useState(null);
