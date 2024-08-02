@@ -92,7 +92,8 @@ export default function Register( {showLogin} ) {
             id,
             password,
             email: `${email}@${emailDomain}`,
-            nickname
+            nickname,
+            profile: `/img/user/userImage1.png`
         });
 
         try {
