@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import LoginPage from './components/LoginPage/LoginPage';
 import MainPage from './components/MainPage/MainPage';
 import LibraryPage from './components/LibraryPage/LibraryPage';
@@ -26,14 +25,24 @@ function App() {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
-    if (storedToken) {
+    const tokenExpiration = localStorage.getItem('tokenExpiration');
+    const currentTime = new Date().getTime();
+
+    if (storedToken && tokenExpiration && currentTime > tokenExpiration) {
+      // 토큰이 만료되었으면 로그아웃 처리
+      localStorage.removeItem('token');
+      localStorage.removeItem('tokenExpiration');
+      setToken(null);
+      alert('세션이 만료되었습니다. 다시 로그인 해주세요.');
+      navigate('/login');
+    } else if (storedToken) {
       setToken(storedToken);
     }
-  }, []);
-
+  }, [navigate]);
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpiration');
     setToken(null);
     navigate('/login');
   };

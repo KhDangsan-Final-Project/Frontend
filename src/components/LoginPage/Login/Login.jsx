@@ -46,8 +46,10 @@ export default function Login({ setToken, showRegister, showPassWordReset }) {
       if (response.data.result) {
         alert(response.data.msg);
         const token = response.data.token;
+        const expirationTime = new Date().getTime() + 86400000; // 현재 시간 + 1일 (86400000 ms)
         setToken(token);
         localStorage.setItem('token', token);
+        localStorage.setItem('tokenExpiration', expirationTime); // 유효기간 저장
         navigate('/');
       } else {
         setError('! 아이디 또는 비밀번호를 정확히 입력해 주세요.');
@@ -56,6 +58,7 @@ export default function Login({ setToken, showRegister, showPassWordReset }) {
       alert('로그인 중 오류 발생: ' + error.message);
     }
   };
+  
 
   return (
     <div className={styles.body}>

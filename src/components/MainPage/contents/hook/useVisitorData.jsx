@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const useVisitorCount = (setLoading) => {
     const [visitorCount, setVisitorCount] = useState(0);
+    const [error, setError] = useState(false); // 에러 상태 추가
 
     useEffect(() => {
         const fetchVisitorCount = async () => {
@@ -17,13 +18,15 @@ export const useVisitorCount = (setLoading) => {
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching visitor count', error);
+                setError(true); // 에러 상태 설정
+                setLoading(false);
             }
         };
 
         fetchVisitorCount();
     }, []);
 
-    return visitorCount;
+    return { visitorCount, error }; // 에러 상태 반환
 };
 
 export const useDisplayedCount = (visitorCount, loading) => {
