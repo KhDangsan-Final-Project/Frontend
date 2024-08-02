@@ -47,7 +47,7 @@ export default function PasswordResetRequestPage( {showLogin}) {
           <button type="submit" className={styles.btn_submit}>Reset Request</button>
           <button type="reset" className={styles.btn_cancel} onClick={showLogin}>Cancel</button>
         </form>
-        {message && <p>{message}</p>}
+        {message && <p className={styles.msg}>{message}</p>}
       </div>
     </div>
     
