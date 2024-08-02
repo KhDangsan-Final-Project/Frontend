@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Login from './Login/Login';
 import styles from './css/LoginPage.module.css';
 import Register from './Register/Register';
-import PasswordResetRequestPage from './PasswdResetRequestPage/PasswordResetRequestPage';
+import PasswordResetRequestPage from './PasswdReset/PasswordResetRequestPage';
 
 export default function LoginPage({ setToken }) {
     const [formType, setFormType] = useState('login');
