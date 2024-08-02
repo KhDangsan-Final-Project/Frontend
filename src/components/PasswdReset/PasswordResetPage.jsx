@@ -36,7 +36,7 @@ export default function PasswordResetPage() {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:9997/ms3/password-reset`, {
+            const response = await fetch(`https://teeput.synology.me:30112/ms3/password-reset`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
