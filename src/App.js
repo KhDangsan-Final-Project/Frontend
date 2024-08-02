@@ -54,9 +54,9 @@ function App() {
         <Route path="/resetPass" element={<PasswordResetRequestPage/>}/>
         <Route path="/boardContent/:boardNo" element={<BoardContent/>}/>
         <Route path="/boardEdit/:boardNo" element={<BoardEdit />} />
-        <Route path="/boardEvent" element={<BoardEvent/>}/>
-        <Route path="/boardNotice" element={<BoardNotice/>}/>
-        <Route path="/boardList" element={<BoardList/>}/>
+        <Route path="/boardEvent" element={<BoardEvent token={token} />}/>
+        <Route path="/boardNotice" element={<BoardNotice token={token}/>}/>
+        <Route path="/boardList" element={<BoardList token={token} />}/>
         <Route path="/fight" element={<FightContent token={token} />} />
         <Route path="/battle" element={<Battle token={token} />} />
       </Routes>
