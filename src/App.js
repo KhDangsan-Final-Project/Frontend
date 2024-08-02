@@ -16,7 +16,7 @@ import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
 import BoardList from './components/BoardPage/BoardList';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
-import PasswordResetRequestPage from './components/LoginPage/PasswdResetRequestPage/PasswordResetRequestPage';
+import PasswordResetPage from './PasswdReset/PasswordResetPage';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -60,7 +60,7 @@ function App() {
         <Route path="/boardmain" element={<BoardPage setToken={setToken} token={token}/>} />
         <Route path="/ai" element={<AIPage setToken={setToken} />} />
         <Route path="/mypage" element={<MyPage setToken={setToken} />} />
-        <Route path="/resetPass" element={<PasswordResetRequestPage/>}/>
+        <Route path="/password-reset" element={<PasswordResetPage/>} />
         <Route path="/boardContent/:boardNo" element={<BoardContent/>}/>
         <Route path="/boardEdit/:boardNo" element={<BoardEdit />} />
         <Route path="/boardEvent" element={<BoardEvent token={token} />}/>
