@@ -46,11 +46,10 @@ function Battle({ token }) {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-  const roomId = queryParams.get('roomId');
   const nickname = queryParams.get('nickname');
+  const roomId = queryParams.get('roomid');
   const matchWin = parseInt(queryParams.get('matchWin'), 10);
   const [isHighlighted, setIsHighlighted] = useState(true);
-
   const [selectedPokemon, setSelectedPokemon] = useState([]);
   const [enemyPokemon, setEnemyPokemon] = useState([]);
   const [showAttacks, setShowAttacks] = useState(false);
@@ -102,7 +101,7 @@ function Battle({ token }) {
   }, [enemyPokemon]);
 
   useEffect(() => {
-    if (isBattleFinished && enemyPokemon.length === 0) {
+    if (enemyPokemon.length === 0) {
       if (token) {
         const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/update');
 
@@ -211,11 +210,7 @@ function Battle({ token }) {
     );
   };
 
-  useEffect(() => {
-    if (enemyPokemon.length === 0) {
-      setIsBattleFinished(true);
-    }
-  }, [enemyPokemon]);
+
 
   useEffect(() => {
     if (enemyPokemon.length > 0 && selectedPokemon.length === 0) {
