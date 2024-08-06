@@ -72,7 +72,6 @@ const useFightContent = (API_KEY, PAGE_SIZE) => {
       const data = await response.json();
       setCards(prevCards => reset ? data.data : [...prevCards, ...data.data]);
       setHasMore(data.data.length === PAGE_SIZE);
-      console.log('Fetched Cards:', data.data); // API 응답 확인
     } catch (error) {
       console.error('카드 데이터를 불러오는 중 오류 발생:', error);
     } finally {
