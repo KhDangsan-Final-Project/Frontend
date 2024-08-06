@@ -10,16 +10,13 @@ function UserInfoFightContent({ token }) {
       const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/token');
 
       ws.onopen = () => {
-        console.log('Connected to WebSocket /UserInfoFightContent');
         ws.send(JSON.stringify({ token }));  // JSON 형식으로 토큰 전송
       };
 
       ws.onmessage = function(event) {
-        console.log('Message from server by userInfoFightContent:', event.data);
 
         try {
           const data = JSON.parse(event.data);
-          console.log(data);
           setUserInfo({
             profile: data.profile,
             id: data.id,
@@ -28,12 +25,10 @@ function UserInfoFightContent({ token }) {
             matchWin: data.matchWin
           });
         } catch (error) {
-          console.error('Error parsing message:', error);
         }
       };
 
       ws.onclose = () => {
-        console.log('Disconnected from WebSocket /UserInfoFightContent');
       };
 
       return () => {
