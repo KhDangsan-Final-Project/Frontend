@@ -79,12 +79,10 @@ function FightContent({ token }) {
       const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/token');
 
       ws.onopen = () => {
-        console.log('Connected to WebSocket');
         ws.send(JSON.stringify({ token }));
       };
 
       ws.onmessage = async function(event) {
-        console.log('Message from server by FightContent:', event.data);
         try {
           const data = JSON.parse(event.data);
           setMatchWin(data.matchWin);
