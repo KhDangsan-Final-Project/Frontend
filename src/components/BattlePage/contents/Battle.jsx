@@ -6,7 +6,7 @@ import UserInfoFightContent from './UserInfoFightContent';
 import BattleTrainer from './BattleTrainer';
 import useAI from './hooks/useAI';
 
-const getTypeLogo = (type) => `/img/types/${type}.png`;
+const getTypeLogo = (type) => `/img/types/${type.toLowerCase()}.png`;
 
 const getTypeLogoContainerClass = (type) => {
   switch (type) {
