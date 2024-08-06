@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './css/SendMail.module.css';
 
 export default function SendMail() {
-  const [newMail, setNewMail] = useState({ receiver: '', subject: '', content: '' });
+  const [newMail, setNewMail] = useState({ sender: '', receiver: '', subject: '', content: '' });
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {

@@ -39,7 +39,7 @@ export default function MyLibrary() {
   };
   
   const handleResultClick = (name) => {
-    navigate(`/library?search=${name}`); // 해당 이름으로 검색 페이지로 이동
+    navigate(`/library?search=${name}`);
   };
 
   const { pokemonDetails, loading: detailsLoading } = usePokemonDetails(pokemonLibrary);

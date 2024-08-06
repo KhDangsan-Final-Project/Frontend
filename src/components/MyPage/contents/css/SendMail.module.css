@@ -4,9 +4,10 @@
 }
 
 .title {
-  font-size: 24px;
+  font-size: 36px;
   border: none;
   margin: 40px;
+  font-family: 'Bazzi';
 }
 
 .input  {

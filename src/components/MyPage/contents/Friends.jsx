@@ -66,10 +66,7 @@ const Friends = () => {
             const token = localStorage.getItem('token');
             const response = await axios.get('https://teeput.synology.me:30112/ms3/friend/search', {
                 params: { query: searchQuery, token: token }, });
-            
-            // 검색 결과에서 이미 친구이거나 친구 요청을 보낸 사용자를 제외
             const filteredResults = response.data.filter(result => {
-                // result.id가 friends 또는 receivedRequests에 포함되지 않는 경우만 포함
                 return !friends.includes(result.id) && !receivedRequests.some(request => request.userId === result.id);
             });
 
