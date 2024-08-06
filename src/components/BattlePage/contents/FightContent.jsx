@@ -17,7 +17,6 @@ const fetchTcgCard = async (pokemonName) => {
     }
     throw new Error(`Card not found for ${pokemonName}`);
   } catch (error) {
-    console.error(`Error fetching TCG card for ${pokemonName}:`, error);
     return null;
   }
 };
@@ -41,7 +40,6 @@ const fetchTcgCards = async (pokemonList) => {
     });
     return updatedCards;
   } catch (error) {
-    console.error('Error fetching TCG cards:', error);
     return [];
   }
 };
@@ -100,16 +98,13 @@ function FightContent({ token }) {
             setFilteredCards(cards.slice(0, PAGE_SIZE)); // 첫 페이지 데이터
           }
         } catch (error) {
-          console.error('Error parsing message:', error);
         }
       };
 
       ws.onerror = function(event) {
-        console.error('WebSocket error:', event);
       };
 
       ws.onclose = () => {
-        console.log('Disconnected from WebSocket');
       };
 
       setWs(ws);
