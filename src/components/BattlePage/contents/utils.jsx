@@ -1,5 +1,5 @@
 export const getRankImageClass = (matchWin, styles) => {
-    if (matchWin > 0 && matchWin <= 10) {
+    if (matchWin >= 0 && matchWin <= 10) {
       return styles.rankImage1;
     } else if (matchWin > 10 && matchWin <= 20) {
       return styles.rankImage2;
