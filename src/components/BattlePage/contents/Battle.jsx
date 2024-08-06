@@ -107,12 +107,10 @@ function Battle({ token }) {
         const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/update');
 
         ws.onopen = () => {
-          console.log('Connected to WebSocket for updating matchWin');
           ws.send(JSON.stringify({ token, matchWin: matchWin }));
         };
 
         ws.onclose = () => {
-          console.log('WebSocket closed after updating matchWin');
         };
       }
 
