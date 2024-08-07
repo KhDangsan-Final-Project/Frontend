@@ -205,7 +205,7 @@ function FightContent({ token }) {
                     </div>
                   ))
                 ) : (
-                  !loading && <p className={styles.p}>카드 정보가 없습니다.</p>
+                  !loading && <p className={styles.p}></p>
                 )}
               </div>
             </div>
