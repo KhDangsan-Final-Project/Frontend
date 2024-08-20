@@ -21,6 +21,10 @@ export default function BoardContent() {
     const [commentHated, setCommentHated] = useState({});
     const [userId, setUserId] = useState('');
     const [userProfile, setUserProfile] = useState('');
+    const [boardProfile, setBoardProfile] = useState('');
+    const [commentProfiles, setCommentProfiles] = useState({});
+
+
 
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
@@ -38,17 +42,17 @@ export default function BoardContent() {
                 await increaseViewCount();
 
                 //boardNo에 맞는 게시물 조회
-                const response = await axios.get(`https://teeput.synology.me:30112/ms1/board/${boardNo}`);
+                const response = await axios.get(`http://localhost:8090/ms1/board/${boardNo}`);
                 setBoard(response.data);
                 // 현재 로그인한 사용자 ID 가져오기
-                const userResponse = await axios.get('https://teeput.synology.me:30112/ms1/currentUser', {
+                const userResponse = await axios.get('http://localhost:8090/ms1/currentUser', {
                     headers: { 'Authorization': 'Bearer ' + token }
                 });
                 setUserId(userResponse.data.id);
                 setUserProfile(userResponse.data.profile);
 
                 //좋아요 상태 및 수 확인
-                const likeResponse = await axios.get(`https://teeput.synology.me:30112/ms1/boardLikeView/${boardNo}`, {
+                const likeResponse = await axios.get(`http://localhost:8090/ms1/boardLikeView/${boardNo}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -60,7 +64,15 @@ export default function BoardContent() {
                 fetchComments();
 
                 // 파일 목록 조회
-                fetchFiles();
+                // fetchFiles();
+
+                // 프로필 조회
+                fetchUserProfile();
+
+                // 게시판 프로필 조회
+                fetchBoardProfile(response.data.id);
+
+
             } catch (err) {
                 setError(err);
             }
@@ -71,22 +83,22 @@ export default function BoardContent() {
     }, [boardNo, token]);
 
     //파일 조회
-    async function fetchFiles() {
-        try {
-            const response = await axios.get(`https://teeput.synology.me:30112/ms1/board/fileList/${boardNo}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            setFiles(response.data || []);
+    // async function fetchFiles() {
+    //     try {
+    //         const response = await axios.get(`http://localhost:8090/ms1/board/fileList/${boardNo}`, {
+    //             headers: { 'Authorization': `Bearer ${token}` }
+    //         });
+    //         setFiles(response.data || []);
 
-        } catch (err) {
-            console.error('파일 목록을 불러오는 중 오류가 발생했습니다.', err);
-        }
-    }
+    //     } catch (err) {
+    //         console.error('파일 목록을 불러오는 중 오류가 발생했습니다.', err);
+    //     }
+    // }
 
     //게시물 조회수
     async function increaseViewCount() {
         try {
-            await axios.post(`https://teeput.synology.me:30112/ms1/boardViewCount/${boardNo}`, {}, {
+            await axios.post(`http://localhost:8090/ms1/boardViewCount/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -101,7 +113,7 @@ export default function BoardContent() {
     //게시물 좋아요
     async function buttonLike() {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/boardLike/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/boardLike/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -127,7 +139,7 @@ export default function BoardContent() {
         }
 
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/comment/insert/${boardNo}`, new URLSearchParams({
+            const response = await axios.post(`http://localhost:8090/ms1/comment/insert/${boardNo}`, new URLSearchParams({
                 comment: commentText
             }), {
                 headers: {
@@ -150,18 +162,22 @@ export default function BoardContent() {
     }
 
     //댓글목록조회
+    // 댓글 목록 조회 및 댓글 프로필 조회
     async function fetchComments() {
         try {
-            const response = await axios.get(`https://teeput.synology.me:30112/ms1/comments/${boardNo}`, {
+            const response = await axios.get(`http://localhost:8090/ms1/comments/${boardNo}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            setComments(response.data || []);
+            const comments = response.data || [];
+            setComments(comments);
 
             const likeStatus = {};
             const hateStatus = {};
+            const profiles = {};
 
-            const likeStatusRequests = response.data.map(comment =>
-                axios.get(`https://teeput.synology.me:30112/ms1/boardCommentLikeView/${comment.cno}/${boardNo}`, {
+            // 댓글 좋아요 및 싫어요 상태 조회
+            const likeStatusRequests = comments.map(comment =>
+                axios.get(`http://localhost:8090/ms1/boardCommentLikeView/${comment.cno}/${boardNo}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }).then(likeResponse => {
                     likeStatus[comment.cno] = likeResponse.data.liked;
@@ -169,8 +185,8 @@ export default function BoardContent() {
                 })
             );
 
-            const hateStatusRequests = response.data.map(comment =>
-                axios.get(`https://teeput.synology.me:30112/ms1/boardCommentHateView/${comment.cno}/${boardNo}`, {
+            const hateStatusRequests = comments.map(comment =>
+                axios.get(`http://localhost:8090/ms1/boardCommentHateView/${comment.cno}/${boardNo}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }).then(hateResponse => {
                     hateStatus[comment.cno] = hateResponse.data.hated;
@@ -178,7 +194,12 @@ export default function BoardContent() {
                 })
             );
 
-            await Promise.all([...likeStatusRequests, ...hateStatusRequests]);
+            // 댓글 프로필 조회
+            const profileRequests = comments.map(comment =>
+                fetchBoardCommentProfile(comment.id)
+            );
+
+            await Promise.all([...likeStatusRequests, ...hateStatusRequests, ...profileRequests]);
 
             setCommentLiked(likeStatus);
             setCommentHated(hateStatus);
@@ -186,10 +207,12 @@ export default function BoardContent() {
             console.error('댓글 목록을 불러오는 중 오류가 발생했습니다.', err);
         }
     }
+
+
     //댓글 좋아요
     async function buttonCommentLike(cno) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/commentLike/${cno}/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/commentLike/${cno}/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -212,7 +235,7 @@ export default function BoardContent() {
     //댓글 싫어요
     async function buttonCommentHate(cno) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/commentHate/${cno}/${boardNo}`, {}, {
+            const response = await axios.post(`http://localhost:8090/ms1/commentHate/${cno}/${boardNo}`, {}, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -235,7 +258,7 @@ export default function BoardContent() {
     // 게시물 삭제
     async function deleteBoard() {
         try {
-            const response = await axios.delete(`https://teeput.synology.me:30112/ms1/board/delete/${boardNo}`, {
+            const response = await axios.delete(`http://localhost:8090/ms1/board/delete/${boardNo}`, {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             if (response.status === 200) {
@@ -258,7 +281,7 @@ export default function BoardContent() {
     //댓글 삭제
     async function deleteComment(cno) {
         try {
-            const response = await axios.delete(`https://teeput.synology.me:30112/ms1/boardCommentDelete/${cno}`, {
+            const response = await axios.delete(`http://localhost:8090/ms1/boardCommentDelete/${cno}`, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -283,7 +306,7 @@ export default function BoardContent() {
     // 게시물 신고
     async function boardReport(boardNo) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/boardReport/${boardNo}`, null, {
+            const response = await axios.post(`http://localhost:8090/ms1/boardReport/${boardNo}`, null, {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             if (response.status === 200) {
@@ -300,7 +323,7 @@ export default function BoardContent() {
     //댓글 신고
     async function boardCommentReport(cno, boardNo) {
         try {
-            const response = await axios.post(`https://teeput.synology.me:30112/ms1/boardCommentReport/${cno}/${boardNo}`, null, {
+            const response = await axios.post(`http://localhost:8090/ms1/boardCommentReport/${cno}/${boardNo}`, null, {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
             if (response.status === 200) {
@@ -313,9 +336,71 @@ export default function BoardContent() {
             alert('이미 신고한 댓글입니다');
         }
     }
-    //유저 프로필 조회
 
-    
+    // 유저 프로필 조회
+    async function fetchUserProfile() {
+        try {
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+
+            const response = await axios.get('http://localhost:8090/ms3/profilecheck', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+
+            if (response.status === 200) {
+                const userProfile = response.data;
+                setUserProfile(userProfile);
+            } else {
+                alert('프로필 조회 실패: ' + response.data);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('프로필 조회 중 오류가 발생했습니다.');
+        }
+    }
+
+    // 게시글 프로필 조회
+    async function fetchBoardProfile(boardId) {
+        try {
+            const response = await axios.get(`http://localhost:8090/ms3/board/profile?id=${boardId}`);
+
+            if (response.status === 200) {
+                const boardProfile = response.data;
+                setBoardProfile(boardProfile);
+            } else {
+                alert('프로필 조회 실패: ' + response.data);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('프로필 조회 중 오류가 발생했습니다.');
+        }
+    }
+
+
+    // 댓글 프로필 조회
+    async function fetchBoardCommentProfile(commentId) {
+        try {
+            console.log(commentId);
+
+            const response = await axios.get(`http://localhost:8090/ms3/board/profile?id=${commentId}`);
+
+            if (response.status === 200) {
+                const profileUrl = response.data;
+                setCommentProfiles(prevProfiles => ({
+                    ...prevProfiles,
+                    [commentId]: profileUrl
+                }));
+            } else {
+                alert('프로필 조회 실패: ' + response.data);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('프로필 조회 중 오류가 발생했습니다.');
+        }
+    }
+
 
 
     if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다!</div>;
@@ -330,7 +415,7 @@ export default function BoardContent() {
                     <h2>{board.boardTitle}</h2>
                     <div className={styles.profile_bar}>
                         <div className={styles.profile}>
-                            <img src={board.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
+                            <img src={boardProfile || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
                         </div>
                         <div className={styles.userInfo}>
                             <div className={styles.userName}>
@@ -338,7 +423,7 @@ export default function BoardContent() {
                             </div>
                             <div className={styles.boardInfo}>
                                 <li>{board.boardWrite}</li>
-                                <img src='/img/eye.png' />
+                                <img src='/img/eye.png' alt="Views" />
                                 <span>{board.boardCount}</span>
                             </div>
                         </div>
@@ -346,7 +431,8 @@ export default function BoardContent() {
                             <div className={styles.boardUpdate}>
                                 <button
                                     className={styles.edit}
-                                    onClick={() => navigate(`/boardedit/${board.boardNo}`, { state: { boardData: board } })}>
+                                    onClick={() => navigate(`/boardedit/${board.boardNo}`, { state: { boardData: board } })}
+                                >
                                     수정
                                 </button>
                                 <button className={styles.delete} onClick={deleteBoard}>삭제</button>
@@ -356,7 +442,7 @@ export default function BoardContent() {
                     <hr />
                     <div>
                         <div className={styles.content} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(board.boardContent || '') }}></div>
-
+    
                         <div className={styles.filesSection}>
                             {files && files.length > 0 ? (
                                 files.map(file => {
@@ -382,7 +468,7 @@ export default function BoardContent() {
                                 <></>
                             )}
                         </div>
-
+    
                     </div>
                     <div className={styles.boardLike}>
                         <button onClick={buttonLike} className={`${styles.boardLike} ${liked ? styles.heartActive : styles.heartNone}`}><span>{likeCount}</span></button>
@@ -406,8 +492,11 @@ export default function BoardContent() {
                                 comments.map(comment => (
                                     <div key={comment.cno} className={styles.comment}>
                                         <div className={styles.commentUser}>
-                                            <img src={comment.profileUrl || '/img/default-profile.png'} alt="Profile" className={styles.profileImage} />
-
+                                            <img
+                                                src={commentProfiles[comment.id] || '/img/default-profile.png'}
+                                                alt="Profile"
+                                                className={styles.profileImage}
+                                            />
                                             <span>{comment.id}</span>
                                         </div>
                                         <span>{comment.comment}</span> <br />
@@ -446,4 +535,5 @@ export default function BoardContent() {
             <Footer />
         </div>
     );
+    
 }

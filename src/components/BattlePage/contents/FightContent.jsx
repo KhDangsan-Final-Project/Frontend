@@ -27,18 +27,11 @@ const fetchTcgCards = async (pokemonList) => {
 
   try {
     const requests = pokemonList.map(pokemon =>
-      fetchTcgCard(pokemon.englishName)
+      fetchTcgCard(pokemon)
     );
     const results = await Promise.all(requests);
     const cards = results.filter(card => card !== null); // 유효한 카드만 필터링
-    const updatedCards = cards.map(card => {
-      const pokemon = pokemonList.find(p => p.englishName === card.name);
-      return {
-        ...card,
-        serverKoreanName: pokemon ? pokemon.koreanName : card.name
-      };
-    });
-    return updatedCards;
+    return cards;
   } catch (error) {
     return [];
   }
@@ -53,7 +46,6 @@ function FightContent({ token }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [tcgCards, setTcgCards] = useState([]);
   const [filteredCards, setFilteredCards] = useState([]);
-  const [ws, setWs] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [matchWin, setMatchWin] = useState(0);
@@ -75,42 +67,35 @@ function FightContent({ token }) {
   } = useFightContent(API_KEY, PAGE_SIZE);
 
   useEffect(() => {
-    if (token) {
-      const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/token');
-
-      ws.onopen = () => {
-        ws.send(JSON.stringify({ token }));
-      };
-
-      ws.onmessage = async function(event) {
+    const fetchPokemonData = async () => {
+      if (token) {
         try {
-          const data = JSON.parse(event.data);
-          setMatchWin(data.matchWin);
-          setNickname(data.nickname);
-          setReceivedData(data);
-          setPokemonList(data.pokemonList || []);
+          const response = await axios.get('http://localhost:8090/ms3/game/getPokemon', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-          if (data.pokemonList) {
-            const cards = await fetchTcgCards(data.pokemonList);
-            setTcgCards(cards);
-            setFilteredCards(cards.slice(0, PAGE_SIZE)); // 첫 페이지 데이터
+          if (response.status === 200) {
+            const data = response.data;
+            setNickname(data.nickname);
+            setMatchWin(data.matchWin);
+            setReceivedData(data);
+            setPokemonList(data);
+
+            if (data.length > 0) {
+              const cards = await fetchTcgCards(data);
+              setTcgCards(cards);
+              setFilteredCards(cards.slice(0, PAGE_SIZE)); // 첫 페이지 데이터
+            }
           }
         } catch (error) {
+          console.error('Failed to fetch user info:', error);
         }
-      };
+      }
+    };
 
-      ws.onerror = function(event) {
-      };
-
-      ws.onclose = () => {
-      };
-
-      setWs(ws);
-
-      return () => {
-        ws.close();
-      };
-    }
+    fetchPokemonData();
   }, [token]);
 
   const handleSearchChange = (event) => {
@@ -122,7 +107,7 @@ function FightContent({ token }) {
   const filterCards = (type, searchTerm) => {
     const filtered = tcgCards.filter(card =>
       (type === '' || card.types.includes(type)) && 
-      (card.serverKoreanName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      (card.serverKoreanName?.toLowerCase().includes(searchTerm.toLowerCase()) || 
       card.name.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredCards(filtered.slice(0, PAGE_SIZE * currentPage)); // 현재 페이지 데이터

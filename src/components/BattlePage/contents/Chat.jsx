@@ -12,7 +12,7 @@ const Chat = ({ nickname }) => {
 
     useEffect(() => {
         // WebSocket 연결 설정
-        const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/chat');
+        const ws = new WebSocket('ws://localhost:8090/ms2/chat');
         setWebSocket(ws);
 
         ws.onopen = () => {

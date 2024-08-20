@@ -16,7 +16,7 @@ export default function MyPage({ setToken }) {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            axios.get('https://teeput.synology.me:30112/ms3/rankcheck', {
+            axios.get('http://localhost:8090/ms3/rankcheck', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

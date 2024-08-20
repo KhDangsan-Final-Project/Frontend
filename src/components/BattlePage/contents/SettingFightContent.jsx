@@ -10,7 +10,7 @@ export default function SettingFightContent({ onReceiveData, token }) {
 
   useEffect(() => {
     // WebSocket 연결 생성
-    const websocket = new WebSocket('wss://teeput.synology.me:30112/ms2/roomid');
+    const websocket = new WebSocket('ws://localhost:8090/ms2/roomid');
 
     websocket.onopen = () => {
       console.log('WebSocket 연결 완료');

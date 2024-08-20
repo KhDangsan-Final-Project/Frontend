@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styles from './css/battle.module.css';
 import usePokemonBattle from './hooks/useBattle';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,28 +11,7 @@ const getTypeLogo = (type) => `/img/types/${type.toLowerCase()}.png`;
 
 const getTypeLogoContainerClass = (type) => {
   switch (type) {
-    case 'Dragon':
-      return styles.dragon;
-    case 'Fairy':
-      return styles.fairy;
-    case 'Fighting':
-      return styles.fighting;
-    case 'Fire':
-      return styles.fire;
-    case 'Grass':
-      return styles.grass;
-    case 'Lightning':
-      return styles.lightning;
-    case 'Metal':
-      return styles.metal;
-    case 'Psychic':
-      return styles.psychic;
-    case 'Water':
-      return styles.water;
-    case 'Colorless':
-      return styles.colorless;
-    case 'Darkness':
-      return styles.darkness;
+    // Type classes mapping
     default:
       return '';
   }
@@ -104,20 +84,20 @@ function Battle({ token }) {
   useEffect(() => {
     if (isBattleFinished && enemyPokemon.length === 0) {
       if (token) {
-        const ws = new WebSocket('wss://teeput.synology.me:30112/ms2/update');
-
-        ws.onopen = () => {
-          ws.send(JSON.stringify({ token, matchWin: matchWin }));
-        };
-
-        ws.onclose = () => {
-        };
+        axios.get('http://localhost:8090/ms2/update', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }).then(response => {
+          console.log('User victory count updated:', response.data);
+        }).catch(error => {
+          console.error('Failed to update victory count:', error);
+        });
       }
 
       alert('챔피언 ALDER 와의 \n승부에서 이겼다!');
       alert('싸움이 끝나고 나의 마음에\n상쾌한 바람이 지나갔다 . . .');
       alert('우리의 싸움을\n다음 스텝으로의 발판 삼아 나아가라! !');
-      alert(`${nickname} 는 상금으로 0원을 손에 넣었다!`);
       const battlePage = window.confirm('메인 화면으로 이동하시겠습니까?');
       if (battlePage) {
         navigate('/fight');
@@ -217,9 +197,9 @@ function Battle({ token }) {
 
   useEffect(() => {
     if (enemyPokemon.length > 0 && selectedPokemon.length === 0) {
-      alert(`${nickname} 에게는 더 이상 \n싸울 수 있는 포켓몬이 없다!`);
+      alert(`당신에게는 더 이상 \n싸울 수 있는 포켓몬이 없다!`);
       alert('. . .  . . .  . . .  \n. . .  . . .  . . .');
-      alert(`${nickname}는 눈앞이 캄캄해졌다!`);
+      alert(`당신은 눈앞이 캄캄해졌다!`);
       navigate('/fight');
     }
   }, [selectedPokemon, navigate]);

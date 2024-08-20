@@ -18,7 +18,7 @@ export default function MailBox() {
             setLoading(false);
             return;
         }
-            const response = await axios.get('https://teeput.synology.me:30112/ms3/mail', { params: { token } });
+            const response = await axios.get('http://localhost:8090/ms3/mail', { params: { token } });
             if (response.data && response.data.result) {
                 setMails(response.data.result);
             } else {
@@ -32,14 +32,14 @@ export default function MailBox() {
             setSelectedMail(null);
             return;
         }
-            const response = await axios.get('https://teeput.synology.me:30112/ms3/mail/detail', {
+            const response = await axios.get('http://localhost:8090/ms3/mail/detail', {
                 params: { mailNo, token }
             });
             setSelectedMail(response.data);
             setSelectedMailId(mailNo);
     };
     const handleDeleteMail = async (mailNo) => {
-            const response = await axios.delete('https://teeput.synology.me:30112/ms3/mail/delete', {
+            const response = await axios.delete('http://localhost:8090/ms3/mail/delete', {
                 headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 params: { mailNo, token }
             });
@@ -53,8 +53,8 @@ export default function MailBox() {
             }
       
     };
-    const formatDateTime = (timestamp) => {
-        return timestamp.replace('T', ' ').slice(0, 16); 
+    const formatDateTime = (writeDate) => {
+        return writeDate.replace('T', ' ').slice(0, 16); 
     };
     useEffect(() => {
         fetchMails();
@@ -78,7 +78,7 @@ export default function MailBox() {
                 <div className={styles.header}>
                     <span className={styles.headerItem}>보낸 사람</span>
                     <span className={styles.headerItem}>제목</span>
-                    <span className={styles.headerItem}>시간</span>
+                    <span className={styles.headerItem}>날자</span>
                 </div>
                 <div className={styles.section}>
                     <ul className={styles.list}>
@@ -88,14 +88,14 @@ export default function MailBox() {
                                     <a href="#" onClick={() => handleMailClick(mail.mailNo)} className={styles.link}>
                                         <span className={styles.mailSender}>{mail.sender}</span>
                                         <span className={styles.mailSubject}>{mail.subject}</span>
-                                        <span className={styles.mailTimestamp}>{formatDateTime(mail.timestamp)}</span>
+                                        <span className={styles.mailTimestamp}>{formatDateTime(mail.writeDate)}</span>
                                     </a>
                                     {selectedMailId === mail.mailNo && selectedMail && (
                                         <div className={styles.detail}>
                                             <div>보낸 사람: {selectedMail.sender}</div>
                                             <div>제목: {selectedMail.subject}</div>
                                             <div>내용: {selectedMail.content}</div>
-                                            <div>시간: {formatDateTime(selectedMail.timestamp)}</div>
+                                            <div>날자: {formatDateTime(selectedMail.writeDate)}</div>
                                             <button onClick={() => handleDeleteMail(selectedMail.mailNo)} className={styles.button}>삭제</button>
                                         </div>
                                     )}

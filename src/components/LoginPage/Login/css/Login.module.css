@@ -129,18 +129,22 @@
 .register_bar {
   width: 100%;
   font-size: 15px;
-  color: #bababa;
+  color: white;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
 }
 
 .register_bar>a {
-  color: #bababa;
+  color: white;
 }
 
 .register_bar>a:hover {
   color: white;
+}
+
+.tag {
+  margin-right: 10px;
 }
 
 @media (max-width:510px) {

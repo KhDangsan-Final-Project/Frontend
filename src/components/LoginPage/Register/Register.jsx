@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'; // react-router-dom에서 useNav
 import styles from './css/Register.module.css';
 import axios from 'axios';
 
-export default function Register( {showLogin} ) {
+export default function Register({ showLogin }) {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -59,13 +59,13 @@ export default function Register( {showLogin} ) {
         setNickname(e.target.value);
     }
 
-    
 
-    
-    const handleIdCheck = async(e) => {
+
+
+    const handleIdCheck = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("https://teeput.synology.me:30112/ms3/user/idcheck", JSON.stringify({ id }), {
+            const response = await axios.post("http://localhost:8090/ms3/user/idcheck", JSON.stringify({ id }), {
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8',
                 }
@@ -97,7 +97,7 @@ export default function Register( {showLogin} ) {
         });
 
         try {
-            const response = await fetch("https://teeput.synology.me:30112/ms3/user/insert", {
+            const signupResponse = await fetch("http://localhost:8090/ms3/user/insert", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -105,16 +105,28 @@ export default function Register( {showLogin} ) {
                 },
                 credentials: 'include'
             });
-            const result = await response.json();
-            console.log(result);
-            if (result.result) {
+            const signupResult = await signupResponse.json(); // signupResult 변수 선언 및 할당
+            
+            if (signupResult.result) { // signupResult가 정의된 상태에서 사용됨
+                // 회원가입이 성공한 경우, match 등록 요청을 보냅니다.
+                const matchResponse = await fetch("http://localhost:8090/ms2/game/insert", {
+                    method: 'POST',
+                    body: formData, // Assuming signupResult.id contains the user ID
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8',
+                    },
+                    credentials: 'include'
+                });
+                const matchResult = await matchResponse.json();
+                
                 navigate('/');
             } else {
-                alert(result.msg);
+                alert(signupResult.msg);
             }
         } catch (error) {
             console.error('Error:', error);
         }
+        
     };
 
     return (

@@ -16,7 +16,7 @@ import BoardNotice from './components/BoardPage/BoardContent/BoardNotice';
 import BoardList from './components/BoardPage/BoardList';
 import FightContent from './components/BattlePage/contents/FightContent';
 import Battle from './components/BattlePage/contents/Battle';
-import PasswordResetPage from './PasswdReset/PasswordResetPage';
+import PasswordResetPage from './components/LoginPage/PasswdReset/PasswordResetPage';
 
 function App() {
   const [token, setToken] = useState(null);

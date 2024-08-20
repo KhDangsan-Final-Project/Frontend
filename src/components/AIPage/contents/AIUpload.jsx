@@ -32,6 +32,13 @@ export default function AIUpload() {
       return;
     }
 
+    // 파일 확장자 체크
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    if (fileExtension !== 'jpg' && fileExtension !== 'png') {
+      alert('파일 형식이 잘못됐습니다 😥');
+      return;
+    }
+
     if (!token) {
       alert('로그인을 하셔야 합니다.');
       navigate('/login');
@@ -43,7 +50,7 @@ export default function AIUpload() {
     setLoading(true);
 
     try {
-      const response = await axios.post('https://teeput.synology.me:30112/ms1/detect', formData, {
+      const response = await axios.post('http://localhost:8090/ms1/detect', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`

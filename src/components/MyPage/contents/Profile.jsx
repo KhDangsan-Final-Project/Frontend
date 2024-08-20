@@ -20,7 +20,7 @@ export default function Profile() {
       setLoading(false);
       return;
     }
-    axios.get('https://teeput.synology.me:30112/ms3/mypage', { params: { token } })
+    axios.get('http://localhost:8090/ms3/mypage', { params: { token } })
       .then(response => {
         if (response.data) {
           setUserData(response.data);
@@ -88,7 +88,7 @@ export default function Profile() {
       return;
     }
     try {
-      const response = await axios.put('https://teeput.synology.me:30112/ms3/mypage/update', userData, {
+      const response = await axios.put('http://localhost:8090/ms3/mypage/update', userData, {
         params: { token }
       });
       if (response.data.status === 'success') {
@@ -100,7 +100,7 @@ export default function Profile() {
     } catch (error) {
       console.error('정보 업데이트 중 오류가 발생했습니다!', error);
     }
-  };  
+  };
 
   const handleDeleteAccount = async () => {
     if (!window.confirm("회원 탈퇴를 하시겠습니까?")) {
@@ -109,14 +109,28 @@ export default function Profile() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.delete(`https://teeput.synology.me:30112/ms3/user/delete`, {
+      const response = await axios.delete(`http://localhost:8090/ms3/user/delete`, {
         params: { id: userData.id, token: token }
       });
 
       if (response.data.status === 'success') {
+        const matchResponse = await axios.delete('http://localhost:8090/ms2/game/delete', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
+
+        const boardResponse = await axios.delete('http://localhost:8090/ms1/user/delete', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
         alert('회원 탈퇴가 성공적으로 처리되었습니다.');
-        localStorage.removeItem('token'); 
-        navigate('/'); 
+        localStorage.removeItem('token');
+        navigate('/');
+
       } else {
         alert(response.data.message || '회원 탈퇴에 실패했습니다.');
       }
@@ -138,7 +152,7 @@ export default function Profile() {
           <span>이름</span>
           <input type="text" placeholder="이름" className={styles.info} value={userData.name} readOnly />
         </label>
-        
+
         <label className={styles.label}>
           <span>아이디</span>
           <input type="text" placeholder="아이디" value={userData.id} readOnly />
@@ -147,8 +161,8 @@ export default function Profile() {
         <div className={styles.emailSection}>
           <label className={styles.label2}>
             <span>이메일</span>
-            <input 
-              type="text"  placeholder="이메일을 입력해주세요"  className={styles.email}  value={userData.email.split('@')[0]}  onChange={(e) => handleEmailChange(0, e.target.value)}  />
+            <input
+              type="text" placeholder="이메일을 입력해주세요" className={styles.email} value={userData.email.split('@')[0]} onChange={(e) => handleEmailChange(0, e.target.value)} />
             @
             <select value={userData.email.split('@')[1]} onChange={(e) => handleEmailChange(1, e.target.value)}>
               <option value="naver.com">naver.com</option>
@@ -176,7 +190,7 @@ export default function Profile() {
 
         <label className={styles.label}>
           <span>닉네임</span>
-          <input  type="text"  placeholder="닉네임"  className={styles.info}  value={userData.nickname}  name="nickname" onChange={handleInputChange} />
+          <input type="text" placeholder="닉네임" className={styles.info} value={userData.nickname} name="nickname" onChange={handleInputChange} />
         </label>
 
         <div className={styles.btn}>

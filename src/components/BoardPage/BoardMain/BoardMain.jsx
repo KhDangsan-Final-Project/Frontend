@@ -19,13 +19,21 @@ const groupBoards = (boardList) => {
     }, []);
 };
 
+const getRankImage = (grantNo) => {
+    switch (grantNo) {
+        default:
+            return '/img/rank/pokeBall.png';
+    }
+};
+
 
 export default function BoardMain({ showWrite, token }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [boardList, setBoardList] = useState([]);
     const [groupedBoards, setGroupedBoards] = useState([]);
     const [error, setError] = useState(null);
-    
+    const [grantNo, setGrantNo] = useState(null);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -41,7 +49,27 @@ export default function BoardMain({ showWrite, token }) {
         }
     }, [token]);
     
-    
+    useEffect(() => {
+        if (token) {
+            setIsLoggedIn(true);
+            // grantNo를 가져오는 API 호출
+            axios.get('http://localhost:8090/ms3/rankcheck', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                setGrantNo(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching grantNo:', error);
+                setGrantNo(null);
+            });
+        } else {
+            setIsLoggedIn(false);
+        }
+    }, [token]);
+
     const alertMsg = () => {
         alert("로그인 후 조회 가능합니다.");
     };
@@ -54,7 +82,7 @@ export default function BoardMain({ showWrite, token }) {
     useEffect(() => {
         async function fetchBoardList() {
             try {
-                const response = await axios.get("https://teeput.synology.me:30112/ms1/board/list");
+                const response = await axios.get("http://localhost:8090/ms1/board/list");
 
                 setBoardList(response.data.boards);
             } catch (err) {
@@ -98,7 +126,8 @@ export default function BoardMain({ showWrite, token }) {
                                 <h5><Link to="/login" onClick={alertMsg}> {board.boardTitle}</Link></h5>
                             )}
                                 <li>
-                                    <img src='/img/pokeball.png' /><span>{board.id}</span>
+                                    <img src={grantNo !== null ? getRankImage(grantNo) : '/img/rank/pokeBall.png'} alt="Rank" />
+                                    <span> {board.id}</span>
                                     &nbsp;
                                     <img src='/img/eye.png' /><span>{board.boardCount}</span>
                                     &nbsp;
